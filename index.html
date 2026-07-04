@@ -1,0 +1,2658 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>BayaranKita - Bayar & isi ulang jadi gampang </title>
+
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- QRCode.js -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js">
+    </script>
+
+    <!-- jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
+    </script>
+
+    <style>
+        /* ============================================
+                   TOKOPEDIA STYLE — DARK MODE READY
+                   ============================================ */
+        :root {
+            --primary: #03AC0E;
+            --primary-dark: #028A0B;
+            --primary-light: #E8F5E9;
+            --bg-light: #F5F7FA;
+            --bg-dark: #0F0F0F;
+            --card-light: #FFFFFF;
+            --card-dark: #1A1A1A;
+            --text-light: #1A1A1A;
+            --text-dark: #F0F0F0;
+            --text-secondary-light: #6B7280;
+            --text-secondary-dark: #A0A0A0;
+            --border-light: #E5E7EB;
+            --border-dark: #2A2A2A;
+            --shadow-light: 0 2px 12px rgba(0, 0, 0, 0.08);
+            --shadow-dark: 0 2px 12px rgba(0, 0, 0, 0.4);
+            --nav-bg-light: #FFFFFF;
+            --nav-bg-dark: #1A1A1A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg-light);
+            color: var(--text-light);
+            padding-bottom: 80px;
+            transition: background 0.3s, color 0.3s;
+            min-height: 100vh;
+        }
+
+        body.dark {
+            background: var(--bg-dark);
+            color: var(--text-dark);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        /* ===== BOTTOM NAV ===== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--nav-bg-light);
+            box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.06);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-around;
+            padding: 6px 0 env(safe-area-inset-bottom, 6px) 0;
+            border-top: 1px solid var(--border-light);
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        body.dark .bottom-nav {
+            background: var(--nav-bg-dark);
+            border-top-color: var(--border-dark);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #9CA3AF;
+            font-size: 10px;
+            cursor: pointer;
+            transition: color 0.2s;
+            padding: 4px 12px;
+            border: none;
+            background: transparent;
+            position: relative;
+            font-weight: 500;
+            min-width: 56px;
+        }
+
+        .nav-item i {
+            font-size: 22px;
+            margin-bottom: 1px;
+            transition: color 0.2s;
+        }
+
+        .nav-item span {
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-item.active i {
+            color: var(--primary);
+        }
+
+        .nav-item .badge-nav {
+            position: absolute;
+            top: 2px;
+            right: 6px;
+            background: #EF4444;
+            color: #fff;
+            font-size: 9px;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        /* ===== PAGES ===== */
+        .page {
+            display: none;
+            padding: 16px 16px 20px;
+            animation: fadeUp 0.3s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: var(--card-light);
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: var(--shadow-light);
+            margin-bottom: 14px;
+            transition: background 0.3s, box-shadow 0.3s, border-color 0.3s;
+            border: 1px solid var(--border-light);
+        }
+
+        body.dark .card {
+            background: var(--card-dark);
+            border-color: var(--border-dark);
+            box-shadow: var(--shadow-dark);
+        }
+
+        /* ===== SALDO CARD (Tokopedia Green) ===== */
+        .saldo-card {
+            background: linear-gradient(145deg, #03AC0E, #028A0B);
+            border-radius: 16px;
+            padding: 18px 20px;
+            color: #fff;
+            border: none;
+            box-shadow: 0 4px 20px rgba(3, 172, 14, 0.3);
+            margin-bottom: 18px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .saldo-card::after {
+            content: '';
+            position: absolute;
+            top: -40%;
+            right: -20%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 50%;
+        }
+
+        .saldo-card .saldo-amount {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .saldo-card .saldo-label {
+            font-size: 13px;
+            opacity: 0.85;
+            font-weight: 500;
+        }
+
+        /* ===== SERVICE GRID (Tokopedia style) ===== */
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .service-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 14px 6px;
+            background: var(--card-light);
+            border-radius: 14px;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        body.dark .service-item {
+            background: var(--card-dark);
+            border-color: var(--border-dark);
+        }
+
+        .service-item:active {
+            transform: scale(0.94);
+        }
+
+        .service-item .icon-wrap {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 6px;
+            font-size: 22px;
+            color: var(--primary);
+            transition: background 0.3s;
+        }
+
+        body.dark .service-item .icon-wrap {
+            background: rgba(3, 172, 14, 0.15);
+        }
+
+        .service-item span {
+            font-size: 10px;
+            font-weight: 600;
+            text-align: center;
+            color: var(--text-light);
+            line-height: 1.2;
+        }
+
+        body.dark .service-item span {
+            color: var(--text-dark);
+        }
+
+        /* ===== PROVIDER GRID ===== */
+        .provider-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .provider-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 12px 6px;
+            background: var(--card-light);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            border-color: var(--border-light);
+        }
+
+        body.dark .provider-item {
+            background: var(--card-dark);
+            border-color: var(--border-dark);
+        }
+
+        .provider-item.active-provider {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        body.dark .provider-item.active-provider {
+            background: rgba(3, 172, 14, 0.15);
+        }
+
+        .provider-item img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            margin-bottom: 4px;
+            border-radius: 8px;
+        }
+
+        .provider-item span {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        body.dark .provider-item span {
+            color: var(--text-dark);
+        }
+
+        /* ===== FORM ===== */
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-light);
+            border-radius: 12px;
+            font-size: 14px;
+            transition: all 0.3s;
+            background: var(--card-light);
+            color: var(--text-light);
+            outline: none;
+        }
+
+        body.dark .form-input {
+            background: var(--card-dark);
+            border-color: var(--border-dark);
+            color: var(--text-dark);
+        }
+
+        .form-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(3, 172, 14, 0.12);
+        }
+
+        .form-input.error {
+            border-color: #EF4444;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+
+        .form-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        body.dark .form-label {
+            color: var(--text-dark);
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+            padding: 14px 24px;
+            border-radius: 14px;
+            border: none;
+            font-weight: 700;
+            font-size: 15px;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.25s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 14px rgba(3, 172, 14, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.96);
+            background: var(--primary-dark);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: var(--border-light);
+            color: var(--text-light);
+            padding: 12px 20px;
+            border-radius: 14px;
+            border: none;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        body.dark .btn-secondary {
+            background: var(--border-dark);
+            color: var(--text-dark);
+        }
+
+        .btn-secondary:active {
+            transform: scale(0.96);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            padding: 12px 20px;
+            border-radius: 14px;
+            border: 2px solid var(--primary);
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.25s;
+            width: 100%;
+        }
+
+        .btn-outline:active {
+            transform: scale(0.96);
+            background: var(--primary-light);
+        }
+
+        body.dark .btn-outline:active {
+            background: rgba(3, 172, 14, 0.15);
+        }
+
+        /* ===== NOMINAL BUTTONS ===== */
+        .nominal-btn {
+            padding: 8px 16px;
+            border: 2px solid var(--border-light);
+            border-radius: 10px;
+            background: var(--card-light);
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-light);
+        }
+
+        body.dark .nominal-btn {
+            background: var(--card-dark);
+            border-color: var(--border-dark);
+            color: var(--text-dark);
+        }
+
+        .nominal-btn:active {
+            transform: scale(0.94);
+        }
+
+        .nominal-btn.active-nominal {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        body.dark .nominal-btn.active-nominal {
+            background: rgba(3, 172, 14, 0.15);
+        }
+
+        /* ===== BADGE ===== */
+        .badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .badge-success {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+        body.dark .badge-success {
+            background: rgba(3, 172, 14, 0.2);
+        }
+        .badge-warning {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+        body.dark .badge-warning {
+            background: rgba(251, 191, 36, 0.2);
+            color: #FBBF24;
+        }
+        .badge-danger {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+        body.dark .badge-danger {
+            background: rgba(239, 68, 68, 0.2);
+            color: #F87171;
+        }
+        .badge-info {
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+        body.dark .badge-info {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60A5FA;
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(6px);
+            z-index: 2000;
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+            animation: slideUp 0.35s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            background: var(--card-light);
+            border-radius: 24px 24px 0 0;
+            max-width: 500px;
+            width: 100%;
+            max-height: 92vh;
+            overflow-y: auto;
+            padding: 24px 20px 28px;
+            animation: slideUp 0.35s ease;
+            transition: background 0.3s;
+        }
+
+        body.dark .modal-content {
+            background: var(--card-dark);
+        }
+
+        .modal-content::-webkit-scrollbar {
+            width: 3px;
+        }
+        .modal-content::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        /* ===== TOAST ===== */
+        .toast-container {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            right: 16px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            pointer-events: none;
+        }
+
+        .toast {
+            padding: 14px 18px;
+            border-radius: 14px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            animation: toastIn 0.35s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            pointer-events: auto;
+        }
+
+        .toast-success {
+            background: var(--primary);
+        }
+        .toast-error {
+            background: #EF4444;
+        }
+        .toast-info {
+            background: #3B82F6;
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* ===== QR CODE ===== */
+        #qrcode {
+            display: flex;
+            justify-content: center;
+            padding: 12px;
+            background: #fff;
+            border-radius: 16px;
+        }
+        #qrcode img {
+            width: 170px !important;
+            height: 170px !important;
+        }
+
+        /* ===== SPP ITEMS ===== */
+        .spp-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 14px;
+            background: var(--bg-light);
+            border-radius: 12px;
+            margin-bottom: 8px;
+            transition: all 0.2s;
+            border: 1px solid var(--border-light);
+        }
+
+        body.dark .spp-item {
+            background: var(--bg-dark);
+            border-color: var(--border-dark);
+        }
+
+        .spp-item:active {
+            transform: scale(0.98);
+        }
+
+        .spp-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        /* ===== HISTORY ===== */
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        body.dark .history-item {
+            border-bottom-color: var(--border-dark);
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        /* ===== TIMER ===== */
+        .timer {
+            color: #EF4444;
+            font-weight: 700;
+            font-size: 14px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (min-width: 640px) {
+            .service-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .provider-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (min-width: 768px) {
+            body {
+                max-width: 440px;
+                margin: 0 auto;
+                padding: 0 0 80px;
+                background: var(--bg-light);
+            }
+            body.dark {
+                background: var(--bg-dark);
+            }
+            .bottom-nav {
+                max-width: 440px;
+                left: 50%;
+                transform: translateX(-50%);
+                border-radius: 20px 20px 0 0;
+            }
+            .modal-content {
+                border-radius: 24px;
+                max-height: 80vh;
+            }
+            .modal-overlay {
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .service-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .provider-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .nominal-btn {
+                padding: 6px 10px;
+                font-size: 11px;
+            }
+            .saldo-card .saldo-amount {
+                font-size: 22px;
+            }
+        }
+
+        /* ===== DARK MODE TOGGLE ===== */
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: var(--card-light);
+            color: var(--text-light);
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: var(--shadow-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-light);
+        }
+
+        body.dark .theme-toggle {
+            background: var(--card-dark);
+            border-color: var(--border-dark);
+            color: var(--text-dark);
+            box-shadow: var(--shadow-dark);
+        }
+
+        .theme-toggle:active {
+            transform: scale(0.92);
+        }
+
+        /* ===== SKELETON ===== */
+        .skeleton {
+            background: linear-gradient(90deg, var(--border-light) 25%, var(--bg-light) 50%, var(--border-light) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.6s infinite;
+            border-radius: 8px;
+        }
+        body.dark .skeleton {
+            background: linear-gradient(90deg, var(--border-dark) 25%, var(--bg-dark) 50%, var(--border-dark) 75%);
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        /* ===== METHOD SELECT ===== */
+        .method-option {
+            padding: 14px 16px;
+            border: 2px solid var(--border-light);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.25s;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: var(--card-light);
+        }
+
+        body.dark .method-option {
+            background: var(--card-dark);
+            border-color: var(--border-dark);
+        }
+
+        .method-option.active-method {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        body.dark .method-option.active-method {
+            background: rgba(3, 172, 14, 0.12);
+        }
+
+        .method-option:active {
+            transform: scale(0.97);
+        }
+
+        /* ===== CATEGORY PILLS ===== */
+        .cat-pill {
+            padding: 8px 16px;
+            border-radius: 30px;
+            border: 2px solid var(--border-light);
+            background: var(--card-light);
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-light);
+            white-space: nowrap;
+        }
+
+        body.dark .cat-pill {
+            background: var(--card-dark);
+            border-color: var(--border-dark);
+            color: var(--text-dark);
+        }
+
+        .cat-pill.active-cat {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        body.dark .cat-pill.active-cat {
+            background: rgba(3, 172, 14, 0.15);
+        }
+
+        .cat-pill:active {
+            transform: scale(0.94);
+        }
+
+        /* ===== PRINT ===== */
+        @media print {
+            .bottom-nav,
+            .btn-primary,
+            .btn-secondary,
+            .btn-outline,
+            .no-print {
+                display: none !important;
+            }
+            .modal-overlay {
+                position: static !important;
+                background: none !important;
+                backdrop-filter: none !important;
+                display: block !important;
+                padding: 0 !important;
+            }
+            .modal-content {
+                border-radius: 0 !important;
+                max-height: none !important;
+                box-shadow: none !important;
+                padding: 20px !important;
+            }
+            body {
+                background: #fff !important;
+                padding: 0 !important;
+                color: #000 !important;
+            }
+            .card {
+                border: 1px solid #ddd !important;
+                box-shadow: none !important;
+            }
+            .saldo-card {
+                background: #03AC0E !important;
+                color: #fff !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ============================================================
+    PAGE: DASHBOARD
+    ============================================================ -->
+    <div class="page active" id="page-dashboard">
+
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <h1 class="text-2xl font-extrabold tracking-tight" style="color:var(--primary);">BayaranKita</h1>
+                <p class="text-sm" style="color:var(--text-secondary-light);">Bayar & isi ulang jadi gampang</p>
+            </div>
+            <button class="theme-toggle" onclick="toggleDarkMode()" id="themeToggleBtn">
+                <i class="fas fa-moon" id="themeIcon"></i>
+            </button>
+        </div>
+
+        <!-- Saldo Card (Tokopedia green) -->
+        <div class="saldo-card">
+            <div class="flex justify-between items-start relative z-10">
+                <div>
+                    <p class="saldo-label"><i class="fas fa-wallet mr-1"></i> Saldo</p>
+                    <p class="saldo-amount" id="saldoDisplay">Rp 1.250.000</p>
+                </div>
+                <button onclick="topUpSaldo()" class="bg-white/20 backdrop-blur px-5 py-2.5 rounded-full text-sm font-bold flex items-center gap-1.5 border border-white/30">
+                    <i class="fas fa-plus text-xs"></i> Top Up
+                </button>
+            </div>
+            <div class="flex gap-5 mt-3 text-sm relative z-10 opacity-90">
+                <span><i class="fas fa-receipt mr-1.5"></i> <span id="countTagihan">0</span> Tagihan</span>
+                <span><i class="fas fa-history mr-1.5"></i> <span id="countTransaksi">0</span> Transaksi</span>
+            </div>
+        </div>
+
+        <!-- Layanan Cepat (Tokopedia grid) -->
+        <h2 class="font-bold text-sm mb-3" style="color:var(--text-light);">Layanan Cepat</h2>
+        <div class="service-grid">
+            <div class="service-item" onclick="navigateTo('tagihan')">
+                <div class="icon-wrap"><i class="fas fa-bolt"></i></div>
+                <span>Listrik</span>
+            </div>
+            <div class="service-item" onclick="navigateTo('tagihan')">
+                <div class="icon-wrap"><i class="fas fa-water"></i></div>
+                <span>PDAM</span>
+            </div>
+            <div class="service-item" onclick="navigateTo('tagihan')">
+                <div class="icon-wrap"><i class="fas fa-wifi"></i></div>
+                <span>Internet</span>
+            </div>
+            <div class="service-item" onclick="navigateTo('spp')">
+                <div class="icon-wrap"><i class="fas fa-graduation-cap"></i></div>
+                <span>SPP</span>
+            </div>
+            <div class="service-item" onclick="navigateTo('pulsa')">
+                <div class="icon-wrap"><i class="fas fa-mobile-alt"></i></div>
+                <span>Pulsa</span>
+            </div>
+            <div class="service-item" onclick="navigateTo('pulsa')">
+                <div class="icon-wrap"><i class="fas fa-signal"></i></div>
+                <span>Paket Data</span>
+            </div>
+            <!-- 4 tambahan dari saldo -->
+            <div class="service-item" onclick="navigateTo('bpjs')">
+                <div class="icon-wrap"><i class="fas fa-heartbeat"></i></div>
+                <span>BPJS</span>
+            </div>
+            <div class="service-item" onclick="navigateTo('pajak')">
+                <div class="icon-wrap"><i class="fas fa-car"></i></div>
+                <span>Pajak</span>
+            </div>
+            <div class="service-item" onclick="navigateTo('tv')">
+                <div class="icon-wrap"><i class="fas fa-tv"></i></div>
+                <span>TV/Stream</span>
+            </div>
+            <div class="service-item" onclick="navigateTo('donasi')">
+                <div class="icon-wrap"><i class="fas fa-hand-holding-heart"></i></div>
+                <span>Donasi</span>
+            </div>
+            <div class="service-item" onclick="navigateTo('riwayat')">
+                <div class="icon-wrap" style="background:var(--border-light);color:var(--text-secondary-light);"><i class="fas fa-clock"></i></div>
+                <span>Riwayat</span>
+            </div>
+            <div class="service-item" onclick="showToast('Fitur bantuan segera hadir!','info')">
+                <div class="icon-wrap" style="background:var(--border-light);color:var(--text-secondary-light);"><i class="fas fa-headset"></i></div>
+                <span>Bantuan</span>
+            </div>
+        </div>
+
+        <!-- Promo Banner -->
+        <div class="card" style="background:linear-gradient(145deg,#03AC0E,#028A0B);color:#fff;border:none;padding:14px 18px;border-radius:16px;">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-xs opacity-80">🔥 Promo Spesial</p>
+                    <p class="font-bold text-sm">Cashback 10% untuk pembayaran pertama</p>
+                    <p class="text-[11px] opacity-70 mt-0.5">Berlaku hingga 31 Juli 2026</p>
+                </div>
+                <i class="fas fa-ticket-alt text-3xl opacity-30"></i>
+            </div>
+        </div>
+
+        <!-- Transaksi Terakhir -->
+        <h2 class="font-bold text-sm mt-4 mb-3" style="color:var(--text-light);">Transaksi Terakhir</h2>
+        <div id="recentTransactions" class="space-y-2"></div>
+    </div>
+
+    <!-- ============================================================
+    PAGE: TAGIHAN (PLN, PDAM, Internet, Seminar)
+    ============================================================ -->
+    <div class="page" id="page-tagihan">
+        <div class="flex items-center gap-3 mb-4">
+            <button onclick="navigateTo('dashboard')" class="p-2 -ml-2 text-xl" style="color:var(--text-light);">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h1 class="text-xl font-bold" style="color:var(--text-light);">Bayar Tagihan</h1>
+        </div>
+
+        <div class="card">
+            <label class="form-label">Kategori</label>
+            <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+                <button class="cat-pill active-cat" data-cat="pln" onclick="selectCategoryTagihan('pln')">⚡ PLN</button>
+                <button class="cat-pill" data-cat="pdam" onclick="selectCategoryTagihan('pdam')">💧 PDAM</button>
+                <button class="cat-pill" data-cat="internet" onclick="selectCategoryTagihan('internet')">📶 Internet</button>
+                <button class="cat-pill" data-cat="seminar" onclick="selectCategoryTagihan('seminar')">🎓 Seminar</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <label class="form-label" id="labelPelanggan">Nomor Pelanggan PLN</label>
+            <input type="text" id="inputPelanggan" class="form-input" placeholder="Masukkan nomor pelanggan" maxlength="15">
+            <div id="pelangganError" class="text-red-500 text-xs mt-1 hidden"></div>
+            <button class="btn-primary mt-3" onclick="cekTagihan()">
+                <i class="fas fa-search"></i> Cek Tagihan
+            </button>
+        </div>
+
+        <div id="tagihanResult" class="hidden">
+            <div class="card">
+                <div class="flex justify-between items-start mb-3">
+                    <div>
+                        <p class="text-xs" style="color:var(--text-secondary-light);">Nama Pelanggan</p>
+                        <p class="font-bold" id="resultNama" style="color:var(--text-light);">-</p>
+                    </div>
+                    <span class="badge badge-warning" id="resultStatus">Belum Lunas</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-sm mb-3">
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Periode</p><p class="font-medium" id="resultPeriode" style="color:var(--text-light);">-</p></div>
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Jatuh Tempo</p><p class="font-medium" id="resultJatuhTempo" style="color:var(--text-light);">-</p></div>
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Tagihan Pokok</p><p class="font-medium" id="resultPokok" style="color:var(--text-light);">-</p></div>
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Denda</p><p class="font-medium text-red-500" id="resultDenda">-</p></div>
+                </div>
+                <div class="border-t pt-3" style="border-color:var(--border-light);">
+                    <p class="text-xs" style="color:var(--text-secondary-light);">Total yang Harus Dibayar</p>
+                    <p class="text-2xl font-extrabold" style="color:var(--primary);" id="resultTotal">-</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <label class="form-label">Metode Pembayaran</label>
+                <div class="space-y-2">
+                    <div class="method-option active-method" data-method="va" onclick="selectMethodTagihan('va')">
+                        <i class="fas fa-university text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">Virtual Account</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">BCA / BNI / Mandiri</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600" id="checkVa"></i>
+                    </div>
+                    <div class="method-option" data-method="qris" onclick="selectMethodTagihan('qris')">
+                        <i class="fas fa-qrcode text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">QRIS</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Scan via e-wallet</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkQris"></i>
+                    </div>
+                    <div class="method-option" data-method="teller" onclick="selectMethodTagihan('teller')">
+                        <i class="fas fa-store text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">Bayar di Teller</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Kantor cabang terdekat</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkTeller"></i>
+                    </div>
+                    <!-- 4 tambahan metode pembayaran -->
+                    <div class="method-option" data-method="gopay" onclick="selectMethodTagihan('gopay')">
+                        <i class="fas fa-credit-card text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">GoPay</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Dompet digital Gojek</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkGopay"></i>
+                    </div>
+                    <div class="method-option" data-method="ovo" onclick="selectMethodTagihan('ovo')">
+                        <i class="fas fa-mobile-screen-button text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">OVO</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Dompet digital OVO</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkOvo"></i>
+                    </div>
+                    <div class="method-option" data-method="dana" onclick="selectMethodTagihan('dana')">
+                        <i class="fas fa-wallet text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">DANA</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Dompet digital DANA</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkDana"></i>
+                    </div>
+                    <div class="method-option" data-method="linkaja" onclick="selectMethodTagihan('linkaja')">
+                        <i class="fas fa-credit-card text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">LinkAja</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Dompet digital LinkAja</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkLinkaja"></i>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="prosesBayarTagihan()">
+                <i class="fas fa-credit-card"></i> Bayar Sekarang
+            </button>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    PAGE: SPP
+    ============================================================ -->
+    <div class="page" id="page-spp">
+        <div class="flex items-center gap-3 mb-4">
+            <button onclick="navigateTo('dashboard')" class="p-2 -ml-2 text-xl" style="color:var(--text-light);">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h1 class="text-xl font-bold" style="color:var(--text-light);">Biaya Kuliah / SPP</h1>
+        </div>
+
+        <div class="card">
+            <label class="form-label">NIM (12 digit)</label>
+            <input type="text" id="inputNim" class="form-input" placeholder="Masukkan NIM" maxlength="12">
+            <div id="nimError" class="text-red-500 text-xs mt-1 hidden"></div>
+            <button class="btn-primary mt-3" onclick="cekTagihanSpp()">
+                <i class="fas fa-search"></i> Lihat Tagihan Semester
+            </button>
+        </div>
+
+        <div id="sppResult" class="hidden">
+            <div class="card">
+                <div class="flex justify-between items-center mb-3">
+                    <div>
+                        <p class="text-xs" style="color:var(--text-secondary-light);">Mahasiswa</p>
+                        <p class="font-bold" id="sppNama" style="color:var(--text-light);">-</p>
+                    </div>
+                    <span class="badge badge-info" id="sppSemester">-</span>
+                </div>
+                <div id="sppList" class="space-y-2"></div>
+                <div class="border-t pt-3 mt-3" style="border-color:var(--border-light);">
+                    <div class="flex justify-between items-center">
+                        <p class="text-sm" style="color:var(--text-secondary-light);">Total Tagihan Terpilih</p>
+                        <p class="text-xl font-extrabold" style="color:var(--primary);" id="sppTotal">Rp 0</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <label class="form-label">Kode Tagihan</label>
+                <input type="text" id="inputKodeTagihan" class="form-input" placeholder="Masukkan kode tagihan" maxlength="15">
+                <div id="kodeTagihanError" class="text-red-500 text-xs mt-1 hidden"></div>
+            </div>
+
+            <button class="btn-primary" onclick="prosesBayarSpp()">
+                <i class="fas fa-credit-card"></i> Bayar SPP Terpilih
+            </button>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    PAGE: PULSA & PAKET DATA
+    ============================================================ -->
+    <div class="page" id="page-pulsa">
+        <div class="flex items-center gap-3 mb-4">
+            <button onclick="navigateTo('dashboard')" class="p-2 -ml-2 text-xl" style="color:var(--text-light);">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h1 class="text-xl font-bold" style="color:var(--text-light);">Isi Pulsa & Paket</h1>
+        </div>
+
+        <div class="card">
+            <label class="form-label">Pilih Provider</label>
+            <div class="provider-grid">
+                <div class="provider-item active-provider" data-provider="telkomsel" onclick="selectProvider('telkomsel')">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ea1f3d'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='white' font-size='20' font-weight='bold'%3ETelkomsel%3C/text%3E%3C/svg%3E" alt="Telkomsel">
+                    <span>Telkomsel</span>
+                </div>
+                <div class="provider-item" data-provider="xl" onclick="selectProvider('xl')">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23007dc3'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='white' font-size='20' font-weight='bold'%3EXL%3C/text%3E%3C/svg%3E" alt="XL">
+                    <span>XL Axiata</span>
+                </div>
+                <div class="provider-item" data-provider="indosat" onclick="selectProvider('indosat')">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ed1c24'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='white' font-size='16' font-weight='bold'%3EIndosat%3C/text%3E%3C/svg%3E" alt="Indosat">
+                    <span>Indosat</span>
+                </div>
+                <div class="provider-item" data-provider="tri" onclick="selectProvider('tri')">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230064b0'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='white' font-size='20' font-weight='bold'%3ETri%3C/text%3E%3C/svg%3E" alt="Tri">
+                    <span>Tri (3)</span>
+                </div>
+                <div class="provider-item" data-provider="smartfren" onclick="selectProvider('smartfren')">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ed1c24'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='white' font-size='14' font-weight='bold'%3ESmartfren%3C/text%3E%3C/svg%3E" alt="Smartfren">
+                    <span>Smartfren</span>
+                </div>
+                <div class="provider-item" data-provider="axis" onclick="selectProvider('axis')">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ffd700'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='black' font-size='20' font-weight='bold'%3EAxis%3C/text%3E%3C/svg%3E" alt="Axis">
+                    <span>Axis</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <label class="form-label">Nomor HP</label>
+            <input type="tel" id="inputHp" class="form-input" placeholder="08xxxxxxxxxx" maxlength="13">
+            <div id="hpError" class="text-red-500 text-xs mt-1 hidden"></div>
+        </div>
+
+        <div class="card">
+            <label class="form-label">Nominal Pulsa</label>
+            <div class="flex flex-wrap gap-2">
+                <button class="nominal-btn active-nominal" data-nominal="10000" onclick="selectNominal('10000')">Rp 10.000</button>
+                <button class="nominal-btn" data-nominal="25000" onclick="selectNominal('25000')">Rp 25.000</button>
+                <button class="nominal-btn" data-nominal="50000" onclick="selectNominal('50000')">Rp 50.000</button>
+                <button class="nominal-btn" data-nominal="100000" onclick="selectNominal('100000')">Rp 100.000</button>
+                <button class="nominal-btn" data-nominal="200000" onclick="selectNominal('200000')">Rp 200.000</button>
+            </div>
+            <div class="mt-2">
+                <input type="number" id="inputCustomNominal" class="form-input" placeholder="Nominal lainnya (min 5.000)" min="5000">
+            </div>
+        </div>
+
+        <div class="card">
+            <label class="form-label">Paket Data (Opsional)</label>
+            <div class="space-y-2">
+                <button class="w-full p-3 border-2 rounded-xl text-left transition-all" data-paket="5gb" onclick="selectPaket('5gb')" style="border-color:var(--border-light);background:var(--card-light);color:var(--text-light);">
+                    <div class="flex justify-between items-center">
+                        <div><p class="font-bold text-sm">Paket 5GB</p><p class="text-xs" style="color:var(--text-secondary-light);">30 hari</p></div>
+                        <span class="font-bold" style="color:var(--primary);">Rp 50.000</span>
+                    </div>
+                </button>
+                <button class="w-full p-3 border-2 rounded-xl text-left transition-all" data-paket="10gb" onclick="selectPaket('10gb')" style="border-color:var(--border-light);background:var(--card-light);color:var(--text-light);">
+                    <div class="flex justify-between items-center">
+                        <div><p class="font-bold text-sm">Paket 10GB</p><p class="text-xs" style="color:var(--text-secondary-light);">30 hari</p></div>
+                        <span class="font-bold" style="color:var(--primary);">Rp 85.000</span>
+                    </div>
+                </button>
+                <button class="w-full p-3 border-2 rounded-xl text-left transition-all" data-paket="20gb" onclick="selectPaket('20gb')" style="border-color:var(--border-light);background:var(--card-light);color:var(--text-light);">
+                    <div class="flex justify-between items-center">
+                        <div><p class="font-bold text-sm">Paket 20GB</p><p class="text-xs" style="color:var(--text-secondary-light);">30 hari</p></div>
+                        <span class="font-bold" style="color:var(--primary);">Rp 145.000</span>
+                    </div>
+                </button>
+                <button class="w-full p-3 border-2 rounded-xl text-left transition-all" data-paket="unlimited" onclick="selectPaket('unlimited')" style="border-color:var(--border-light);background:var(--card-light);color:var(--text-light);">
+                    <div class="flex justify-between items-center">
+                        <div><p class="font-bold text-sm">Paket Unlimited</p><p class="text-xs" style="color:var(--text-secondary-light);">30 hari</p></div>
+                        <span class="font-bold" style="color:var(--primary);">Rp 250.000</span>
+                    </div>
+                </button>
+            </div>
+            <p class="text-xs mt-2" style="color:var(--text-secondary-light);">*Pilih nominal pulsa atau paket data, bisa keduanya</p>
+        </div>
+
+        <button class="btn-primary" onclick="prosesBayarPulsa()">
+            <i class="fas fa-mobile-alt"></i> Beli Pulsa / Paket
+        </button>
+    </div>
+
+    <!-- ============================================================
+    PAGE: BPJS (tambahan 1)
+    ============================================================ -->
+    <div class="page" id="page-bpjs">
+        <div class="flex items-center gap-3 mb-4">
+            <button onclick="navigateTo('dashboard')" class="p-2 -ml-2 text-xl" style="color:var(--text-light);">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h1 class="text-xl font-bold" style="color:var(--text-light);">Bayar BPJS Kesehatan</h1>
+        </div>
+        <div class="card">
+            <label class="form-label">Nomor BPJS</label>
+            <input type="text" id="inputBpjs" class="form-input" placeholder="Masukkan nomor BPJS" maxlength="13">
+            <div id="bpjsError" class="text-red-500 text-xs mt-1 hidden"></div>
+            <button class="btn-primary mt-3" onclick="cekBpjs()"><i class="fas fa-search"></i> Cek Tagihan BPJS</button>
+        </div>
+        <div id="bpjsResult" class="hidden">
+            <div class="card">
+                <div class="flex justify-between items-start mb-3">
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Nama Peserta</p><p class="font-bold" id="bpjsNama" style="color:var(--text-light);">-</p></div>
+                    <span class="badge badge-warning" id="bpjsStatus">Belum Lunas</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-sm mb-3">
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Periode</p><p class="font-medium" id="bpjsPeriode" style="color:var(--text-light);">-</p></div>
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Jatuh Tempo</p><p class="font-medium" id="bpjsDue" style="color:var(--text-light);">-</p></div>
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Tagihan</p><p class="font-medium" id="bpjsAmount" style="color:var(--text-light);">-</p></div>
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Denda</p><p class="font-medium text-red-500" id="bpjsDenda">-</p></div>
+                </div>
+                <div class="border-t pt-3" style="border-color:var(--border-light);">
+                    <p class="text-xs" style="color:var(--text-secondary-light);">Total</p>
+                    <p class="text-2xl font-extrabold" style="color:var(--primary);" id="bpjsTotal">-</p>
+                </div>
+            </div>
+            <button class="btn-primary" onclick="prosesBayarBpjs()"><i class="fas fa-credit-card"></i> Bayar BPJS</button>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    PAGE: PAJAK (tambahan 2)
+    ============================================================ -->
+    <div class="page" id="page-pajak">
+        <div class="flex items-center gap-3 mb-4">
+            <button onclick="navigateTo('dashboard')" class="p-2 -ml-2 text-xl" style="color:var(--text-light);">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h1 class="text-xl font-bold" style="color:var(--text-light);">Pajak Kendaraan Bermotor</h1>
+        </div>
+        <div class="card">
+            <label class="form-label">Nomor Polisi</label>
+            <input type="text" id="inputPajak" class="form-input" placeholder="B 1234 XYZ" maxlength="10">
+            <div id="pajakError" class="text-red-500 text-xs mt-1 hidden"></div>
+            <button class="btn-primary mt-3" onclick="cekPajak()"><i class="fas fa-search"></i> Cek Pajak</button>
+        </div>
+        <div id="pajakResult" class="hidden">
+            <div class="card">
+                <div class="flex justify-between items-start mb-3">
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Kendaraan</p><p class="font-bold" id="pajakNama" style="color:var(--text-light);">-</p></div>
+                    <span class="badge badge-warning" id="pajakStatus">Belum Bayar</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-sm mb-3">
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Tahun</p><p class="font-medium" id="pajakTahun" style="color:var(--text-light);">-</p></div>
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Jatuh Tempo</p><p class="font-medium" id="pajakDue" style="color:var(--text-light);">-</p></div>
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Pajak</p><p class="font-medium" id="pajakAmount" style="color:var(--text-light);">-</p></div>
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Denda</p><p class="font-medium text-red-500" id="pajakDenda">-</p></div>
+                </div>
+                <div class="border-t pt-3" style="border-color:var(--border-light);">
+                    <p class="text-xs" style="color:var(--text-secondary-light);">Total</p>
+                    <p class="text-2xl font-extrabold" style="color:var(--primary);" id="pajakTotal">-</p>
+                </div>
+            </div>
+            <button class="btn-primary" onclick="prosesBayarPajak()"><i class="fas fa-credit-card"></i> Bayar Pajak</button>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    PAGE: TV / STREAMING (tambahan 3)
+    ============================================================ -->
+    <div class="page" id="page-tv">
+        <div class="flex items-center gap-3 mb-4">
+            <button onclick="navigateTo('dashboard')" class="p-2 -ml-2 text-xl" style="color:var(--text-light);">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h1 class="text-xl font-bold" style="color:var(--text-light);">TV / Streaming</h1>
+        </div>
+        <div class="card">
+            <label class="form-label">Pilih Layanan</label>
+            <div class="grid grid-cols-2 gap-2">
+                <button class="cat-pill active-cat" data-tv="netflix" onclick="selectTv('netflix')">📺 Netflix</button>
+                <button class="cat-pill" data-tv="disney" onclick="selectTv('disney')">🏰 Disney+</button>
+                <button class="cat-pill" data-tv="prime" onclick="selectTv('prime')">📦 Prime Video</button>
+                <button class="cat-pill" data-tv="vidio" onclick="selectTv('vidio')">🎬 Vidio</button>
+            </div>
+        </div>
+        <div class="card">
+            <label class="form-label">ID Pelanggan / Email</label>
+            <input type="text" id="inputTv" class="form-input" placeholder="Masukkan ID atau email">
+            <div id="tvError" class="text-red-500 text-xs mt-1 hidden"></div>
+            <button class="btn-primary mt-3" onclick="cekTv()"><i class="fas fa-search"></i> Cek Tagihan</button>
+        </div>
+        <div id="tvResult" class="hidden">
+            <div class="card">
+                <div class="flex justify-between items-start mb-3">
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Pelanggan</p><p class="font-bold" id="tvNama" style="color:var(--text-light);">-</p></div>
+                    <span class="badge badge-warning" id="tvStatus">Belum Bayar</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-sm mb-3">
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Paket</p><p class="font-medium" id="tvPaket" style="color:var(--text-light);">-</p></div>
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Periode</p><p class="font-medium" id="tvPeriode" style="color:var(--text-light);">-</p></div>
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Tagihan</p><p class="font-medium" id="tvAmount" style="color:var(--text-light);">-</p></div>
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Denda</p><p class="font-medium text-red-500" id="tvDenda">-</p></div>
+                </div>
+                <div class="border-t pt-3" style="border-color:var(--border-light);">
+                    <p class="text-xs" style="color:var(--text-secondary-light);">Total</p>
+                    <p class="text-2xl font-extrabold" style="color:var(--primary);" id="tvTotal">-</p>
+                </div>
+            </div>
+            <button class="btn-primary" onclick="prosesBayarTv()"><i class="fas fa-credit-card"></i> Bayar Langganan</button>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    PAGE: DONASI (tambahan 4)
+    ============================================================ -->
+    <div class="page" id="page-donasi">
+        <div class="flex items-center gap-3 mb-4">
+            <button onclick="navigateTo('dashboard')" class="p-2 -ml-2 text-xl" style="color:var(--text-light);">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h1 class="text-xl font-bold" style="color:var(--text-light);">Donasi & Zakat</h1>
+        </div>
+        <div class="card">
+            <label class="form-label">Pilih Lembaga</label>
+            <div class="grid grid-cols-2 gap-2">
+                <button class="cat-pill active-cat" data-donasi="baznas" onclick="selectDonasi('baznas')">🕌 BAZNAS</button>
+                <button class="cat-pill" data-donasi="dompet" onclick="selectDonasi('dompet')">🤲 Dompet Dhuafa</button>
+                <button class="cat-pill" data-donasi="rumah" onclick="selectDonasi('rumah')">🏠 Rumah Zakat</button>
+                <button class="cat-pill" data-donasi="yatim" onclick="selectDonasi('yatim')">🧒 Yatim Mandiri</button>
+            </div>
+        </div>
+        <div class="card">
+            <label class="form-label">Nominal Donasi</label>
+            <div class="flex flex-wrap gap-2">
+                <button class="nominal-btn active-nominal" data-donas="25000" onclick="selectDonasiNominal('25000')">Rp 25.000</button>
+                <button class="nominal-btn" data-donas="50000" onclick="selectDonasiNominal('50000')">Rp 50.000</button>
+                <button class="nominal-btn" data-donas="100000" onclick="selectDonasiNominal('100000')">Rp 100.000</button>
+                <button class="nominal-btn" data-donas="250000" onclick="selectDonasiNominal('250000')">Rp 250.000</button>
+            </div>
+            <div class="mt-2">
+                <input type="number" id="inputDonasiCustom" class="form-input" placeholder="Nominal lainnya" min="10000">
+            </div>
+            <div class="mt-3">
+                <label class="form-label">Catatan (opsional)</label>
+                <input type="text" id="inputDonasiCatatan" class="form-input" placeholder="Doa atau pesan">
+            </div>
+        </div>
+        <button class="btn-primary" onclick="prosesBayarDonasi()"><i class="fas fa-hand-holding-heart"></i> Kirim Donasi</button>
+    </div>
+
+    <!-- ============================================================
+    PAGE: RIWAYAT
+    ============================================================ -->
+    <div class="page" id="page-riwayat">
+        <div class="flex items-center justify-between mb-4">
+            <h1 class="text-xl font-bold" style="color:var(--text-light);">Riwayat Transaksi</h1>
+            <button onclick="clearHistory()" class="text-sm font-bold" style="color:#EF4444;">
+                <i class="fas fa-trash"></i> Hapus
+            </button>
+        </div>
+        <div class="card">
+            <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+                <button class="cat-pill active-cat" data-filter="all" onclick="filterHistory('all')">Semua</button>
+                <button class="cat-pill" data-filter="tagihan" onclick="filterHistory('tagihan')">Tagihan</button>
+                <button class="cat-pill" data-filter="spp" onclick="filterHistory('spp')">SPP</button>
+                <button class="cat-pill" data-filter="pulsa" onclick="filterHistory('pulsa')">Pulsa</button>
+                <button class="cat-pill" data-filter="bpjs" onclick="filterHistory('bpjs')">BPJS</button>
+                <button class="cat-pill" data-filter="pajak" onclick="filterHistory('pajak')">Pajak</button>
+                <button class="cat-pill" data-filter="tv" onclick="filterHistory('tv')">TV</button>
+                <button class="cat-pill" data-filter="donasi" onclick="filterHistory('donasi')">Donasi</button>
+            </div>
+        </div>
+        <div id="historyList" class="space-y-2"></div>
+    </div>
+
+    <!-- ============================================================
+    BOTTOM NAVIGATION
+    ============================================================ -->
+    <nav class="bottom-nav" id="bottomNav">
+        <button class="nav-item active" data-page="dashboard" onclick="navigateTo('dashboard')">
+            <i class="fas fa-home"></i>
+            <span>Beranda</span>
+        </button>
+        <button class="nav-item" data-page="tagihan" onclick="navigateTo('tagihan')">
+            <i class="fas fa-file-invoice"></i>
+            <span>Tagihan</span>
+        </button>
+        <button class="nav-item" data-page="spp" onclick="navigateTo('spp')">
+            <i class="fas fa-graduation-cap"></i>
+            <span>SPP</span>
+        </button>
+        <button class="nav-item" data-page="pulsa" onclick="navigateTo('pulsa')">
+            <i class="fas fa-mobile-alt"></i>
+            <span>Pulsa</span>
+        </button>
+        <button class="nav-item" data-page="riwayat" onclick="navigateTo('riwayat')">
+            <i class="fas fa-clock"></i>
+            <span>Riwayat</span>
+        </button>
+    </nav>
+
+    <!-- ============================================================
+    MODAL
+    ============================================================ -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content" id="modalContent"></div>
+    </div>
+
+    <!-- ============================================================
+    JAVASCRIPT
+    ============================================================ -->
+    <script>
+        // =============================================
+        // DATA SIMULASI
+        // =============================================
+        const billData = {
+            pln: {
+                "123456789012": { name: "Ahmad Fauzi", period: "Februari 2026", due: "2026-03-10", amount: 245000,
+                    fine: 0, status: "unpaid" },
+                "234567890123": { name: "Siti Rahayu", period: "Februari 2026", due: "2026-03-15", amount: 532000,
+                    fine: 15000, status: "unpaid" },
+                "345678901234": { name: "Budi Santoso", period: "Februari 2026", due: "2026-03-20", amount: 187000,
+                    fine: 0, status: "unpaid" },
+                "456789012345": { name: "Dewi Lestari", period: "Februari 2026", due: "2026-03-05", amount: 410000,
+                    fine: 25000, status: "unpaid" },
+                "567890123456": { name: "Rudi Hartono", period: "Februari 2026", due: "2026-03-25", amount: 298000,
+                    fine: 0, status: "unpaid" }
+            },
+            pdam: {
+                "678901234567": { name: "Toko Jaya Abadi", period: "Februari 2026", due: "2026-03-12", amount: 185000,
+                    fine: 0, status: "unpaid" },
+                "789012345678": { name: "Rumah Sakit Harapan", period: "Februari 2026", due: "2026-03-18", amount: 420000,
+                    fine: 12000, status: "unpaid" },
+                "890123456789": { name: "Hotel Permata", period: "Februari 2026", due: "2026-03-22", amount: 750000,
+                    fine: 45000, status: "unpaid" }
+            },
+            internet: {
+                "901234567890": { name: "PT. Teknologi Nusantara", period: "Februari 2026", due: "2026-03-08",
+                    amount: 550000, fine: 0, status: "unpaid" },
+                "012345678901": { name: "Kantor Desa Maju", period: "Februari 2026", due: "2026-03-14", amount: 320000,
+                    fine: 8000, status: "unpaid" },
+                "123456789013": { name: "Sekolah Digital", period: "Februari 2026", due: "2026-03-28", amount: 450000,
+                    fine: 0, status: "unpaid" }
+            },
+            seminar: {
+                "SEM-2026-001": { name: "Workshop AI & ML", period: "Maret 2026", due: "2026-03-20", amount: 2500000,
+                    fine: 0, status: "unpaid" },
+                "SEM-2026-002": { name: "Seminar Digital Marketing", period: "April 2026", due: "2026-04-05",
+                    amount: 1750000, fine: 200000, status: "unpaid" }
+            },
+            spp: {
+                "221011450228": {
+                    name: "Muhammad Ricky Ardian",
+                    semester: "Ganjil 2025/2026",
+                    items: [
+                        { id: 1, desc: "SPP Cicilan ke-1", amount: 2500000, status: "paid" },
+                        { id: 2, desc: "SPP Cicilan ke-2", amount: 2500000, status: "paid" },
+                        { id: 3, desc: "SPP Cicilan ke-3", amount: 2500000, status: "unpaid" },
+                        { id: 4, desc: "SPP Cicilan ke-4", amount: 2500000, status: "unpaid" },
+                        { id: 5, desc: "SPP Cicilan ke-5", amount: 2500000, status: "unpaid" },
+                        { id: 6, desc: "SPP Cicilan ke-6", amount: 2500000, status: "unpaid" },
+                        { id: 7, desc: "SPP Cicilan ke-7", amount: 2500000, status: "unpaid" },
+                        { id: 8, desc: "SPP Cicilan ke-8", amount: 2500000, status: "unpaid" }
+                    ]
+                },
+                "202310002": {
+                    name: "Bella Putri",
+                    semester: "Genap 2025/2026",
+                    items: [
+                        { id: 1, desc: "SPP Cicilan ke-1", amount: 3500000, status: "paid" },
+                        { id: 2, desc: "SPP Cicilan ke-2", amount: 3500000, status: "unpaid" },
+                        { id: 3, desc: "SPP Cicilan ke-3", amount: 3500000, status: "unpaid" },
+                        { id: 4, desc: "SPP Cicilan ke-4", amount: 3500000, status: "unpaid" },
+                        { id: 5, desc: "SPP Cicilan ke-5", amount: 3500000, status: "unpaid" },
+                        { id: 6, desc: "SPP Cicilan ke-6", amount: 3500000, status: "unpaid" }
+                    ]
+                },
+                "202310003": {
+                    name: "Cahya Nugraha",
+                    semester: "Ganjil 2025/2026",
+                    items: [
+                        { id: 1, desc: "SPP Cicilan ke-1", amount: 2000000, status: "paid" },
+                        { id: 2, desc: "SPP Cicilan ke-2", amount: 2000000, status: "paid" },
+                        { id: 3, desc: "SPP Cicilan ke-3", amount: 2000000, status: "paid" },
+                        { id: 4, desc: "SPP Cicilan ke-4", amount: 2000000, status: "unpaid" },
+                        { id: 5, desc: "SPP Cicilan ke-5", amount: 2000000, status: "unpaid" },
+                        { id: 6, desc: "SPP Cicilan ke-6", amount: 2000000, status: "unpaid" },
+                        { id: 7, desc: "SPP Cicilan ke-7", amount: 2000000, status: "unpaid" },
+                        { id: 8, desc: "SPP Cicilan ke-8", amount: 2000000, status: "unpaid" }
+                    ]
+                }
+            },
+            bpjs: {
+                "1234567890123": { name: "Rina Sari", period: "Februari 2026", due: "2026-03-10", amount: 42500,
+                    fine: 0, status: "unpaid" },
+                "2345678901234": { name: "Andi Wijaya", period: "Februari 2026", due: "2026-03-15", amount: 42500,
+                    fine: 5000, status: "unpaid" },
+                "3456789012345": { name: "Toko Sembako Jaya", period: "Februari 2026", due: "2026-03-20", amount: 85000,
+                    fine: 0, status: "unpaid" }
+            },
+            pajak: {
+                "B1234XYZ": { name: "Toyota Avanza 2018", tahun: "2025", due: "2026-06-30", amount: 1200000, fine: 0,
+                    status: "unpaid" },
+                "D5678ABC": { name: "Honda Civic 2020", tahun: "2025", due: "2026-07-15", amount: 2350000, fine: 150000,
+                    status: "unpaid" },
+                "F9012DEF": { name: "Suzuki Ertiga 2019", tahun: "2025", due: "2026-08-01", amount: 850000, fine: 0,
+                    status: "unpaid" }
+            },
+            tv: {
+                "netflix_user1": { name: "Netflix - Andi", paket: "Premium", period: "Maret 2026", due: "2026-03-10",
+                    amount: 149000, fine: 0, status: "unpaid" },
+                "disney_user2": { name: "Disney+ - Siti", paket: "Bulanan", period: "Maret 2026", due: "2026-03-15",
+                    amount: 119000, fine: 5000, status: "unpaid" },
+                "prime_user3": { name: "Prime Video - Budi", paket: "Tahunan", period: "Maret 2026", due: "2026-03-20",
+                    amount: 359000, fine: 0, status: "unpaid" },
+                "vidio_user4": { name: "Vidio - Dewi", paket: "Diamond", period: "Maret 2026", due: "2026-03-25",
+                    amount: 89000, fine: 0, status: "unpaid" }
+            },
+            donasi: {
+                "baznas": { name: "BAZNAS", desc: "Zakat Fitrah" },
+                "dompet": { name: "Dompet Dhuafa", desc: "Program Kemanusiaan" },
+                "rumah": { name: "Rumah Zakat", desc: "Pendidikan & Kesehatan" },
+                "yatim": { name: "Yatim Mandiri", desc: "Pemberdayaan Anak Yatim" }
+            }
+        };
+
+        const providerMapping = {
+            '0811': 'telkomsel',
+            '0812': 'telkomsel',
+            '0813': 'telkomsel',
+            '0814': 'indosat',
+            '0815': 'indosat',
+            '0816': 'indosat',
+            '0817': 'xl',
+            '0818': 'xl',
+            '0819': 'xl',
+            '0821': 'telkomsel',
+            '0822': 'telkomsel',
+            '0823': 'telkomsel',
+            '0851': 'axis',
+            '0852': 'axis',
+            '0853': 'axis',
+            '0855': 'indosat',
+            '0856': 'indosat',
+            '0857': 'indosat',
+            '0858': 'indosat',
+            '0859': 'axis',
+            '0877': 'xl',
+            '0878': 'xl',
+            '0879': 'xl',
+            '0881': 'smartfren',
+            '0882': 'smartfren',
+            '0883': 'smartfren',
+            '0884': 'smartfren',
+            '0885': 'smartfren',
+            '0886': 'smartfren',
+            '0887': 'smartfren',
+            '0888': 'smartfren',
+            '0889': 'smartfren',
+            '0895': 'tri',
+            '0896': 'tri',
+            '0897': 'tri',
+            '0898': 'tri',
+            '0899': 'tri'
+        };
+
+        // =============================================
+        // STATE
+        // =============================================
+        let state = {
+            currentPage: 'dashboard',
+            currentCategory: 'pln',
+            selectedMethod: 'va',
+            currentBill: null,
+            selectedNominal: '10000',
+            selectedProvider: 'telkomsel',
+            selectedPaket: null,
+            selectedSppItems: [],
+            sppData: null,
+            saldo: 1250000,
+            history: [],
+            darkMode: false,
+            // tambahan
+            tvSelected: 'netflix',
+            donasiSelected: 'baznas',
+            donasiNominal: '25000',
+            bpjsBill: null,
+            pajakBill: null,
+            tvBill: null,
+            donasiAmount: 25000
+        };
+
+        function loadState() {
+            try {
+                const saved = localStorage.getItem('bayarkita_state');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    state = { ...state, ...parsed };
+                }
+                const history = localStorage.getItem('bayarkita_history');
+                if (history) {
+                    state.history = JSON.parse(history);
+                }
+                updateSaldoDisplay();
+                updateCounters();
+            } catch (e) { console.warn(e); }
+        }
+
+        function saveState() {
+            try {
+                const { history, ...stateToSave } = state;
+                localStorage.setItem('bayarkita_state', JSON.stringify(stateToSave));
+                localStorage.setItem('bayarkita_history', JSON.stringify(state.history));
+            } catch (e) { console.warn(e); }
+        }
+
+        // =============================================
+        // UTILITY
+        // =============================================
+        function formatRupiah(amount) {
+            return new Intl.NumberFormat('id-ID').format(amount);
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '-';
+            const parts = dateStr.split('-');
+            if (parts.length === 3) {
+                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+                return `${parseInt(parts[2])} ${months[parseInt(parts[1])-1]} ${parts[0]}`;
+            }
+            return dateStr;
+        }
+
+        function getCategoryLabel(cat) {
+            const map = { pln: 'PLN', pdam: 'PDAM', internet: 'Internet', seminar: 'Seminar' };
+            return map[cat] || cat;
+        }
+
+        function getIconForType(type) {
+            const map = {
+                tagihan: 'fa-file-invoice',
+                spp: 'fa-graduation-cap',
+                pulsa: 'fa-mobile-alt',
+                bpjs: 'fa-heartbeat',
+                pajak: 'fa-car',
+                tv: 'fa-tv',
+                donasi: 'fa-hand-holding-heart'
+            };
+            return map[type] || 'fa-receipt';
+        }
+
+        function getTypeLabel(type) {
+            const map = {
+                tagihan: 'Tagihan',
+                spp: 'SPP',
+                pulsa: 'Pulsa',
+                bpjs: 'BPJS',
+                pajak: 'Pajak',
+                tv: 'TV/Stream',
+                donasi: 'Donasi'
+            };
+            return map[type] || type;
+        }
+
+        function generateVA() {
+            return '8810' + Date.now().toString().slice(-12);
+        }
+
+        // =============================================
+        // TOAST
+        // =============================================
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            const icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle', info: 'fa-info-circle' };
+            toast.innerHTML = `<i class="fas ${icons[type]||icons.info}"></i><span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(-20px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // =============================================
+        // MODAL
+        // =============================================
+        function showModal(html) {
+            document.getElementById('modalContent').innerHTML = html;
+            document.getElementById('modalOverlay').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+        document.getElementById('modalOverlay').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // =============================================
+        // NAVIGATION
+        // =============================================
+        function navigateTo(page) {
+            state.currentPage = page;
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const target = document.getElementById(`page-${page}`);
+            if (target) target.classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            const navBtn = document.querySelector(`.nav-item[data-page="${page}"]`);
+            if (navBtn) navBtn.classList.add('active');
+            if (page === 'riwayat') renderHistory();
+            if (page === 'dashboard') { renderRecentTransactions();
+                updateCounters(); }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // =============================================
+        // SALDO
+        // =============================================
+        function updateSaldoDisplay() {
+            document.getElementById('saldoDisplay').textContent = `Rp ${formatRupiah(state.saldo)}`;
+        }
+
+        function updateCounters() {
+            document.getElementById('countTagihan').textContent = state.history.filter(t => t.type === 'tagihan').length;
+            document.getElementById('countTransaksi').textContent = state.history.length;
+        }
+
+        function topUpSaldo() {
+            const amount = prompt('Masukkan nominal top up:', '100000');
+            if (amount && !isNaN(amount) && parseInt(amount) > 0) {
+                state.saldo += parseInt(amount);
+                updateSaldoDisplay();
+                saveState();
+                showToast(`Saldo +Rp ${formatRupiah(parseInt(amount))}`, 'success');
+            }
+        }
+
+        // =============================================
+        // DARK MODE
+        // =============================================
+        function toggleDarkMode() {
+            state.darkMode = !state.darkMode;
+            document.body.classList.toggle('dark', state.darkMode);
+            const icon = document.getElementById('themeIcon');
+            if (state.darkMode) {
+                icon.className = 'fas fa-sun';
+            } else {
+                icon.className = 'fas fa-moon';
+            }
+            saveState();
+        }
+        // initial
+        if (state.darkMode) {
+            document.body.classList.add('dark');
+            document.getElementById('themeIcon').className = 'fas fa-sun';
+        }
+
+        // =============================================
+        // DASHBOARD
+        // =============================================
+        function renderRecentTransactions() {
+            const container = document.getElementById('recentTransactions');
+            const recent = state.history.slice(-3).reverse();
+            if (recent.length === 0) {
+                container.innerHTML = `
+                    <div class="card text-center py-8" style="border-color:var(--border-light);">
+                        <i class="fas fa-inbox text-3xl" style="color:var(--text-secondary-light);"></i>
+                        <p class="text-sm mt-1" style="color:var(--text-secondary-light);">Belum ada transaksi</p>
+                    </div>
+                `;
+                return;
+            }
+            container.innerHTML = recent.map(t => `
+                <div class="card flex items-center justify-between p-3" style="border-color:var(--border-light);">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background:var(--primary-light);color:var(--primary);">
+                            <i class="fas ${getIconForType(t.type)}"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-sm" style="color:var(--text-light);">${t.title}</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">${t.date}</p>
+                        </div>
+                    </div>
+                    <span class="font-bold" style="color:var(--primary);">-Rp ${formatRupiah(t.amount)}</span>
+                </div>
+            `).join('');
+        }
+
+        // =============================================
+        // TAGIHAN (PLN, PDAM, Internet, Seminar)
+        // =============================================
+        function selectCategoryTagihan(cat) {
+            state.currentCategory = cat;
+            document.querySelectorAll('#page-tagihan .cat-pill').forEach(el => {
+                el.classList.toggle('active-cat', el.dataset.cat === cat);
+            });
+            const labels = {
+                pln: 'Nomor Pelanggan PLN',
+                pdam: 'Nomor Pelanggan PDAM',
+                internet: 'Nomor Pelanggan Internet',
+                seminar: 'Nomor Referensi Seminar'
+            };
+            document.getElementById('labelPelanggan').textContent = labels[cat] || 'Nomor Pelanggan';
+            document.getElementById('tagihanResult').classList.add('hidden');
+            document.getElementById('inputPelanggan').value = '';
+        }
+
+        function cekTagihan() {
+            const input = document.getElementById('inputPelanggan');
+            const errorEl = document.getElementById('pelangganError');
+            const value = input.value.trim();
+            let isValid = true,
+                msg = '';
+            if (!value) { isValid = false;
+                msg = 'Harus diisi'; } else if (state.currentCategory === 'seminar') {
+                if (!/^SEM-[0-9]{3}-[0-9]{3}$/.test(value) && !/^SEM-2026-[0-9]{3}$/.test(value)) { isValid = false;
+                    msg = 'Format: SEM-2026-001'; }
+            } else {
+                if (!/^\d{8,12}$/.test(value)) { isValid = false;
+                    msg = '8-12 digit angka'; }
+            }
+            if (!isValid) { input.classList.add('error');
+                errorEl.textContent = msg;
+                errorEl.classList.remove('hidden'); return; }
+            input.classList.remove('error');
+            errorEl.classList.add('hidden');
+            showToast('Mencari tagihan...', 'info');
+            setTimeout(() => {
+                const data = billData[state.currentCategory];
+                let bill = null;
+                if (state.currentCategory === 'seminar') {
+                    bill = data[value] || null;
+                } else {
+                    bill = data[value] || null;
+                }
+                if (!bill) { showToast('Nomor tidak ditemukan', 'error'); return; }
+                state.currentBill = { ...bill, id: value, category: state.currentCategory };
+                displayTagihanResult(bill);
+            }, 800);
+        }
+
+        function displayTagihanResult(bill) {
+            document.getElementById('tagihanResult').classList.remove('hidden');
+            document.getElementById('resultNama').textContent = bill.name;
+            document.getElementById('resultPeriode').textContent = bill.period;
+            document.getElementById('resultJatuhTempo').textContent = formatDate(bill.due);
+            document.getElementById('resultPokok').textContent = `Rp ${formatRupiah(bill.amount)}`;
+            document.getElementById('resultDenda').textContent = bill.fine > 0 ? `Rp ${formatRupiah(bill.fine)}` : 'Tidak ada';
+            document.getElementById('resultTotal').textContent = `Rp ${formatRupiah(bill.amount + bill.fine)}`;
+            document.getElementById('resultStatus').textContent = bill.status === 'paid' ? 'Lunas' : 'Belum Lunas';
+            document.getElementById('resultStatus').className = `badge ${bill.status === 'paid' ? 'badge-success' : 'badge-warning'}`;
+            state.selectedMethod = 'va';
+            document.querySelectorAll('#page-tagihan .method-option').forEach(el => {
+                el.classList.remove('active-method');
+                const check = el.querySelector('[class*="fa-check-circle"]');
+                if (check) check.classList.add('hidden');
+            });
+            const first = document.querySelector('#page-tagihan .method-option[data-method="va"]');
+            if (first) { first.classList.add('active-method');
+                const c = first.querySelector('[class*="fa-check-circle"]');
+                if (c) c.classList.remove('hidden'); }
+            document.getElementById('tagihanResult').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function selectMethodTagihan(method) {
+            state.selectedMethod = method;
+            document.querySelectorAll('#page-tagihan .method-option').forEach(el => {
+                el.classList.remove('active-method');
+                const check = el.querySelector('[class*="fa-check-circle"]');
+                if (check) check.classList.add('hidden');
+            });
+            const el = document.querySelector(`#page-tagihan .method-option[data-method="${method}"]`);
+            if (el) { el.classList.add('active-method');
+                const c = el.querySelector('[class*="fa-check-circle"]');
+                if (c) c.classList.remove('hidden'); }
+        }
+
+        function prosesBayarTagihan() {
+            if (!state.currentBill) { showToast('Cek tagihan dulu', 'error'); return; }
+            if (!state.selectedMethod) { showToast('Pilih metode', 'error'); return; }
+            const total = state.currentBill.amount + state.currentBill.fine;
+            if (state.saldo < total) { showToast(`Saldo kurang! Rp ${formatRupiah(total)}`, 'error'); return; }
+            showToast('Memproses...', 'info');
+            setTimeout(() => {
+                state.saldo -= total;
+                updateSaldoDisplay();
+                const trans = {
+                    id: Date.now(),
+                    type: 'tagihan',
+                    title: `${getCategoryLabel(state.currentCategory)} - ${state.currentBill.name}`,
+                    amount: total,
+                    date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
+                    time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+                    method: state.selectedMethod,
+                    status: 'success',
+                    bill: { ...state.currentBill }
+                };
+                state.history.push(trans);
+                saveState();
+                const cat = state.currentCategory;
+                if (billData[cat] && billData[cat][state.currentBill.id]) {
+                    billData[cat][state.currentBill.id].status = 'paid';
+                }
+                showReceipt(trans);
+                state.currentBill = null;
+                document.getElementById('tagihanResult').classList.add('hidden');
+                updateCounters();
+            }, 1200);
+        }
+
+        // =============================================
+        // SPP
+        // =============================================
+        function cekTagihanSpp() {
+            const input = document.getElementById('inputNim');
+            const err = document.getElementById('nimError');
+            const val = input.value.trim();
+            if (!/^\d{12}$/.test(val)) { input.classList.add('error');
+                err.textContent = 'NIM harus 12 digit';
+                err.classList.remove('hidden'); return; }
+            input.classList.remove('error');
+            err.classList.add('hidden');
+            showToast('Mencari data...', 'info');
+            setTimeout(() => {
+                const data = billData.spp[val];
+                if (!data) { showToast('NIM tidak terdaftar', 'error'); return; }
+                state.sppData = { ...data, nim: val };
+                displaySppResult(data);
+            }, 800);
+        }
+
+        function displaySppResult(data) {
+            document.getElementById('sppResult').classList.remove('hidden');
+            document.getElementById('sppNama').textContent = data.name;
+            document.getElementById('sppSemester').textContent = data.semester;
+            state.selectedSppItems = [];
+            const container = document.getElementById('sppList');
+            container.innerHTML = data.items.map((item, idx) => `
+                <div class="spp-item">
+                    <div class="flex items-center gap-3 flex-1">
+                        <input type="checkbox" id="spp_${idx}" ${item.status==='paid'?'disabled':''} onchange="toggleSppItem(${idx},this.checked)">
+                        <div>
+                            <p class="font-bold text-sm ${item.status==='paid'?'line-through opacity-50':''}" style="color:var(--text-light);">${item.desc}</p>
+                            <p class="text-xs ${item.status==='paid'?'text-green-600':'text-gray-500'}">${item.status==='paid'?'✓ Lunas':'Belum Lunas'}</p>
+                        </div>
+                    </div>
+                    <span class="font-bold ${item.status==='paid'?'text-gray-400':''}" style="color:${item.status==='paid'?'var(--text-secondary-light)':'var(--primary)'};">Rp ${formatRupiah(item.amount)}</span>
+                </div>
+            `).join('');
+            document.getElementById('sppTotal').textContent = 'Rp 0';
+            document.getElementById('sppResult').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function toggleSppItem(idx, checked) {
+            if (!state.sppData) return;
+            if (checked) { state.selectedSppItems.push(idx); } else { state.selectedSppItems = state.selectedSppItems.filter(i =>
+                    i !== idx); }
+            const total = state.selectedSppItems.reduce((s, i) => s + (state.sppData.items[i]?.amount || 0), 0);
+            document.getElementById('sppTotal').textContent = `Rp ${formatRupiah(total)}`;
+        }
+
+        function prosesBayarSpp() {
+            if (!state.sppData) { showToast('Cek NIM dulu', 'error'); return; }
+            if (state.selectedSppItems.length === 0) { showToast('Pilih minimal satu cicilan', 'error'); return; }
+            const kode = document.getElementById('inputKodeTagihan').value.trim();
+            const kErr = document.getElementById('kodeTagihanError');
+            if (!kode) { kErr.textContent = 'Kode tagihan harus diisi';
+                kErr.classList.remove('hidden'); return; }
+            if (!/^\d{12,15}$/.test(kode)) { kErr.textContent = '12-15 digit angka';
+                kErr.classList.remove('hidden'); return; }
+            kErr.classList.add('hidden');
+            const total = state.selectedSppItems.reduce((s, i) => s + (state.sppData.items[i]?.amount || 0), 0);
+            if (state.saldo < total) { showToast(`Saldo kurang! Rp ${formatRupiah(total)}`, 'error'); return; }
+            showToast('Memproses...', 'info');
+            setTimeout(() => {
+                state.saldo -= total;
+                updateSaldoDisplay();
+                state.selectedSppItems.forEach(i => { if (state.sppData.items[i]) state.sppData.items[i].status =
+                    'paid'; });
+                const nim = state.sppData.nim;
+                if (billData.spp[nim]) billData.spp[nim].items = state.sppData.items;
+                const trans = {
+                    id: Date.now(),
+                    type: 'spp',
+                    title: `SPP - ${state.sppData.name} (${state.selectedSppItems.length} cicilan)`,
+                    amount: total,
+                    date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
+                    time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+                    method: 'VA',
+                    status: 'success',
+                    spp: { nim: state.sppData.nim, name: state.sppData.name, items: state.selectedSppItems.map(i =>
+                            state.sppData.items[i]) }
+                };
+                state.history.push(trans);
+                saveState();
+                showReceipt(trans);
+                state.selectedSppItems = [];
+                document.getElementById('sppTotal').textContent = 'Rp 0';
+                document.getElementById('sppResult').classList.add('hidden');
+                document.getElementById('inputNim').value = '';
+                document.getElementById('inputKodeTagihan').value = '';
+                updateCounters();
+            }, 1200);
+        }
+
+        // =============================================
+        // PULSA & PAKET
+        // =============================================
+        function selectProvider(p) {
+            state.selectedProvider = p;
+            document.querySelectorAll('.provider-item').forEach(el => el.classList.toggle('active-provider', el.dataset
+                .provider === p));
+        }
+
+        function selectNominal(n) {
+            state.selectedNominal = n;
+            document.querySelectorAll('.nominal-btn').forEach(el => el.classList.toggle('active-nominal', el.dataset
+                .nominal === n));
+        }
+
+        function selectPaket(p) {
+            state.selectedPaket = state.selectedPaket === p ? null : p;
+            document.querySelectorAll('#page-pulsa [data-paket]').forEach(el => {
+                const isActive = el.dataset.paket === state.selectedPaket;
+                el.style.borderColor = isActive ? 'var(--primary)' : 'var(--border-light)';
+                el.style.background = isActive ? 'var(--primary-light)' : 'var(--card-light)';
+                if (document.body.classList.contains('dark') && isActive) {
+                    el.style.background = 'rgba(3,172,14,0.12)';
+                }
+            });
+        }
+
+        function prosesBayarPulsa() {
+            const hp = document.getElementById('inputHp').value.trim();
+            const hpErr = document.getElementById('hpError');
+            if (!/^08\d{8,11}$/.test(hp)) { hpErr.textContent = 'Mulai 08, 10-13 digit';
+                hpErr.classList.remove('hidden'); return; }
+            hpErr.classList.add('hidden');
+            let nominal = 0;
+            const custom = document.getElementById('inputCustomNominal').value;
+            if (custom && parseInt(custom) > 0) { nominal = parseInt(custom); } else if (state.selectedNominal) { nominal =
+                    parseInt(state.selectedNominal); } else { showToast('Pilih nominal pulsa', 'error'); return; }
+            let paketPrice = 0,
+                paketName = '';
+            if (state.selectedPaket) {
+                const map = { '5gb': { price: 50000, name: 'Paket 5GB' }, '10gb': { price: 85000, name: 'Paket 10GB' },
+                    '20gb': { price: 145000, name: 'Paket 20GB' }, 'unlimited': { price: 250000, name: 'Paket Unlimited' } };
+                const p = map[state.selectedPaket];
+                if (p) { paketPrice = p.price;
+                    paketName = p.name; }
+            }
+            const total = nominal + paketPrice;
+            if (state.saldo < total) { showToast(`Saldo kurang! Rp ${formatRupiah(total)}`, 'error'); return; }
+            let provider = state.selectedProvider;
+            for (const [pref, prov] of Object.entries(providerMapping)) {
+                if (hp.startsWith(pref)) { provider = prov; break; }
+            }
+            showToast('Memproses...', 'info');
+            setTimeout(() => {
+                state.saldo -= total;
+                updateSaldoDisplay();
+                const trans = {
+                    id: Date.now(),
+                    type: 'pulsa',
+                    title: `${paketName||'Pulsa'} ${formatRupiah(nominal)} - ${hp}`,
+                    amount: total,
+                    date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
+                    time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+                    method: 'QRIS',
+                    status: 'success',
+                    pulsa: { hp, provider, nominal, paket: paketName || null, total }
+                };
+                state.history.push(trans);
+                saveState();
+                showReceipt(trans);
+                document.getElementById('inputHp').value = '';
+                document.getElementById('inputCustomNominal').value = '';
+                state.selectedPaket = null;
+                document.querySelectorAll('#page-pulsa [data-paket]').forEach(el => {
+                    el.style.borderColor = 'var(--border-light)';
+                    el.style.background = 'var(--card-light)';
+                });
+                updateCounters();
+            }, 1200);
+        }
+
+        // =============================================
+        // BPJS (tambahan 1)
+        // =============================================
+        function cekBpjs() {
+            const input = document.getElementById('inputBpjs');
+            const err = document.getElementById('bpjsError');
+            const val = input.value.trim();
+            if (!/^\d{13}$/.test(val)) { input.classList.add('error');
+                err.textContent = '13 digit angka';
+                err.classList.remove('hidden'); return; }
+            input.classList.remove('error');
+            err.classList.add('hidden');
+            showToast('Mencari data BPJS...', 'info');
+            setTimeout(() => {
+                const data = billData.bpjs[val];
+                if (!data) { showToast('Nomor BPJS tidak ditemukan', 'error'); return; }
+                state.bpjsBill = { ...data, id: val };
+                document.getElementById('bpjsResult').classList.remove('hidden');
+                document.getElementById('bpjsNama').textContent = data.name;
+                document.getElementById('bpjsPeriode').textContent = data.period;
+                document.getElementById('bpjsDue').textContent = formatDate(data.due);
+                document.getElementById('bpjsAmount').textContent = `Rp ${formatRupiah(data.amount)}`;
+                document.getElementById('bpjsDenda').textContent = data.fine > 0 ? `Rp ${formatRupiah(data.fine)}` :
+                    'Tidak ada';
+                document.getElementById('bpjsTotal').textContent = `Rp ${formatRupiah(data.amount + data.fine)}`;
+                document.getElementById('bpjsStatus').textContent = data.status === 'paid' ? 'Lunas' : 'Belum Lunas';
+                document.getElementById('bpjsStatus').className = `badge ${data.status==='paid'?'badge-success':'badge-warning'}`;
+                document.getElementById('bpjsResult').scrollIntoView({ behavior: 'smooth' });
+            }, 800);
+        }
+
+        function prosesBayarBpjs() {
+            if (!state.bpjsBill) { showToast('Cek BPJS dulu', 'error'); return; }
+            const total = state.bpjsBill.amount + state.bpjsBill.fine;
+            if (state.saldo < total) { showToast(`Saldo kurang! Rp ${formatRupiah(total)}`, 'error'); return; }
+            showToast('Memproses...', 'info');
+            setTimeout(() => {
+                state.saldo -= total;
+                updateSaldoDisplay();
+                const trans = {
+                    id: Date.now(),
+                    type: 'bpjs',
+                    title: `BPJS - ${state.bpjsBill.name}`,
+                    amount: total,
+                    date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
+                    time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+                    method: 'VA',
+                    status: 'success',
+                    bill: { ...state.bpjsBill }
+                };
+                state.history.push(trans);
+                saveState();
+                if (billData.bpjs[state.bpjsBill.id]) billData.bpjs[state.bpjsBill.id].status = 'paid';
+                showReceipt(trans);
+                state.bpjsBill = null;
+                document.getElementById('bpjsResult').classList.add('hidden');
+                document.getElementById('inputBpjs').value = '';
+                updateCounters();
+            }, 1200);
+        }
+
+        // =============================================
+        // PAJAK (tambahan 2)
+        // =============================================
+        function cekPajak() {
+            const input = document.getElementById('inputPajak');
+            const err = document.getElementById('pajakError');
+            const val = input.value.trim().toUpperCase();
+            if (!/^[A-Z]{1,2}\d{1,4}[A-Z]{1,3}$/.test(val)) { input.classList.add('error');
+                err.textContent = 'Format plat nomor tidak valid';
+                err.classList.remove('hidden'); return; }
+            input.classList.remove('error');
+            err.classList.add('hidden');
+            showToast('Mencari data pajak...', 'info');
+            setTimeout(() => {
+                const data = billData.pajak[val];
+                if (!data) { showToast('Nomor polisi tidak ditemukan', 'error'); return; }
+                state.pajakBill = { ...data, id: val };
+                document.getElementById('pajakResult').classList.remove('hidden');
+                document.getElementById('pajakNama').textContent = data.name;
+                document.getElementById('pajakTahun').textContent = data.tahun;
+                document.getElementById('pajakDue').textContent = formatDate(data.due);
+                document.getElementById('pajakAmount').textContent = `Rp ${formatRupiah(data.amount)}`;
+                document.getElementById('pajakDenda').textContent = data.fine > 0 ? `Rp ${formatRupiah(data.fine)}` :
+                    'Tidak ada';
+                document.getElementById('pajakTotal').textContent = `Rp ${formatRupiah(data.amount + data.fine)}`;
+                document.getElementById('pajakStatus').textContent = data.status === 'paid' ? 'Lunas' : 'Belum Bayar';
+                document.getElementById('pajakStatus').className = `badge ${data.status==='paid'?'badge-success':'badge-warning'}`;
+                document.getElementById('pajakResult').scrollIntoView({ behavior: 'smooth' });
+            }, 800);
+        }
+
+        function prosesBayarPajak() {
+            if (!state.pajakBill) { showToast('Cek pajak dulu', 'error'); return; }
+            const total = state.pajakBill.amount + state.pajakBill.fine;
+            if (state.saldo < total) { showToast(`Saldo kurang! Rp ${formatRupiah(total)}`, 'error'); return; }
+            showToast('Memproses...', 'info');
+            setTimeout(() => {
+                state.saldo -= total;
+                updateSaldoDisplay();
+                const trans = {
+                    id: Date.now(),
+                    type: 'pajak',
+                    title: `Pajak - ${state.pajakBill.name}`,
+                    amount: total,
+                    date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
+                    time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+                    method: 'VA',
+                    status: 'success',
+                    bill: { ...state.pajakBill }
+                };
+                state.history.push(trans);
+                saveState();
+                if (billData.pajak[state.pajakBill.id]) billData.pajak[state.pajakBill.id].status = 'paid';
+                showReceipt(trans);
+                state.pajakBill = null;
+                document.getElementById('pajakResult').classList.add('hidden');
+                document.getElementById('inputPajak').value = '';
+                updateCounters();
+            }, 1200);
+        }
+
+        // =============================================
+        // TV / STREAMING (tambahan 3)
+        // =============================================
+        function selectTv(p) {
+            state.tvSelected = p;
+            document.querySelectorAll('#page-tv .cat-pill').forEach(el => {
+                el.classList.toggle('active-cat', el.dataset.tv === p);
+            });
+        }
+
+        function cekTv() {
+            const input = document.getElementById('inputTv');
+            const err = document.getElementById('tvError');
+            const val = input.value.trim();
+            if (!val) { input.classList.add('error');
+                err.textContent = 'ID pelanggan harus diisi';
+                err.classList.remove('hidden'); return; }
+            input.classList.remove('error');
+            err.classList.add('hidden');
+            showToast('Mencari data langganan...', 'info');
+            setTimeout(() => {
+                // cari di data tv dengan key yang mengandung val (case insensitive)
+                let found = null,
+                    foundKey = '';
+                for (const [key, data] of Object.entries(billData.tv)) {
+                    if (key.toLowerCase().includes(val.toLowerCase()) || data.name.toLowerCase().includes(val
+                        .toLowerCase())) {
+                        found = { ...data, id: key };
+                        foundKey = key;
+                        break;
+                    }
+                }
+                if (!found) { showToast('ID pelanggan tidak ditemukan', 'error'); return; }
+                state.tvBill = found;
+                document.getElementById('tvResult').classList.remove('hidden');
+                document.getElementById('tvNama').textContent = found.name;
+                document.getElementById('tvPaket').textContent = found.paket;
+                document.getElementById('tvPeriode').textContent = found.period;
+                document.getElementById('tvAmount').textContent = `Rp ${formatRupiah(found.amount)}`;
+                document.getElementById('tvDenda').textContent = found.fine > 0 ? `Rp ${formatRupiah(found.fine)}` :
+                    'Tidak ada';
+                document.getElementById('tvTotal').textContent = `Rp ${formatRupiah(found.amount + found.fine)}`;
+                document.getElementById('tvStatus').textContent = found.status === 'paid' ? 'Lunas' : 'Belum Bayar';
+                document.getElementById('tvStatus').className = `badge ${found.status==='paid'?'badge-success':'badge-warning'}`;
+                document.getElementById('tvResult').scrollIntoView({ behavior: 'smooth' });
+            }, 800);
+        }
+
+        function prosesBayarTv() {
+            if (!state.tvBill) { showToast('Cek tagihan dulu', 'error'); return; }
+            const total = state.tvBill.amount + state.tvBill.fine;
+            if (state.saldo < total) { showToast(`Saldo kurang! Rp ${formatRupiah(total)}`, 'error'); return; }
+            showToast('Memproses...', 'info');
+            setTimeout(() => {
+                state.saldo -= total;
+                updateSaldoDisplay();
+                const trans = {
+                    id: Date.now(),
+                    type: 'tv',
+                    title: `${state.tvBill.name}`,
+                    amount: total,
+                    date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
+                    time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+                    method: 'QRIS',
+                    status: 'success',
+                    bill: { ...state.tvBill }
+                };
+                state.history.push(trans);
+                saveState();
+                if (billData.tv[state.tvBill.id]) billData.tv[state.tvBill.id].status = 'paid';
+                showReceipt(trans);
+                state.tvBill = null;
+                document.getElementById('tvResult').classList.add('hidden');
+                document.getElementById('inputTv').value = '';
+                updateCounters();
+            }, 1200);
+        }
+
+        // =============================================
+        // DONASI (tambahan 4)
+        // =============================================
+        function selectDonasi(p) {
+            state.donasiSelected = p;
+            document.querySelectorAll('#page-donasi .cat-pill').forEach(el => {
+                el.classList.toggle('active-cat', el.dataset.donasi === p);
+            });
+        }
+
+        function selectDonasiNominal(n) {
+            state.donasiNominal = n;
+            document.querySelectorAll('#page-donasi .nominal-btn').forEach(el => {
+                el.classList.toggle('active-nominal', el.dataset.donas === n);
+            });
+        }
+
+        function prosesBayarDonasi() {
+            let nominal = 0;
+            const custom = document.getElementById('inputDonasiCustom').value;
+            if (custom && parseInt(custom) > 0) { nominal = parseInt(custom); } else if (state.donasiNominal) { nominal =
+                    parseInt(state.donasiNominal); } else { showToast('Pilih nominal donasi', 'error'); return; }
+            if (nominal < 10000) { showToast('Minimal Rp 10.000', 'error'); return; }
+            if (state.saldo < nominal) { showToast(`Saldo kurang! Rp ${formatRupiah(nominal)}`, 'error'); return; }
+            const catatan = document.getElementById('inputDonasiCatatan').value.trim();
+            const lembaga = billData.donasi[state.donasiSelected];
+            showToast('Memproses donasi...', 'info');
+            setTimeout(() => {
+                state.saldo -= nominal;
+                updateSaldoDisplay();
+                const trans = {
+                    id: Date.now(),
+                    type: 'donasi',
+                    title: `Donasi ${lembaga?.name||state.donasiSelected} ${catatan?'- '+catatan:''}`,
+                    amount: nominal,
+                    date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
+                    time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+                    method: 'QRIS',
+                    status: 'success',
+                    donasi: { lembaga: state.donasiSelected, nominal, catatan }
+                };
+                state.history.push(trans);
+                saveState();
+                showReceipt(trans);
+                document.getElementById('inputDonasiCustom').value = '';
+                document.getElementById('inputDonasiCatatan').value = '';
+                updateCounters();
+            }, 1200);
+        }
+
+        // =============================================
+        // RECEIPT
+        // =============================================
+        function showReceipt(transaction) {
+            let detailHtml = '';
+            const isPulsa = transaction.type === 'pulsa';
+            const isSpp = transaction.type === 'spp';
+            const isDonasi = transaction.type === 'donasi';
+
+            if (isPulsa) {
+                detailHtml = `
+                    <div class="text-sm space-y-1">
+                        <p><span style="color:var(--text-secondary-light);">Nomor HP:</span> ${transaction.pulsa.hp}</p>
+                        <p><span style="color:var(--text-secondary-light);">Provider:</span> ${transaction.pulsa.provider}</p>
+                        ${transaction.pulsa.nominal>0?`<p><span style="color:var(--text-secondary-light);">Pulsa:</span> Rp ${formatRupiah(transaction.pulsa.nominal)}</p>`:''}
+                        ${transaction.pulsa.paket?`<p><span style="color:var(--text-secondary-light);">Paket:</span> ${transaction.pulsa.paket}</p>`:''}
+                    </div>
+                `;
+            } else if (isSpp) {
+                detailHtml = `
+                    <div class="text-sm space-y-1">
+                        <p><span style="color:var(--text-secondary-light);">NIM:</span> ${transaction.spp.nim}</p>
+                        <p><span style="color:var(--text-secondary-light);">Nama:</span> ${transaction.spp.name}</p>
+                        <p><span style="color:var(--text-secondary-light);">Cicilan:</span> ${transaction.spp.items.length} item</p>
+                    </div>
+                `;
+            } else if (isDonasi) {
+                detailHtml = `
+                    <div class="text-sm space-y-1">
+                        <p><span style="color:var(--text-secondary-light);">Lembaga:</span> ${billData.donasi[transaction.donasi.lembaga]?.name||transaction.donasi.lembaga}</p>
+                        <p><span style="color:var(--text-secondary-light);">Nominal:</span> Rp ${formatRupiah(transaction.donasi.nominal)}</p>
+                        ${transaction.donasi.catatan?`<p><span style="color:var(--text-secondary-light);">Catatan:</span> ${transaction.donasi.catatan}</p>`:''}
+                    </div>
+                `;
+            } else {
+                detailHtml = `
+                    <div class="text-sm space-y-1">
+                        <p><span style="color:var(--text-secondary-light);">Kategori:</span> ${getCategoryLabel(transaction.category)||transaction.type}</p>
+                        <p><span style="color:var(--text-secondary-light);">Pelanggan:</span> ${transaction.bill?.name||'-'}</p>
+                        ${transaction.bill?.period?`<p><span style="color:var(--text-secondary-light);">Periode:</span> ${transaction.bill.period}</p>`:''}
+                    </div>
+                `;
+            }
+
+            const methodLabels = {
+                va: 'Virtual Account',
+                qris: 'QRIS',
+                teller: 'Teller',
+                gopay: 'GoPay',
+                ovo: 'OVO',
+                dana: 'DANA',
+                linkaja: 'LinkAja'
+            };
+            const methodLabel = methodLabels[transaction.method] || transaction.method || 'Transfer';
+
+            let qrHtml = '';
+            if ((transaction.method === 'qris' || transaction.method === 'gopay' || transaction.method === 'ovo' ||
+                    transaction.method === 'dana' || transaction.method === 'linkaja') && !isSpp && !isDonasi) {
+                const vaCode = generateVA();
+                qrHtml = `
+                    <div class="bg-white p-4 rounded-xl text-center" style="background:var(--card-light);">
+                        <div id="qrcode" class="flex justify-center"></div>
+                        <p class="text-xs mt-2" style="color:var(--text-secondary-light);">Scan QR untuk pembayaran</p>
+                        <div class="text-sm mt-2">
+                            <p class="font-mono" style="color:var(--text-light);">${vaCode}</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Kode Virtual Account</p>
+                        </div>
+                        <div class="timer mt-2" id="qrTimer">05:00</div>
+                    </div>
+                `;
+            }
+
+            const html = `
+                <div class="text-center mb-4">
+                    <i class="fas fa-check-circle text-5xl mb-2" style="color:var(--primary);"></i>
+                    <h2 class="text-xl font-bold" style="color:var(--text-light);">Pembayaran Berhasil!</h2>
+                    <p class="text-sm" style="color:var(--text-secondary-light);">Transaksi berhasil diproses</p>
+                </div>
+                <div class="border-t border-b py-4 my-4" style="border-color:var(--border-light);">
+                    <div class="flex justify-between text-sm"><span style="color:var(--text-secondary-light);">ID</span><span class="font-mono" style="color:var(--text-light);">#${transaction.id}</span></div>
+                    <div class="flex justify-between text-sm mt-1"><span style="color:var(--text-secondary-light);">Tanggal</span><span style="color:var(--text-light);">${transaction.date} ${transaction.time}</span></div>
+                    <div class="flex justify-between text-sm mt-1"><span style="color:var(--text-secondary-light);">Metode</span><span style="color:var(--text-light);">${methodLabel}</span></div>
+                </div>
+                ${qrHtml}
+                <div class="mb-4">
+                    <p class="text-sm" style="color:var(--text-secondary-light);">${isDonasi?'Donasi':isPulsa?'Pembelian':'Pembayaran'}</p>
+                    <p class="font-bold" style="color:var(--text-light);">${transaction.title}</p>
+                </div>
+                ${detailHtml}
+                <div class="border-t pt-4 mt-4 flex justify-between items-center" style="border-color:var(--border-light);">
+                    <span class="font-bold text-lg" style="color:var(--text-light);">Total</span>
+                    <span class="font-bold text-2xl" style="color:var(--primary);">Rp ${formatRupiah(transaction.amount)}</span>
+                </div>
+                <div class="flex gap-3 mt-6 no-print">
+                    <button class="flex-1 btn-primary" onclick="window.print()"><i class="fas fa-print"></i> Cetak</button>
+                    <button class="flex-1 btn-secondary" onclick="exportPDF()"><i class="fas fa-file-pdf"></i> PDF</button>
+                </div>
+                <button class="btn-secondary w-full mt-2 no-print" onclick="closeModal();navigateTo('riwayat')">Lihat Riwayat</button>
+            `;
+
+            showModal(html);
+
+            if (qrHtml) {
+                setTimeout(() => {
+                    const qrContainer = document.getElementById('qrcode');
+                    if (qrContainer && typeof QRCode !== 'undefined') {
+                        qrContainer.innerHTML = '';
+                        new QRCode(qrContainer, {
+                            text: generateVA(),
+                            width: 170,
+                            height: 170,
+                            colorDark: '#03AC0E',
+                            colorLight: '#ffffff',
+                            correctLevel: QRCode.CorrectLevel.H
+                        });
+                        startTimer(300);
+                    }
+                }, 350);
+            }
+        }
+
+        function startTimer(seconds) {
+            let remaining = seconds;
+            const timerEl = document.getElementById('qrTimer');
+            if (!timerEl) return;
+            const interval = setInterval(() => {
+                const mins = Math.floor(remaining / 60);
+                const secs = remaining % 60;
+                timerEl.textContent = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+                if (remaining <= 0) { clearInterval(interval);
+                    timerEl.textContent = '⏰ Expired';
+                    timerEl.style.color = '#EF4444';
+                    showToast('QR Code kadaluarsa', 'error'); }
+                remaining--;
+            }, 1000);
+        }
+
+        function exportPDF() {
+            if (typeof window.jspdf !== 'undefined') {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                doc.setFontSize(16);
+                doc.text('BayaranKita - Bukti Transaksi', 20, 20);
+                doc.setFontSize(12);
+                doc.text(`ID: #${Date.now()}`, 20, 30);
+                doc.text(`Tanggal: ${new Date().toLocaleString('id-ID')}`, 20, 40);
+                const last = state.history[state.history.length - 1];
+                doc.text(`Total: Rp ${formatRupiah(last?.amount||0)}`, 20, 50);
+                doc.save('struk-bayarkita.pdf');
+                showToast('PDF berhasil diunduh', 'success');
+            } else {
+                showToast('Library jsPDF belum siap', 'error');
+            }
+        }
+
+        // =============================================
+        // RIWAYAT
+        // =============================================
+        function renderHistory(filter = 'all') {
+            const container = document.getElementById('historyList');
+            let data = state.history;
+            if (filter !== 'all') data = data.filter(t => t.type === filter);
+            if (data.length === 0) {
+                container.innerHTML = `
+                    <div class="card text-center py-12" style="border-color:var(--border-light);">
+                        <i class="fas fa-inbox text-4xl" style="color:var(--text-secondary-light);"></i>
+                        <p class="text-sm mt-2" style="color:var(--text-secondary-light);">Belum ada transaksi</p>
+                        <p class="text-xs" style="color:var(--text-secondary-light);">Mulai bayar tagihan atau isi pulsa</p>
+                    </div>
+                `;
+                return;
+            }
+            container.innerHTML = data.slice().reverse().map(t => `
+                <div class="card p-4" style="border-color:var(--border-light);">
+                    <div class="flex justify-between items-start">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background:var(--primary-light);color:var(--primary);">
+                                <i class="fas ${getIconForType(t.type)}"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-sm" style="color:var(--text-light);">${t.title}</p>
+                                <p class="text-xs" style="color:var(--text-secondary-light);">${t.date} ${t.time||''}</p>
+                            </div>
+                        </div>
+                        <span class="font-bold" style="color:var(--primary);">-Rp ${formatRupiah(t.amount)}</span>
+                    </div>
+                    <div class="mt-2 flex gap-2 text-xs">
+                        <span class="badge badge-success">${getTypeLabel(t.type).toUpperCase()}</span>
+                        <span class="badge badge-info">${t.method||'Transfer'}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterHistory(filter) {
+            document.querySelectorAll('#page-riwayat .cat-pill').forEach(el => {
+                el.classList.toggle('active-cat', el.dataset.filter === filter);
+            });
+            renderHistory(filter);
+        }
+
+        function clearHistory() {
+            if (state.history.length === 0) { showToast('Tidak ada riwayat', 'info'); return; }
+            if (confirm('Hapus semua riwayat transaksi?')) {
+                state.history = [];
+                saveState();
+                renderHistory();
+                renderRecentTransactions();
+                updateCounters();
+                showToast('Riwayat dihapus', 'success');
+            }
+        }
+
+        // =============================================
+        // INIT
+        // =============================================
+        loadState();
+        renderRecentTransactions();
+        renderHistory();
+        updateSaldoDisplay();
+        updateCounters();
+
+        // Enter key
+        document.getElementById('inputPelanggan').addEventListener('keypress', e => { if (e.key === 'Enter') cekTagihan(); });
+        document.getElementById('inputNim').addEventListener('keypress', e => { if (e.key === 'Enter') cekTagihanSpp(); });
+        document.getElementById('inputHp').addEventListener('keypress', e => { if (e.key === 'Enter') prosesBayarPulsa(); });
+        document.getElementById('inputBpjs').addEventListener('keypress', e => { if (e.key === 'Enter') cekBpjs(); });
+        document.getElementById('inputPajak').addEventListener('keypress', e => { if (e.key === 'Enter') cekPajak(); });
+        document.getElementById('inputTv').addEventListener('keypress', e => { if (e.key === 'Enter') cekTv(); });
+
+        console.log('💰 BayaranKita — Tokopedia Style with Dark Mode & 4+ Payments');
+        console.log('📱 All payments use saldo balance.');
+    </script>
+</body>
+</html>
