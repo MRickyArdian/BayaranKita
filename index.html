@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>BayaranKita - Bayar & isi ulang jadi gampang </title>
+    <title>BayaranKita - Bayar & isi ulang jadi gampang</title>
 
     <!-- Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com">
@@ -22,8 +22,8 @@
 
     <style>
         /* ============================================
-                   TOKOPEDIA STYLE — DARK MODE READY
-                   ============================================ */
+           TOKOPEDIA STYLE — DARK MODE READY
+           ============================================ */
         :root {
             --primary: #03AC0E;
             --primary-dark: #028A0B;
@@ -134,22 +134,6 @@
             color: var(--primary);
         }
 
-        .nav-item .badge-nav {
-            position: absolute;
-            top: 2px;
-            right: 6px;
-            background: #EF4444;
-            color: #fff;
-            font-size: 9px;
-            border-radius: 50%;
-            width: 18px;
-            height: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-        }
-
         /* ===== PAGES ===== */
         .page {
             display: none;
@@ -225,7 +209,7 @@
             font-weight: 500;
         }
 
-        /* ===== SERVICE GRID (Tokopedia style) ===== */
+        /* ===== SERVICE GRID ===== */
         .service-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -774,26 +758,6 @@
             transform: scale(0.92);
         }
 
-        /* ===== SKELETON ===== */
-        .skeleton {
-            background: linear-gradient(90deg, var(--border-light) 25%, var(--bg-light) 50%, var(--border-light) 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.6s infinite;
-            border-radius: 8px;
-        }
-        body.dark .skeleton {
-            background: linear-gradient(90deg, var(--border-dark) 25%, var(--bg-dark) 50%, var(--border-dark) 75%);
-        }
-
-        @keyframes shimmer {
-            0% {
-                background-position: -200% 0;
-            }
-            100% {
-                background-position: 200% 0;
-            }
-        }
-
         /* ===== METHOD SELECT ===== */
         .method-option {
             padding: 14px 16px;
@@ -895,6 +859,27 @@
                 color: #fff !important;
             }
         }
+
+        /* ===== GREETING BADGE ===== */
+        .greeting-badge {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid var(--primary);
+        }
+        body.dark .greeting-badge {
+            background: rgba(3, 172, 14, 0.15);
+            border-color: var(--primary);
+        }
+        .greeting-badge i {
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -903,12 +888,12 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <!-- ============================================================
-    PAGE: DASHBOARD
+    PAGE: DASHBOARD (langsung muncul, tanpa login)
     ============================================================ -->
     <div class="page active" id="page-dashboard">
 
         <!-- Header -->
-        <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center justify-between mb-2">
             <div>
                 <h1 class="text-2xl font-extrabold tracking-tight" style="color:var(--primary);">BayaranKita</h1>
                 <p class="text-sm" style="color:var(--text-secondary-light);">Bayar & isi ulang jadi gampang</p>
@@ -918,7 +903,12 @@
             </button>
         </div>
 
-        <!-- Saldo Card (Tokopedia green) -->
+        <!-- GREETING -->
+        <div class="flex items-center gap-2 mb-4">
+            <span class="greeting-badge"><i class="fas fa-hand-peace"></i> HALO, SELAMAT DATANG <strong id="userGreeting">Muhammad Ricky Ardian</strong></span>
+        </div>
+
+        <!-- Saldo Card -->
         <div class="saldo-card">
             <div class="flex justify-between items-start relative z-10">
                 <div>
@@ -935,7 +925,7 @@
             </div>
         </div>
 
-        <!-- Layanan Cepat (Tokopedia grid) -->
+        <!-- Layanan Cepat -->
         <h2 class="font-bold text-sm mb-3" style="color:var(--text-light);">Layanan Cepat</h2>
         <div class="service-grid">
             <div class="service-item" onclick="navigateTo('tagihan')">
@@ -962,7 +952,6 @@
                 <div class="icon-wrap"><i class="fas fa-signal"></i></div>
                 <span>Paket Data</span>
             </div>
-            <!-- 4 tambahan dari saldo -->
             <div class="service-item" onclick="navigateTo('bpjs')">
                 <div class="icon-wrap"><i class="fas fa-heartbeat"></i></div>
                 <span>BPJS</span>
@@ -1007,7 +996,7 @@
     </div>
 
     <!-- ============================================================
-    PAGE: TAGIHAN (PLN, PDAM, Internet, Seminar)
+    PAGE: TAGIHAN
     ============================================================ -->
     <div class="page" id="page-tagihan">
         <div class="flex items-center gap-3 mb-4">
@@ -1057,65 +1046,45 @@
                 </div>
             </div>
 
+            <!-- ===== METODE PEMBAYARAN (4 METODE) ===== -->
             <div class="card">
-                <label class="form-label">Metode Pembayaran</label>
+                <label class="form-label">Pilih Metode Pembayaran</label>
                 <div class="space-y-2">
+                    <!-- 1. Virtual Account -->
                     <div class="method-option active-method" data-method="va" onclick="selectMethodTagihan('va')">
                         <i class="fas fa-university text-xl" style="color:var(--primary);"></i>
                         <div class="flex-1">
                             <p class="font-bold text-sm" style="color:var(--text-light);">Virtual Account</p>
-                            <p class="text-xs" style="color:var(--text-secondary-light);">BCA / BNI / Mandiri</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Transfer bank BCA/BNI/Mandiri</p>
                         </div>
                         <i class="fas fa-check-circle text-emerald-600" id="checkVa"></i>
                     </div>
+                    <!-- 2. QRIS -->
                     <div class="method-option" data-method="qris" onclick="selectMethodTagihan('qris')">
                         <i class="fas fa-qrcode text-xl" style="color:var(--primary);"></i>
                         <div class="flex-1">
                             <p class="font-bold text-sm" style="color:var(--text-light);">QRIS</p>
-                            <p class="text-xs" style="color:var(--text-secondary-light);">Scan via e-wallet</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Scan QR code via e-wallet</p>
                         </div>
                         <i class="fas fa-check-circle text-emerald-600 hidden" id="checkQris"></i>
                     </div>
+                    <!-- 3. Bayar di Teller / Kasir -->
                     <div class="method-option" data-method="teller" onclick="selectMethodTagihan('teller')">
                         <i class="fas fa-store text-xl" style="color:var(--primary);"></i>
                         <div class="flex-1">
-                            <p class="font-bold text-sm" style="color:var(--text-light);">Bayar di Teller</p>
+                            <p class="font-bold text-sm" style="color:var(--text-light);">Bayar di Teller / Kasir</p>
                             <p class="text-xs" style="color:var(--text-secondary-light);">Kantor cabang terdekat</p>
                         </div>
                         <i class="fas fa-check-circle text-emerald-600 hidden" id="checkTeller"></i>
                     </div>
-                    <!-- 4 tambahan metode pembayaran -->
-                    <div class="method-option" data-method="gopay" onclick="selectMethodTagihan('gopay')">
-                        <i class="fas fa-credit-card text-xl" style="color:var(--primary);"></i>
-                        <div class="flex-1">
-                            <p class="font-bold text-sm" style="color:var(--text-light);">GoPay</p>
-                            <p class="text-xs" style="color:var(--text-secondary-light);">Dompet digital Gojek</p>
-                        </div>
-                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkGopay"></i>
-                    </div>
-                    <div class="method-option" data-method="ovo" onclick="selectMethodTagihan('ovo')">
-                        <i class="fas fa-mobile-screen-button text-xl" style="color:var(--primary);"></i>
-                        <div class="flex-1">
-                            <p class="font-bold text-sm" style="color:var(--text-light);">OVO</p>
-                            <p class="text-xs" style="color:var(--text-secondary-light);">Dompet digital OVO</p>
-                        </div>
-                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkOvo"></i>
-                    </div>
-                    <div class="method-option" data-method="dana" onclick="selectMethodTagihan('dana')">
+                    <!-- 4. Dengan Saldo Itu Sendiri -->
+                    <div class="method-option" data-method="saldo" onclick="selectMethodTagihan('saldo')">
                         <i class="fas fa-wallet text-xl" style="color:var(--primary);"></i>
                         <div class="flex-1">
-                            <p class="font-bold text-sm" style="color:var(--text-light);">DANA</p>
-                            <p class="text-xs" style="color:var(--text-secondary-light);">Dompet digital DANA</p>
+                            <p class="font-bold text-sm" style="color:var(--text-light);">Dengan Saldo</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Bayar langsung dari saldo</p>
                         </div>
-                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkDana"></i>
-                    </div>
-                    <div class="method-option" data-method="linkaja" onclick="selectMethodTagihan('linkaja')">
-                        <i class="fas fa-credit-card text-xl" style="color:var(--primary);"></i>
-                        <div class="flex-1">
-                            <p class="font-bold text-sm" style="color:var(--text-light);">LinkAja</p>
-                            <p class="text-xs" style="color:var(--text-secondary-light);">Dompet digital LinkAja</p>
-                        </div>
-                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkLinkaja"></i>
+                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkSaldo"></i>
                     </div>
                 </div>
             </div>
@@ -1274,7 +1243,7 @@
     </div>
 
     <!-- ============================================================
-    PAGE: BPJS (tambahan 1)
+    PAGE: BPJS
     ============================================================ -->
     <div class="page" id="page-bpjs">
         <div class="flex items-center gap-3 mb-4">
@@ -1311,7 +1280,7 @@
     </div>
 
     <!-- ============================================================
-    PAGE: PAJAK (tambahan 2)
+    PAGE: PAJAK
     ============================================================ -->
     <div class="page" id="page-pajak">
         <div class="flex items-center gap-3 mb-4">
@@ -1348,7 +1317,7 @@
     </div>
 
     <!-- ============================================================
-    PAGE: TV / STREAMING (tambahan 3)
+    PAGE: TV / STREAMING
     ============================================================ -->
     <div class="page" id="page-tv">
         <div class="flex items-center gap-3 mb-4">
@@ -1394,7 +1363,7 @@
     </div>
 
     <!-- ============================================================
-    PAGE: DONASI (tambahan 4)
+    PAGE: DONASI
     ============================================================ -->
     <div class="page" id="page-donasi">
         <div class="flex items-center gap-3 mb-4">
@@ -1663,7 +1632,6 @@
             saldo: 1250000,
             history: [],
             darkMode: false,
-            // tambahan
             tvSelected: 'netflix',
             donasiSelected: 'baznas',
             donasiNominal: '25000',
@@ -1962,12 +1930,54 @@
                 if (c) c.classList.remove('hidden'); }
         }
 
+        // =============================================
+        // PROSES BAYAR TAGIHAN — dengan 4 metode
+        // =============================================
         function prosesBayarTagihan() {
             if (!state.currentBill) { showToast('Cek tagihan dulu', 'error'); return; }
             if (!state.selectedMethod) { showToast('Pilih metode', 'error'); return; }
+
             const total = state.currentBill.amount + state.currentBill.fine;
+
+            // Jika metode "saldo" atau metode lain, tetap pakai saldo
+            // Tapi kita tetap tampilkan instruksi sesuai metode
+            if (state.selectedMethod === 'saldo') {
+                // Bayar langsung dari saldo
+                if (state.saldo < total) { showToast(`Saldo kurang! Rp ${formatRupiah(total)}`, 'error'); return; }
+                showToast('Memproses pembayaran dengan saldo...', 'info');
+                setTimeout(() => {
+                    state.saldo -= total;
+                    updateSaldoDisplay();
+                    const trans = {
+                        id: Date.now(),
+                        type: 'tagihan',
+                        title: `${getCategoryLabel(state.currentCategory)} - ${state.currentBill.name}`,
+                        amount: total,
+                        date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
+                        time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+                        method: 'Saldo',
+                        status: 'success',
+                        bill: { ...state.currentBill }
+                    };
+                    state.history.push(trans);
+                    saveState();
+                    const cat = state.currentCategory;
+                    if (billData[cat] && billData[cat][state.currentBill.id]) {
+                        billData[cat][state.currentBill.id].status = 'paid';
+                    }
+                    showReceipt(trans);
+                    state.currentBill = null;
+                    document.getElementById('tagihanResult').classList.add('hidden');
+                    updateCounters();
+                }, 1200);
+                return;
+            }
+
+            // Untuk metode VA, QRIS, Teller — kita tetap tampilkan instruksi + simulasi
+            // Tapi tetap potong saldo (karena semua pembayaran dari saldo)
             if (state.saldo < total) { showToast(`Saldo kurang! Rp ${formatRupiah(total)}`, 'error'); return; }
-            showToast('Memproses...', 'info');
+
+            showToast(`Memproses pembayaran dengan ${state.selectedMethod.toUpperCase()}...`, 'info');
             setTimeout(() => {
                 state.saldo -= total;
                 updateSaldoDisplay();
@@ -1978,7 +1988,8 @@
                     amount: total,
                     date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
                     time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
-                    method: state.selectedMethod,
+                    method: state.selectedMethod === 'va' ? 'Virtual Account' :
+                        state.selectedMethod === 'qris' ? 'QRIS' : 'Teller / Kasir',
                     status: 'success',
                     bill: { ...state.currentBill }
                 };
@@ -1988,7 +1999,8 @@
                 if (billData[cat] && billData[cat][state.currentBill.id]) {
                     billData[cat][state.currentBill.id].status = 'paid';
                 }
-                showReceipt(trans);
+                // Tampilkan struk dengan detail metode
+                showReceipt(trans, state.selectedMethod);
                 state.currentBill = null;
                 document.getElementById('tagihanResult').classList.add('hidden');
                 updateCounters();
@@ -2073,7 +2085,7 @@
                     amount: total,
                     date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
                     time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
-                    method: 'VA',
+                    method: 'Saldo',
                     status: 'success',
                     spp: { nim: state.sppData.nim, name: state.sppData.name, items: state.selectedSppItems.map(i =>
                             state.sppData.items[i]) }
@@ -2153,7 +2165,7 @@
                     amount: total,
                     date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
                     time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
-                    method: 'QRIS',
+                    method: 'Saldo',
                     status: 'success',
                     pulsa: { hp, provider, nominal, paket: paketName || null, total }
                 };
@@ -2172,7 +2184,7 @@
         }
 
         // =============================================
-        // BPJS (tambahan 1)
+        // BPJS
         // =============================================
         function cekBpjs() {
             const input = document.getElementById('inputBpjs');
@@ -2217,7 +2229,7 @@
                     amount: total,
                     date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
                     time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
-                    method: 'VA',
+                    method: 'Saldo',
                     status: 'success',
                     bill: { ...state.bpjsBill }
                 };
@@ -2233,7 +2245,7 @@
         }
 
         // =============================================
-        // PAJAK (tambahan 2)
+        // PAJAK
         // =============================================
         function cekPajak() {
             const input = document.getElementById('inputPajak');
@@ -2278,7 +2290,7 @@
                     amount: total,
                     date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
                     time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
-                    method: 'VA',
+                    method: 'Saldo',
                     status: 'success',
                     bill: { ...state.pajakBill }
                 };
@@ -2294,7 +2306,7 @@
         }
 
         // =============================================
-        // TV / STREAMING (tambahan 3)
+        // TV / STREAMING
         // =============================================
         function selectTv(p) {
             state.tvSelected = p;
@@ -2314,7 +2326,6 @@
             err.classList.add('hidden');
             showToast('Mencari data langganan...', 'info');
             setTimeout(() => {
-                // cari di data tv dengan key yang mengandung val (case insensitive)
                 let found = null,
                     foundKey = '';
                 for (const [key, data] of Object.entries(billData.tv)) {
@@ -2356,7 +2367,7 @@
                     amount: total,
                     date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
                     time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
-                    method: 'QRIS',
+                    method: 'Saldo',
                     status: 'success',
                     bill: { ...state.tvBill }
                 };
@@ -2372,7 +2383,7 @@
         }
 
         // =============================================
-        // DONASI (tambahan 4)
+        // DONASI
         // =============================================
         function selectDonasi(p) {
             state.donasiSelected = p;
@@ -2408,7 +2419,7 @@
                     amount: nominal,
                     date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
                     time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
-                    method: 'QRIS',
+                    method: 'Saldo',
                     status: 'success',
                     donasi: { lembaga: state.donasiSelected, nominal, catatan }
                 };
@@ -2422,13 +2433,63 @@
         }
 
         // =============================================
-        // RECEIPT
+        // RECEIPT — dengan detail metode
         // =============================================
-        function showReceipt(transaction) {
+        function showReceipt(transaction, methodOverride) {
+            const method = methodOverride || transaction.method || 'Saldo';
             let detailHtml = '';
             const isPulsa = transaction.type === 'pulsa';
             const isSpp = transaction.type === 'spp';
             const isDonasi = transaction.type === 'donasi';
+
+            // Detail spesifik metode
+            let methodDetailHtml = '';
+            if (method === 'Virtual Account' || method === 'va') {
+                const vaNumber = generateVA();
+                methodDetailHtml = `
+                    <div class="bg-primary-light p-4 rounded-xl mt-2" style="background:var(--primary-light);">
+                        <p class="font-bold text-sm" style="color:var(--text-light);">💳 Virtual Account</p>
+                        <p class="font-mono text-lg font-bold" style="color:var(--primary);">${vaNumber}</p>
+                        <p class="text-xs" style="color:var(--text-secondary-light);">Transfer ke bank:</p>
+                        <div class="flex gap-2 mt-1 flex-wrap">
+                            <span class="badge badge-info">BCA</span>
+                            <span class="badge badge-info">BNI</span>
+                            <span class="badge badge-info">Mandiri</span>
+                            <span class="badge badge-info">BRI</span>
+                        </div>
+                        <p class="text-xs mt-2" style="color:var(--text-secondary-light);">Gunakan nomor VA di atas untuk transfer.</p>
+                    </div>
+                `;
+            } else if (method === 'QRIS' || method === 'qris') {
+                const vaCode = generateVA();
+                methodDetailHtml = `
+                    <div class="bg-white p-4 rounded-xl text-center mt-2" style="background:var(--card-light);">
+                        <div id="qrcode" class="flex justify-center"></div>
+                        <p class="text-xs mt-2" style="color:var(--text-secondary-light);">Scan QR code dengan aplikasi e-wallet</p>
+                        <div class="text-sm mt-2">
+                            <p class="font-mono" style="color:var(--text-light);">${vaCode}</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Kode QRIS</p>
+                        </div>
+                        <div class="timer mt-2" id="qrTimer">05:00</div>
+                    </div>
+                `;
+            } else if (method === 'Teller / Kasir' || method === 'teller') {
+                const paymentCode = 'TRX-' + Date.now().toString().slice(-8);
+                methodDetailHtml = `
+                    <div class="bg-primary-light p-4 rounded-xl mt-2" style="background:var(--primary-light);">
+                        <p class="font-bold text-sm" style="color:var(--text-light);">🏦 Bayar di Teller / Kasir</p>
+                        <p class="font-mono text-lg font-bold" style="color:var(--primary);">${paymentCode}</p>
+                        <p class="text-xs" style="color:var(--text-secondary-light);">Kantor cabang terdekat:</p>
+                        <ul class="text-xs mt-1 space-y-1" style="color:var(--text-secondary-light);">
+                            <li>📍 Jl. Sudirman No. 12, Jakarta Pusat</li>
+                            <li>📍 Jl. Pahlawan No. 45, Bandung</li>
+                            <li>📍 Jl. Diponegoro No. 78, Surabaya</li>
+                            <li>📍 Jl. Gajah Mada No. 33, Medan</li>
+                        </ul>
+                        <p class="text-xs mt-2" style="color:var(--text-secondary-light);">Tunjukkan kode ini ke kasir.</p>
+                    </div>
+                `;
+            }
 
             if (isPulsa) {
                 detailHtml = `
@@ -2465,34 +2526,6 @@
                 `;
             }
 
-            const methodLabels = {
-                va: 'Virtual Account',
-                qris: 'QRIS',
-                teller: 'Teller',
-                gopay: 'GoPay',
-                ovo: 'OVO',
-                dana: 'DANA',
-                linkaja: 'LinkAja'
-            };
-            const methodLabel = methodLabels[transaction.method] || transaction.method || 'Transfer';
-
-            let qrHtml = '';
-            if ((transaction.method === 'qris' || transaction.method === 'gopay' || transaction.method === 'ovo' ||
-                    transaction.method === 'dana' || transaction.method === 'linkaja') && !isSpp && !isDonasi) {
-                const vaCode = generateVA();
-                qrHtml = `
-                    <div class="bg-white p-4 rounded-xl text-center" style="background:var(--card-light);">
-                        <div id="qrcode" class="flex justify-center"></div>
-                        <p class="text-xs mt-2" style="color:var(--text-secondary-light);">Scan QR untuk pembayaran</p>
-                        <div class="text-sm mt-2">
-                            <p class="font-mono" style="color:var(--text-light);">${vaCode}</p>
-                            <p class="text-xs" style="color:var(--text-secondary-light);">Kode Virtual Account</p>
-                        </div>
-                        <div class="timer mt-2" id="qrTimer">05:00</div>
-                    </div>
-                `;
-            }
-
             const html = `
                 <div class="text-center mb-4">
                     <i class="fas fa-check-circle text-5xl mb-2" style="color:var(--primary);"></i>
@@ -2502,10 +2535,10 @@
                 <div class="border-t border-b py-4 my-4" style="border-color:var(--border-light);">
                     <div class="flex justify-between text-sm"><span style="color:var(--text-secondary-light);">ID</span><span class="font-mono" style="color:var(--text-light);">#${transaction.id}</span></div>
                     <div class="flex justify-between text-sm mt-1"><span style="color:var(--text-secondary-light);">Tanggal</span><span style="color:var(--text-light);">${transaction.date} ${transaction.time}</span></div>
-                    <div class="flex justify-between text-sm mt-1"><span style="color:var(--text-secondary-light);">Metode</span><span style="color:var(--text-light);">${methodLabel}</span></div>
+                    <div class="flex justify-between text-sm mt-1"><span style="color:var(--text-secondary-light);">Metode</span><span style="color:var(--text-light);">${method}</span></div>
                 </div>
-                ${qrHtml}
-                <div class="mb-4">
+                ${methodDetailHtml}
+                <div class="mb-4 mt-3">
                     <p class="text-sm" style="color:var(--text-secondary-light);">${isDonasi?'Donasi':isPulsa?'Pembelian':'Pembayaran'}</p>
                     <p class="font-bold" style="color:var(--text-light);">${transaction.title}</p>
                 </div>
@@ -2523,7 +2556,8 @@
 
             showModal(html);
 
-            if (qrHtml) {
+            // QR Code untuk metode QRIS
+            if (method === 'QRIS' || method === 'qris') {
                 setTimeout(() => {
                     const qrContainer = document.getElementById('qrcode');
                     if (qrContainer && typeof QRCode !== 'undefined') {
@@ -2609,7 +2643,7 @@
                     </div>
                     <div class="mt-2 flex gap-2 text-xs">
                         <span class="badge badge-success">${getTypeLabel(t.type).toUpperCase()}</span>
-                        <span class="badge badge-info">${t.method||'Transfer'}</span>
+                        <span class="badge badge-info">${t.method||'Saldo'}</span>
                     </div>
                 </div>
             `).join('');
@@ -2651,8 +2685,9 @@
         document.getElementById('inputPajak').addEventListener('keypress', e => { if (e.key === 'Enter') cekPajak(); });
         document.getElementById('inputTv').addEventListener('keypress', e => { if (e.key === 'Enter') cekTv(); });
 
-        console.log('💰 BayaranKita — Tokopedia Style with Dark Mode & 4+ Payments');
-        console.log('📱 All payments use saldo balance.');
+        console.log('💰 BayaranKita — tanpa login, langsung greeting');
+        console.log('👋 HALO SELAMAT DATANG Muhammad Ricky Ardian');
+        console.log('📱 Metode: Virtual Account, QRIS, Teller, Saldo');
     </script>
 </body>
 </html>
