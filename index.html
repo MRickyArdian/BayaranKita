@@ -173,7 +173,7 @@
             box-shadow: var(--shadow-dark);
         }
 
-        /* ===== SALDO CARD (Tokopedia Green) ===== */
+        /* ===== SALDO CARD ===== */
         .saldo-card {
             background: linear-gradient(145deg, #03AC0E, #028A0B);
             border-radius: 16px;
@@ -823,6 +823,27 @@
             transform: scale(0.94);
         }
 
+        /* ===== GREETING BADGE ===== */
+        .greeting-badge {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid var(--primary);
+        }
+        body.dark .greeting-badge {
+            background: rgba(3, 172, 14, 0.15);
+            border-color: var(--primary);
+        }
+        .greeting-badge i {
+            font-size: 16px;
+        }
+
         /* ===== PRINT ===== */
         @media print {
             .bottom-nav,
@@ -860,25 +881,31 @@
             }
         }
 
-        /* ===== GREETING BADGE ===== */
-        .greeting-badge {
-            background: var(--primary-light);
-            color: var(--primary);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            display: inline-flex;
+        /* ===== NO SCROLLBAR ===== */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* ===== SECTION HEADER ===== */
+        .section-header {
+            display: flex;
             align-items: center;
-            gap: 6px;
-            border: 1px solid var(--primary);
-        }
-        body.dark .greeting-badge {
-            background: rgba(3, 172, 14, 0.15);
-            border-color: var(--primary);
-        }
-        .greeting-badge i {
+            gap: 10px;
             font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--border-light);
+        }
+        body.dark .section-header {
+            border-bottom-color: var(--border-dark);
+        }
+        .section-header i {
+            font-size: 18px;
         }
     </style>
 </head>
@@ -888,7 +915,7 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <!-- ============================================================
-    PAGE: DASHBOARD (langsung muncul, tanpa login)
+    PAGE: DASHBOARD
     ============================================================ -->
     <div class="page active" id="page-dashboard">
 
@@ -905,7 +932,7 @@
 
         <!-- GREETING -->
         <div class="flex items-center gap-2 mb-4">
-            <span class="greeting-badge"><i class="fas fa-hand-peace"></i> HALO, SELAMAT DATANG <strong id="userGreeting">Muhammad Ricky Ardian</strong></span>
+            <span class="greeting-badge"><i class="fas fa-hand-peace"></i> HALO, SELAMAT DATANG <strong>Muhammad Ricky Ardian</strong></span>
         </div>
 
         <!-- Saldo Card -->
@@ -928,21 +955,21 @@
         <!-- Layanan Cepat -->
         <h2 class="font-bold text-sm mb-3" style="color:var(--text-light);">Layanan Cepat</h2>
         <div class="service-grid">
-            <div class="service-item" onclick="navigateTo('tagihan')">
+            <div class="service-item" onclick="navigateTo('listrik')">
                 <div class="icon-wrap"><i class="fas fa-bolt"></i></div>
                 <span>Listrik</span>
             </div>
-            <div class="service-item" onclick="navigateTo('tagihan')">
+            <div class="service-item" onclick="navigateTo('pdam')">
                 <div class="icon-wrap"><i class="fas fa-water"></i></div>
                 <span>PDAM</span>
             </div>
-            <div class="service-item" onclick="navigateTo('tagihan')">
+            <div class="service-item" onclick="navigateTo('internet')">
                 <div class="icon-wrap"><i class="fas fa-wifi"></i></div>
                 <span>Internet</span>
             </div>
-            <div class="service-item" onclick="navigateTo('spp')">
+            <div class="service-item" onclick="navigateTo('spp-seminar')">
                 <div class="icon-wrap"><i class="fas fa-graduation-cap"></i></div>
-                <span>SPP</span>
+                <span>SPP/SEMINAR</span>
             </div>
             <div class="service-item" onclick="navigateTo('pulsa')">
                 <div class="icon-wrap"><i class="fas fa-mobile-alt"></i></div>
@@ -996,119 +1023,155 @@
     </div>
 
     <!-- ============================================================
-    PAGE: TAGIHAN
+    PAGE: LISTRIK (PLN)
     ============================================================ -->
-    <div class="page" id="page-tagihan">
+    <div class="page" id="page-listrik">
         <div class="flex items-center gap-3 mb-4">
             <button onclick="navigateTo('dashboard')" class="p-2 -ml-2 text-xl" style="color:var(--text-light);">
                 <i class="fas fa-arrow-left"></i>
             </button>
-            <h1 class="text-xl font-bold" style="color:var(--text-light);">Bayar Tagihan</h1>
+            <h1 class="text-xl font-bold" style="color:var(--text-light);">⚡ Bayar Listrik (PLN)</h1>
         </div>
 
         <div class="card">
-            <label class="form-label">Kategori</label>
-            <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
-                <button class="cat-pill active-cat" data-cat="pln" onclick="selectCategoryTagihan('pln')">⚡ PLN</button>
-                <button class="cat-pill" data-cat="pdam" onclick="selectCategoryTagihan('pdam')">💧 PDAM</button>
-                <button class="cat-pill" data-cat="internet" onclick="selectCategoryTagihan('internet')">📶 Internet</button>
-                <button class="cat-pill" data-cat="seminar" onclick="selectCategoryTagihan('seminar')">🎓 Seminar</button>
-            </div>
-        </div>
-
-        <div class="card">
-            <label class="form-label" id="labelPelanggan">Nomor Pelanggan PLN</label>
-            <input type="text" id="inputPelanggan" class="form-input" placeholder="Masukkan nomor pelanggan" maxlength="15">
-            <div id="pelangganError" class="text-red-500 text-xs mt-1 hidden"></div>
-            <button class="btn-primary mt-3" onclick="cekTagihan()">
+            <label class="form-label">Nomor Pelanggan PLN</label>
+            <input type="text" id="inputListrik" class="form-input" placeholder="Contoh: 123456789012" maxlength="15">
+            <div id="listrikError" class="text-red-500 text-xs mt-1 hidden"></div>
+            <button class="btn-primary mt-3" onclick="cekListrik()">
                 <i class="fas fa-search"></i> Cek Tagihan
             </button>
         </div>
 
-        <div id="tagihanResult" class="hidden">
+        <div id="listrikResult" class="hidden">
             <div class="card">
                 <div class="flex justify-between items-start mb-3">
                     <div>
                         <p class="text-xs" style="color:var(--text-secondary-light);">Nama Pelanggan</p>
-                        <p class="font-bold" id="resultNama" style="color:var(--text-light);">-</p>
+                        <p class="font-bold" id="listrikNama" style="color:var(--text-light);">-</p>
                     </div>
-                    <span class="badge badge-warning" id="resultStatus">Belum Lunas</span>
+                    <span class="badge badge-warning" id="listrikStatus">Belum Lunas</span>
                 </div>
                 <div class="grid grid-cols-2 gap-2 text-sm mb-3">
-                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Periode</p><p class="font-medium" id="resultPeriode" style="color:var(--text-light);">-</p></div>
-                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Jatuh Tempo</p><p class="font-medium" id="resultJatuhTempo" style="color:var(--text-light);">-</p></div>
-                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Tagihan Pokok</p><p class="font-medium" id="resultPokok" style="color:var(--text-light);">-</p></div>
-                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Denda</p><p class="font-medium text-red-500" id="resultDenda">-</p></div>
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Periode</p><p class="font-medium" id="listrikPeriode" style="color:var(--text-light);">-</p></div>
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Jatuh Tempo</p><p class="font-medium" id="listrikDue" style="color:var(--text-light);">-</p></div>
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Tagihan Pokok</p><p class="font-medium" id="listrikPokok" style="color:var(--text-light);">-</p></div>
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Denda</p><p class="font-medium text-red-500" id="listrikDenda">-</p></div>
                 </div>
                 <div class="border-t pt-3" style="border-color:var(--border-light);">
-                    <p class="text-xs" style="color:var(--text-secondary-light);">Total yang Harus Dibayar</p>
-                    <p class="text-2xl font-extrabold" style="color:var(--primary);" id="resultTotal">-</p>
+                    <p class="text-xs" style="color:var(--text-secondary-light);">Total</p>
+                    <p class="text-2xl font-extrabold" style="color:var(--primary);" id="listrikTotal">-</p>
                 </div>
             </div>
-
-            <!-- ===== METODE PEMBAYARAN (4 METODE) ===== -->
-            <div class="card">
-                <label class="form-label">Pilih Metode Pembayaran</label>
-                <div class="space-y-2">
-                    <!-- 1. Virtual Account -->
-                    <div class="method-option active-method" data-method="va" onclick="selectMethodTagihan('va')">
-                        <i class="fas fa-university text-xl" style="color:var(--primary);"></i>
-                        <div class="flex-1">
-                            <p class="font-bold text-sm" style="color:var(--text-light);">Virtual Account</p>
-                            <p class="text-xs" style="color:var(--text-secondary-light);">Transfer bank BCA/BNI/Mandiri</p>
-                        </div>
-                        <i class="fas fa-check-circle text-emerald-600" id="checkVa"></i>
-                    </div>
-                    <!-- 2. QRIS -->
-                    <div class="method-option" data-method="qris" onclick="selectMethodTagihan('qris')">
-                        <i class="fas fa-qrcode text-xl" style="color:var(--primary);"></i>
-                        <div class="flex-1">
-                            <p class="font-bold text-sm" style="color:var(--text-light);">QRIS</p>
-                            <p class="text-xs" style="color:var(--text-secondary-light);">Scan QR code via e-wallet</p>
-                        </div>
-                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkQris"></i>
-                    </div>
-                    <!-- 3. Bayar di Teller / Kasir -->
-                    <div class="method-option" data-method="teller" onclick="selectMethodTagihan('teller')">
-                        <i class="fas fa-store text-xl" style="color:var(--primary);"></i>
-                        <div class="flex-1">
-                            <p class="font-bold text-sm" style="color:var(--text-light);">Bayar di Teller / Kasir</p>
-                            <p class="text-xs" style="color:var(--text-secondary-light);">Kantor cabang terdekat</p>
-                        </div>
-                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkTeller"></i>
-                    </div>
-                    <!-- 4. Dengan Saldo Itu Sendiri -->
-                    <div class="method-option" data-method="saldo" onclick="selectMethodTagihan('saldo')">
-                        <i class="fas fa-wallet text-xl" style="color:var(--primary);"></i>
-                        <div class="flex-1">
-                            <p class="font-bold text-sm" style="color:var(--text-light);">Dengan Saldo</p>
-                            <p class="text-xs" style="color:var(--text-secondary-light);">Bayar langsung dari saldo</p>
-                        </div>
-                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkSaldo"></i>
-                    </div>
-                </div>
-            </div>
-
-            <button class="btn-primary" onclick="prosesBayarTagihan()">
-                <i class="fas fa-credit-card"></i> Bayar Sekarang
-            </button>
+            <button class="btn-primary" onclick="prosesBayarListrik()"><i class="fas fa-credit-card"></i> Bayar Listrik</button>
         </div>
     </div>
 
     <!-- ============================================================
-    PAGE: SPP
+    PAGE: PDAM
     ============================================================ -->
-    <div class="page" id="page-spp">
+    <div class="page" id="page-pdam">
         <div class="flex items-center gap-3 mb-4">
             <button onclick="navigateTo('dashboard')" class="p-2 -ml-2 text-xl" style="color:var(--text-light);">
                 <i class="fas fa-arrow-left"></i>
             </button>
-            <h1 class="text-xl font-bold" style="color:var(--text-light);">Biaya Kuliah / SPP</h1>
+            <h1 class="text-xl font-bold" style="color:var(--text-light);">💧 Bayar PDAM</h1>
         </div>
 
         <div class="card">
+            <label class="form-label">Nomor Pelanggan PDAM</label>
+            <input type="text" id="inputPdam" class="form-input" placeholder="Contoh: 678901234567" maxlength="15">
+            <div id="pdamError" class="text-red-500 text-xs mt-1 hidden"></div>
+            <button class="btn-primary mt-3" onclick="cekPdam()">
+                <i class="fas fa-search"></i> Cek Tagihan
+            </button>
+        </div>
+
+        <div id="pdamResult" class="hidden">
+            <div class="card">
+                <div class="flex justify-between items-start mb-3">
+                    <div>
+                        <p class="text-xs" style="color:var(--text-secondary-light);">Nama Pelanggan</p>
+                        <p class="font-bold" id="pdamNama" style="color:var(--text-light);">-</p>
+                    </div>
+                    <span class="badge badge-warning" id="pdamStatus">Belum Lunas</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-sm mb-3">
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Periode</p><p class="font-medium" id="pdamPeriode" style="color:var(--text-light);">-</p></div>
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Jatuh Tempo</p><p class="font-medium" id="pdamDue" style="color:var(--text-light);">-</p></div>
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Tagihan Pokok</p><p class="font-medium" id="pdamPokok" style="color:var(--text-light);">-</p></div>
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Denda</p><p class="font-medium text-red-500" id="pdamDenda">-</p></div>
+                </div>
+                <div class="border-t pt-3" style="border-color:var(--border-light);">
+                    <p class="text-xs" style="color:var(--text-secondary-light);">Total</p>
+                    <p class="text-2xl font-extrabold" style="color:var(--primary);" id="pdamTotal">-</p>
+                </div>
+            </div>
+            <button class="btn-primary" onclick="prosesBayarPdam()"><i class="fas fa-credit-card"></i> Bayar PDAM</button>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    PAGE: INTERNET
+    ============================================================ -->
+    <div class="page" id="page-internet">
+        <div class="flex items-center gap-3 mb-4">
+            <button onclick="navigateTo('dashboard')" class="p-2 -ml-2 text-xl" style="color:var(--text-light);">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h1 class="text-xl font-bold" style="color:var(--text-light);">📶 Bayar Internet</h1>
+        </div>
+
+        <div class="card">
+            <label class="form-label">Nomor Pelanggan Internet</label>
+            <input type="text" id="inputInternet" class="form-input" placeholder="Contoh: 901234567890" maxlength="15">
+            <div id="internetError" class="text-red-500 text-xs mt-1 hidden"></div>
+            <button class="btn-primary mt-3" onclick="cekInternet()">
+                <i class="fas fa-search"></i> Cek Tagihan
+            </button>
+        </div>
+
+        <div id="internetResult" class="hidden">
+            <div class="card">
+                <div class="flex justify-between items-start mb-3">
+                    <div>
+                        <p class="text-xs" style="color:var(--text-secondary-light);">Nama Pelanggan</p>
+                        <p class="font-bold" id="internetNama" style="color:var(--text-light);">-</p>
+                    </div>
+                    <span class="badge badge-warning" id="internetStatus">Belum Lunas</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-sm mb-3">
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Periode</p><p class="font-medium" id="internetPeriode" style="color:var(--text-light);">-</p></div>
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Jatuh Tempo</p><p class="font-medium" id="internetDue" style="color:var(--text-light);">-</p></div>
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Tagihan Pokok</p><p class="font-medium" id="internetPokok" style="color:var(--text-light);">-</p></div>
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Denda</p><p class="font-medium text-red-500" id="internetDenda">-</p></div>
+                </div>
+                <div class="border-t pt-3" style="border-color:var(--border-light);">
+                    <p class="text-xs" style="color:var(--text-secondary-light);">Total</p>
+                    <p class="text-2xl font-extrabold" style="color:var(--primary);" id="internetTotal">-</p>
+                </div>
+            </div>
+            <button class="btn-primary" onclick="prosesBayarInternet()"><i class="fas fa-credit-card"></i> Bayar Internet</button>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    PAGE: SPP / SEMINAR (Gabungan)
+    ============================================================ -->
+    <div class="page" id="page-spp-seminar">
+        <div class="flex items-center gap-3 mb-4">
+            <button onclick="navigateTo('dashboard')" class="p-2 -ml-2 text-xl" style="color:var(--text-light);">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h1 class="text-xl font-bold" style="color:var(--text-light);">🎓 SPP / SEMINAR</h1>
+        </div>
+
+        <!-- === SECTION SPP === -->
+        <div class="card" style="border-left: 4px solid var(--primary);">
+            <div class="section-header" style="color:var(--primary);">
+                <i class="fas fa-graduation-cap"></i> SPP / Biaya Kuliah
+            </div>
             <label class="form-label">NIM (12 digit)</label>
-            <input type="text" id="inputNim" class="form-input" placeholder="Masukkan NIM" maxlength="12">
+            <input type="text" id="inputNim" class="form-input" placeholder="Contoh: 221011450228" maxlength="12">
             <div id="nimError" class="text-red-500 text-xs mt-1 hidden"></div>
             <button class="btn-primary mt-3" onclick="cekTagihanSpp()">
                 <i class="fas fa-search"></i> Lihat Tagihan Semester
@@ -1132,15 +1195,49 @@
                     </div>
                 </div>
             </div>
-
             <div class="card">
-                <label class="form-label">Kode Tagihan</label>
-                <input type="text" id="inputKodeTagihan" class="form-input" placeholder="Masukkan kode tagihan" maxlength="15">
+                <label class="form-label">Kode Tagihan (verifikasi)</label>
+                <input type="text" id="inputKodeTagihan" class="form-input" placeholder="Contoh: 221011450228001" maxlength="15">
                 <div id="kodeTagihanError" class="text-red-500 text-xs mt-1 hidden"></div>
             </div>
+            <button class="btn-primary" onclick="prosesBayarSpp()"><i class="fas fa-credit-card"></i> Bayar SPP</button>
+        </div>
 
-            <button class="btn-primary" onclick="prosesBayarSpp()">
-                <i class="fas fa-credit-card"></i> Bayar SPP Terpilih
+        <!-- === SECTION SEMINAR === -->
+        <div class="card mt-4" style="border-left: 4px solid #F59E0B;">
+            <div class="section-header" style="color:#F59E0B;">
+                <i class="fas fa-chalkboard-teacher"></i> Seminar / Workshop
+            </div>
+            <label class="form-label">Kode Referensi Seminar</label>
+            <input type="text" id="inputSeminar" class="form-input" placeholder="Contoh: SEM-2026-001" maxlength="15">
+            <div id="seminarError" class="text-red-500 text-xs mt-1 hidden"></div>
+            <button class="btn-primary mt-3" style="background:#F59E0B;box-shadow:0 4px 14px rgba(245,158,11,0.3);" onclick="cekSeminar()">
+                <i class="fas fa-search"></i> Cek Tagihan Seminar
+            </button>
+        </div>
+
+        <div id="seminarResult" class="hidden">
+            <div class="card">
+                <div class="flex justify-between items-start mb-3">
+                    <div>
+                        <p class="text-xs" style="color:var(--text-secondary-light);">Event</p>
+                        <p class="font-bold" id="seminarNama" style="color:var(--text-light);">-</p>
+                    </div>
+                    <span class="badge badge-warning" id="seminarStatus">Belum Lunas</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-sm mb-3">
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Periode</p><p class="font-medium" id="seminarPeriode" style="color:var(--text-light);">-</p></div>
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Jatuh Tempo</p><p class="font-medium" id="seminarDue" style="color:var(--text-light);">-</p></div>
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Biaya</p><p class="font-medium" id="seminarAmount" style="color:var(--text-light);">-</p></div>
+                    <div><p class="text-xs" style="color:var(--text-secondary-light);">Denda</p><p class="font-medium text-red-500" id="seminarDenda">-</p></div>
+                </div>
+                <div class="border-t pt-3" style="border-color:var(--border-light);">
+                    <p class="text-xs" style="color:var(--text-secondary-light);">Total</p>
+                    <p class="text-2xl font-extrabold" style="color:#F59E0B;" id="seminarTotal">-</p>
+                </div>
+            </div>
+            <button class="btn-primary" style="background:#F59E0B;box-shadow:0 4px 14px rgba(245,158,11,0.3);" onclick="prosesBayarSeminar()">
+                <i class="fas fa-credit-card"></i> Bayar Seminar
             </button>
         </div>
     </div>
@@ -1153,7 +1250,7 @@
             <button onclick="navigateTo('dashboard')" class="p-2 -ml-2 text-xl" style="color:var(--text-light);">
                 <i class="fas fa-arrow-left"></i>
             </button>
-            <h1 class="text-xl font-bold" style="color:var(--text-light);">Isi Pulsa & Paket</h1>
+            <h1 class="text-xl font-bold" style="color:var(--text-light);">📱 Isi Pulsa & Paket</h1>
         </div>
 
         <div class="card">
@@ -1188,7 +1285,7 @@
 
         <div class="card">
             <label class="form-label">Nomor HP</label>
-            <input type="tel" id="inputHp" class="form-input" placeholder="08xxxxxxxxxx" maxlength="13">
+            <input type="tel" id="inputHp" class="form-input" placeholder="Contoh: 081234567890" maxlength="13">
             <div id="hpError" class="text-red-500 text-xs mt-1 hidden"></div>
         </div>
 
@@ -1250,11 +1347,11 @@
             <button onclick="navigateTo('dashboard')" class="p-2 -ml-2 text-xl" style="color:var(--text-light);">
                 <i class="fas fa-arrow-left"></i>
             </button>
-            <h1 class="text-xl font-bold" style="color:var(--text-light);">Bayar BPJS Kesehatan</h1>
+            <h1 class="text-xl font-bold" style="color:var(--text-light);">❤️ Bayar BPJS Kesehatan</h1>
         </div>
         <div class="card">
             <label class="form-label">Nomor BPJS</label>
-            <input type="text" id="inputBpjs" class="form-input" placeholder="Masukkan nomor BPJS" maxlength="13">
+            <input type="text" id="inputBpjs" class="form-input" placeholder="Contoh: 1234567890123" maxlength="13">
             <div id="bpjsError" class="text-red-500 text-xs mt-1 hidden"></div>
             <button class="btn-primary mt-3" onclick="cekBpjs()"><i class="fas fa-search"></i> Cek Tagihan BPJS</button>
         </div>
@@ -1287,11 +1384,11 @@
             <button onclick="navigateTo('dashboard')" class="p-2 -ml-2 text-xl" style="color:var(--text-light);">
                 <i class="fas fa-arrow-left"></i>
             </button>
-            <h1 class="text-xl font-bold" style="color:var(--text-light);">Pajak Kendaraan Bermotor</h1>
+            <h1 class="text-xl font-bold" style="color:var(--text-light);">🚗 Pajak Kendaraan Bermotor</h1>
         </div>
         <div class="card">
             <label class="form-label">Nomor Polisi</label>
-            <input type="text" id="inputPajak" class="form-input" placeholder="B 1234 XYZ" maxlength="10">
+            <input type="text" id="inputPajak" class="form-input" placeholder="Contoh: B1234XYZ" maxlength="10">
             <div id="pajakError" class="text-red-500 text-xs mt-1 hidden"></div>
             <button class="btn-primary mt-3" onclick="cekPajak()"><i class="fas fa-search"></i> Cek Pajak</button>
         </div>
@@ -1324,7 +1421,7 @@
             <button onclick="navigateTo('dashboard')" class="p-2 -ml-2 text-xl" style="color:var(--text-light);">
                 <i class="fas fa-arrow-left"></i>
             </button>
-            <h1 class="text-xl font-bold" style="color:var(--text-light);">TV / Streaming</h1>
+            <h1 class="text-xl font-bold" style="color:var(--text-light);">📺 TV / Streaming</h1>
         </div>
         <div class="card">
             <label class="form-label">Pilih Layanan</label>
@@ -1337,7 +1434,7 @@
         </div>
         <div class="card">
             <label class="form-label">ID Pelanggan / Email</label>
-            <input type="text" id="inputTv" class="form-input" placeholder="Masukkan ID atau email">
+            <input type="text" id="inputTv" class="form-input" placeholder="Contoh: netflix_user1">
             <div id="tvError" class="text-red-500 text-xs mt-1 hidden"></div>
             <button class="btn-primary mt-3" onclick="cekTv()"><i class="fas fa-search"></i> Cek Tagihan</button>
         </div>
@@ -1370,7 +1467,7 @@
             <button onclick="navigateTo('dashboard')" class="p-2 -ml-2 text-xl" style="color:var(--text-light);">
                 <i class="fas fa-arrow-left"></i>
             </button>
-            <h1 class="text-xl font-bold" style="color:var(--text-light);">Donasi & Zakat</h1>
+            <h1 class="text-xl font-bold" style="color:var(--text-light);">🤲 Donasi & Zakat</h1>
         </div>
         <div class="card">
             <label class="form-label">Pilih Lembaga</label>
@@ -1390,7 +1487,7 @@
                 <button class="nominal-btn" data-donas="250000" onclick="selectDonasiNominal('250000')">Rp 250.000</button>
             </div>
             <div class="mt-2">
-                <input type="number" id="inputDonasiCustom" class="form-input" placeholder="Nominal lainnya" min="10000">
+                <input type="number" id="inputDonasiCustom" class="form-input" placeholder="Nominal lainnya (min 10.000)" min="10000">
             </div>
             <div class="mt-3">
                 <label class="form-label">Catatan (opsional)</label>
@@ -1405,7 +1502,7 @@
     ============================================================ -->
     <div class="page" id="page-riwayat">
         <div class="flex items-center justify-between mb-4">
-            <h1 class="text-xl font-bold" style="color:var(--text-light);">Riwayat Transaksi</h1>
+            <h1 class="text-xl font-bold" style="color:var(--text-light);">📜 Riwayat Transaksi</h1>
             <button onclick="clearHistory()" class="text-sm font-bold" style="color:#EF4444;">
                 <i class="fas fa-trash"></i> Hapus
             </button>
@@ -1413,8 +1510,11 @@
         <div class="card">
             <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
                 <button class="cat-pill active-cat" data-filter="all" onclick="filterHistory('all')">Semua</button>
-                <button class="cat-pill" data-filter="tagihan" onclick="filterHistory('tagihan')">Tagihan</button>
+                <button class="cat-pill" data-filter="listrik" onclick="filterHistory('listrik')">Listrik</button>
+                <button class="cat-pill" data-filter="pdam" onclick="filterHistory('pdam')">PDAM</button>
+                <button class="cat-pill" data-filter="internet" onclick="filterHistory('internet')">Internet</button>
                 <button class="cat-pill" data-filter="spp" onclick="filterHistory('spp')">SPP</button>
+                <button class="cat-pill" data-filter="seminar" onclick="filterHistory('seminar')">Seminar</button>
                 <button class="cat-pill" data-filter="pulsa" onclick="filterHistory('pulsa')">Pulsa</button>
                 <button class="cat-pill" data-filter="bpjs" onclick="filterHistory('bpjs')">BPJS</button>
                 <button class="cat-pill" data-filter="pajak" onclick="filterHistory('pajak')">Pajak</button>
@@ -1433,17 +1533,17 @@
             <i class="fas fa-home"></i>
             <span>Beranda</span>
         </button>
-        <button class="nav-item" data-page="tagihan" onclick="navigateTo('tagihan')">
-            <i class="fas fa-file-invoice"></i>
-            <span>Tagihan</span>
+        <button class="nav-item" data-page="listrik" onclick="navigateTo('listrik')">
+            <i class="fas fa-bolt"></i>
+            <span>Listrik</span>
         </button>
-        <button class="nav-item" data-page="spp" onclick="navigateTo('spp')">
-            <i class="fas fa-graduation-cap"></i>
-            <span>SPP</span>
+        <button class="nav-item" data-page="pdam" onclick="navigateTo('pdam')">
+            <i class="fas fa-water"></i>
+            <span>PDAM</span>
         </button>
-        <button class="nav-item" data-page="pulsa" onclick="navigateTo('pulsa')">
-            <i class="fas fa-mobile-alt"></i>
-            <span>Pulsa</span>
+        <button class="nav-item" data-page="internet" onclick="navigateTo('internet')">
+            <i class="fas fa-wifi"></i>
+            <span>Internet</span>
         </button>
         <button class="nav-item" data-page="riwayat" onclick="navigateTo('riwayat')">
             <i class="fas fa-clock"></i>
@@ -1495,10 +1595,12 @@
                     fine: 0, status: "unpaid" }
             },
             seminar: {
-                "SEM-2026-001": { name: "Workshop AI & ML", period: "Maret 2026", due: "2026-03-20", amount: 2500000,
-                    fine: 0, status: "unpaid" },
+                "SEM-2026-001": { name: "Workshop AI & Machine Learning", period: "Maret 2026", due: "2026-03-20",
+                    amount: 2500000, fine: 0, status: "unpaid" },
                 "SEM-2026-002": { name: "Seminar Digital Marketing", period: "April 2026", due: "2026-04-05",
-                    amount: 1750000, fine: 200000, status: "unpaid" }
+                    amount: 1750000, fine: 200000, status: "unpaid" },
+                "SEM-2026-003": { name: "Webinar Fullstack Developer", period: "Mei 2026", due: "2026-05-10",
+                    amount: 1200000, fine: 0, status: "unpaid" }
             },
             spp: {
                 "221011450228": {
@@ -1638,7 +1740,11 @@
             bpjsBill: null,
             pajakBill: null,
             tvBill: null,
-            donasiAmount: 25000
+            seminarBill: null,
+            // untuk tagihan terpisah
+            listrikBill: null,
+            pdamBill: null,
+            internetBill: null
         };
 
         function loadState() {
@@ -1683,14 +1789,17 @@
         }
 
         function getCategoryLabel(cat) {
-            const map = { pln: 'PLN', pdam: 'PDAM', internet: 'Internet', seminar: 'Seminar' };
+            const map = { pln: 'PLN', pdam: 'PDAM', internet: 'Internet' };
             return map[cat] || cat;
         }
 
         function getIconForType(type) {
             const map = {
-                tagihan: 'fa-file-invoice',
+                listrik: 'fa-bolt',
+                pdam: 'fa-water',
+                internet: 'fa-wifi',
                 spp: 'fa-graduation-cap',
+                seminar: 'fa-chalkboard-teacher',
                 pulsa: 'fa-mobile-alt',
                 bpjs: 'fa-heartbeat',
                 pajak: 'fa-car',
@@ -1702,8 +1811,11 @@
 
         function getTypeLabel(type) {
             const map = {
-                tagihan: 'Tagihan',
+                listrik: 'Listrik',
+                pdam: 'PDAM',
+                internet: 'Internet',
                 spp: 'SPP',
+                seminar: 'Seminar',
                 pulsa: 'Pulsa',
                 bpjs: 'BPJS',
                 pajak: 'Pajak',
@@ -1776,7 +1888,9 @@
         }
 
         function updateCounters() {
-            document.getElementById('countTagihan').textContent = state.history.filter(t => t.type === 'tagihan').length;
+            document.getElementById('countTagihan').textContent = state.history.filter(t =>
+                ['listrik', 'pdam', 'internet', 'spp', 'seminar'].includes(t.type)
+            ).length;
             document.getElementById('countTransaksi').textContent = state.history.length;
         }
 
@@ -1804,7 +1918,6 @@
             }
             saveState();
         }
-        // initial
         if (state.darkMode) {
             document.body.classList.add('dark');
             document.getElementById('themeIcon').className = 'fas fa-sun';
@@ -1842,167 +1955,184 @@
         }
 
         // =============================================
-        // TAGIHAN (PLN, PDAM, Internet, Seminar)
+        // LISTRIK (PLN)
         // =============================================
-        function selectCategoryTagihan(cat) {
-            state.currentCategory = cat;
-            document.querySelectorAll('#page-tagihan .cat-pill').forEach(el => {
-                el.classList.toggle('active-cat', el.dataset.cat === cat);
-            });
-            const labels = {
-                pln: 'Nomor Pelanggan PLN',
-                pdam: 'Nomor Pelanggan PDAM',
-                internet: 'Nomor Pelanggan Internet',
-                seminar: 'Nomor Referensi Seminar'
-            };
-            document.getElementById('labelPelanggan').textContent = labels[cat] || 'Nomor Pelanggan';
-            document.getElementById('tagihanResult').classList.add('hidden');
-            document.getElementById('inputPelanggan').value = '';
-        }
-
-        function cekTagihan() {
-            const input = document.getElementById('inputPelanggan');
-            const errorEl = document.getElementById('pelangganError');
-            const value = input.value.trim();
-            let isValid = true,
-                msg = '';
-            if (!value) { isValid = false;
-                msg = 'Harus diisi'; } else if (state.currentCategory === 'seminar') {
-                if (!/^SEM-[0-9]{3}-[0-9]{3}$/.test(value) && !/^SEM-2026-[0-9]{3}$/.test(value)) { isValid = false;
-                    msg = 'Format: SEM-2026-001'; }
-            } else {
-                if (!/^\d{8,12}$/.test(value)) { isValid = false;
-                    msg = '8-12 digit angka'; }
-            }
-            if (!isValid) { input.classList.add('error');
-                errorEl.textContent = msg;
-                errorEl.classList.remove('hidden'); return; }
+        function cekListrik() {
+            const input = document.getElementById('inputListrik');
+            const err = document.getElementById('listrikError');
+            const val = input.value.trim();
+            if (!/^\d{8,12}$/.test(val)) { input.classList.add('error');
+                err.textContent = '8-12 digit angka';
+                err.classList.remove('hidden'); return; }
             input.classList.remove('error');
-            errorEl.classList.add('hidden');
-            showToast('Mencari tagihan...', 'info');
+            err.classList.add('hidden');
+            showToast('Mencari tagihan listrik...', 'info');
             setTimeout(() => {
-                const data = billData[state.currentCategory];
-                let bill = null;
-                if (state.currentCategory === 'seminar') {
-                    bill = data[value] || null;
-                } else {
-                    bill = data[value] || null;
-                }
-                if (!bill) { showToast('Nomor tidak ditemukan', 'error'); return; }
-                state.currentBill = { ...bill, id: value, category: state.currentCategory };
-                displayTagihanResult(bill);
+                const data = billData.pln[val];
+                if (!data) { showToast('Nomor tidak ditemukan', 'error'); return; }
+                state.listrikBill = { ...data, id: val, category: 'pln' };
+                document.getElementById('listrikResult').classList.remove('hidden');
+                document.getElementById('listrikNama').textContent = data.name;
+                document.getElementById('listrikPeriode').textContent = data.period;
+                document.getElementById('listrikDue').textContent = formatDate(data.due);
+                document.getElementById('listrikPokok').textContent = `Rp ${formatRupiah(data.amount)}`;
+                document.getElementById('listrikDenda').textContent = data.fine > 0 ? `Rp ${formatRupiah(data.fine)}` :
+                    'Tidak ada';
+                document.getElementById('listrikTotal').textContent = `Rp ${formatRupiah(data.amount + data.fine)}`;
+                document.getElementById('listrikStatus').textContent = data.status === 'paid' ? 'Lunas' : 'Belum Lunas';
+                document.getElementById('listrikStatus').className = `badge ${data.status==='paid'?'badge-success':'badge-warning'}`;
+                document.getElementById('listrikResult').scrollIntoView({ behavior: 'smooth' });
             }, 800);
         }
 
-        function displayTagihanResult(bill) {
-            document.getElementById('tagihanResult').classList.remove('hidden');
-            document.getElementById('resultNama').textContent = bill.name;
-            document.getElementById('resultPeriode').textContent = bill.period;
-            document.getElementById('resultJatuhTempo').textContent = formatDate(bill.due);
-            document.getElementById('resultPokok').textContent = `Rp ${formatRupiah(bill.amount)}`;
-            document.getElementById('resultDenda').textContent = bill.fine > 0 ? `Rp ${formatRupiah(bill.fine)}` : 'Tidak ada';
-            document.getElementById('resultTotal').textContent = `Rp ${formatRupiah(bill.amount + bill.fine)}`;
-            document.getElementById('resultStatus').textContent = bill.status === 'paid' ? 'Lunas' : 'Belum Lunas';
-            document.getElementById('resultStatus').className = `badge ${bill.status === 'paid' ? 'badge-success' : 'badge-warning'}`;
-            state.selectedMethod = 'va';
-            document.querySelectorAll('#page-tagihan .method-option').forEach(el => {
-                el.classList.remove('active-method');
-                const check = el.querySelector('[class*="fa-check-circle"]');
-                if (check) check.classList.add('hidden');
-            });
-            const first = document.querySelector('#page-tagihan .method-option[data-method="va"]');
-            if (first) { first.classList.add('active-method');
-                const c = first.querySelector('[class*="fa-check-circle"]');
-                if (c) c.classList.remove('hidden'); }
-            document.getElementById('tagihanResult').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function selectMethodTagihan(method) {
-            state.selectedMethod = method;
-            document.querySelectorAll('#page-tagihan .method-option').forEach(el => {
-                el.classList.remove('active-method');
-                const check = el.querySelector('[class*="fa-check-circle"]');
-                if (check) check.classList.add('hidden');
-            });
-            const el = document.querySelector(`#page-tagihan .method-option[data-method="${method}"]`);
-            if (el) { el.classList.add('active-method');
-                const c = el.querySelector('[class*="fa-check-circle"]');
-                if (c) c.classList.remove('hidden'); }
-        }
-
-        // =============================================
-        // PROSES BAYAR TAGIHAN — dengan 4 metode
-        // =============================================
-        function prosesBayarTagihan() {
-            if (!state.currentBill) { showToast('Cek tagihan dulu', 'error'); return; }
-            if (!state.selectedMethod) { showToast('Pilih metode', 'error'); return; }
-
-            const total = state.currentBill.amount + state.currentBill.fine;
-
-            // Jika metode "saldo" atau metode lain, tetap pakai saldo
-            // Tapi kita tetap tampilkan instruksi sesuai metode
-            if (state.selectedMethod === 'saldo') {
-                // Bayar langsung dari saldo
-                if (state.saldo < total) { showToast(`Saldo kurang! Rp ${formatRupiah(total)}`, 'error'); return; }
-                showToast('Memproses pembayaran dengan saldo...', 'info');
-                setTimeout(() => {
-                    state.saldo -= total;
-                    updateSaldoDisplay();
-                    const trans = {
-                        id: Date.now(),
-                        type: 'tagihan',
-                        title: `${getCategoryLabel(state.currentCategory)} - ${state.currentBill.name}`,
-                        amount: total,
-                        date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
-                        time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
-                        method: 'Saldo',
-                        status: 'success',
-                        bill: { ...state.currentBill }
-                    };
-                    state.history.push(trans);
-                    saveState();
-                    const cat = state.currentCategory;
-                    if (billData[cat] && billData[cat][state.currentBill.id]) {
-                        billData[cat][state.currentBill.id].status = 'paid';
-                    }
-                    showReceipt(trans);
-                    state.currentBill = null;
-                    document.getElementById('tagihanResult').classList.add('hidden');
-                    updateCounters();
-                }, 1200);
-                return;
-            }
-
-            // Untuk metode VA, QRIS, Teller — kita tetap tampilkan instruksi + simulasi
-            // Tapi tetap potong saldo (karena semua pembayaran dari saldo)
+        function prosesBayarListrik() {
+            if (!state.listrikBill) { showToast('Cek tagihan dulu', 'error'); return; }
+            const total = state.listrikBill.amount + state.listrikBill.fine;
             if (state.saldo < total) { showToast(`Saldo kurang! Rp ${formatRupiah(total)}`, 'error'); return; }
-
-            showToast(`Memproses pembayaran dengan ${state.selectedMethod.toUpperCase()}...`, 'info');
+            showToast('Memproses...', 'info');
             setTimeout(() => {
                 state.saldo -= total;
                 updateSaldoDisplay();
                 const trans = {
                     id: Date.now(),
-                    type: 'tagihan',
-                    title: `${getCategoryLabel(state.currentCategory)} - ${state.currentBill.name}`,
+                    type: 'listrik',
+                    title: `Listrik - ${state.listrikBill.name}`,
                     amount: total,
                     date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
                     time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
-                    method: state.selectedMethod === 'va' ? 'Virtual Account' :
-                        state.selectedMethod === 'qris' ? 'QRIS' : 'Teller / Kasir',
+                    method: 'Saldo',
                     status: 'success',
-                    bill: { ...state.currentBill }
+                    bill: { ...state.listrikBill }
                 };
                 state.history.push(trans);
                 saveState();
-                const cat = state.currentCategory;
-                if (billData[cat] && billData[cat][state.currentBill.id]) {
-                    billData[cat][state.currentBill.id].status = 'paid';
-                }
-                // Tampilkan struk dengan detail metode
-                showReceipt(trans, state.selectedMethod);
-                state.currentBill = null;
-                document.getElementById('tagihanResult').classList.add('hidden');
+                if (billData.pln[state.listrikBill.id]) billData.pln[state.listrikBill.id].status = 'paid';
+                showReceipt(trans);
+                state.listrikBill = null;
+                document.getElementById('listrikResult').classList.add('hidden');
+                document.getElementById('inputListrik').value = '';
+                updateCounters();
+            }, 1200);
+        }
+
+        // =============================================
+        // PDAM
+        // =============================================
+        function cekPdam() {
+            const input = document.getElementById('inputPdam');
+            const err = document.getElementById('pdamError');
+            const val = input.value.trim();
+            if (!/^\d{8,12}$/.test(val)) { input.classList.add('error');
+                err.textContent = '8-12 digit angka';
+                err.classList.remove('hidden'); return; }
+            input.classList.remove('error');
+            err.classList.add('hidden');
+            showToast('Mencari tagihan PDAM...', 'info');
+            setTimeout(() => {
+                const data = billData.pdam[val];
+                if (!data) { showToast('Nomor tidak ditemukan', 'error'); return; }
+                state.pdamBill = { ...data, id: val, category: 'pdam' };
+                document.getElementById('pdamResult').classList.remove('hidden');
+                document.getElementById('pdamNama').textContent = data.name;
+                document.getElementById('pdamPeriode').textContent = data.period;
+                document.getElementById('pdamDue').textContent = formatDate(data.due);
+                document.getElementById('pdamPokok').textContent = `Rp ${formatRupiah(data.amount)}`;
+                document.getElementById('pdamDenda').textContent = data.fine > 0 ? `Rp ${formatRupiah(data.fine)}` :
+                    'Tidak ada';
+                document.getElementById('pdamTotal').textContent = `Rp ${formatRupiah(data.amount + data.fine)}`;
+                document.getElementById('pdamStatus').textContent = data.status === 'paid' ? 'Lunas' : 'Belum Lunas';
+                document.getElementById('pdamStatus').className = `badge ${data.status==='paid'?'badge-success':'badge-warning'}`;
+                document.getElementById('pdamResult').scrollIntoView({ behavior: 'smooth' });
+            }, 800);
+        }
+
+        function prosesBayarPdam() {
+            if (!state.pdamBill) { showToast('Cek tagihan dulu', 'error'); return; }
+            const total = state.pdamBill.amount + state.pdamBill.fine;
+            if (state.saldo < total) { showToast(`Saldo kurang! Rp ${formatRupiah(total)}`, 'error'); return; }
+            showToast('Memproses...', 'info');
+            setTimeout(() => {
+                state.saldo -= total;
+                updateSaldoDisplay();
+                const trans = {
+                    id: Date.now(),
+                    type: 'pdam',
+                    title: `PDAM - ${state.pdamBill.name}`,
+                    amount: total,
+                    date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
+                    time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+                    method: 'Saldo',
+                    status: 'success',
+                    bill: { ...state.pdamBill }
+                };
+                state.history.push(trans);
+                saveState();
+                if (billData.pdam[state.pdamBill.id]) billData.pdam[state.pdamBill.id].status = 'paid';
+                showReceipt(trans);
+                state.pdamBill = null;
+                document.getElementById('pdamResult').classList.add('hidden');
+                document.getElementById('inputPdam').value = '';
+                updateCounters();
+            }, 1200);
+        }
+
+        // =============================================
+        // INTERNET
+        // =============================================
+        function cekInternet() {
+            const input = document.getElementById('inputInternet');
+            const err = document.getElementById('internetError');
+            const val = input.value.trim();
+            if (!/^\d{8,12}$/.test(val)) { input.classList.add('error');
+                err.textContent = '8-12 digit angka';
+                err.classList.remove('hidden'); return; }
+            input.classList.remove('error');
+            err.classList.add('hidden');
+            showToast('Mencari tagihan internet...', 'info');
+            setTimeout(() => {
+                const data = billData.internet[val];
+                if (!data) { showToast('Nomor tidak ditemukan', 'error'); return; }
+                state.internetBill = { ...data, id: val, category: 'internet' };
+                document.getElementById('internetResult').classList.remove('hidden');
+                document.getElementById('internetNama').textContent = data.name;
+                document.getElementById('internetPeriode').textContent = data.period;
+                document.getElementById('internetDue').textContent = formatDate(data.due);
+                document.getElementById('internetPokok').textContent = `Rp ${formatRupiah(data.amount)}`;
+                document.getElementById('internetDenda').textContent = data.fine > 0 ? `Rp ${formatRupiah(data.fine)}` :
+                    'Tidak ada';
+                document.getElementById('internetTotal').textContent = `Rp ${formatRupiah(data.amount + data.fine)}`;
+                document.getElementById('internetStatus').textContent = data.status === 'paid' ? 'Lunas' : 'Belum Lunas';
+                document.getElementById('internetStatus').className = `badge ${data.status==='paid'?'badge-success':'badge-warning'}`;
+                document.getElementById('internetResult').scrollIntoView({ behavior: 'smooth' });
+            }, 800);
+        }
+
+        function prosesBayarInternet() {
+            if (!state.internetBill) { showToast('Cek tagihan dulu', 'error'); return; }
+            const total = state.internetBill.amount + state.internetBill.fine;
+            if (state.saldo < total) { showToast(`Saldo kurang! Rp ${formatRupiah(total)}`, 'error'); return; }
+            showToast('Memproses...', 'info');
+            setTimeout(() => {
+                state.saldo -= total;
+                updateSaldoDisplay();
+                const trans = {
+                    id: Date.now(),
+                    type: 'internet',
+                    title: `Internet - ${state.internetBill.name}`,
+                    amount: total,
+                    date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
+                    time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+                    method: 'Saldo',
+                    status: 'success',
+                    bill: { ...state.internetBill }
+                };
+                state.history.push(trans);
+                saveState();
+                if (billData.internet[state.internetBill.id]) billData.internet[state.internetBill.id].status = 'paid';
+                showReceipt(trans);
+                state.internetBill = null;
+                document.getElementById('internetResult').classList.add('hidden');
+                document.getElementById('inputInternet').value = '';
                 updateCounters();
             }, 1200);
         }
@@ -2098,6 +2228,76 @@
                 document.getElementById('sppResult').classList.add('hidden');
                 document.getElementById('inputNim').value = '';
                 document.getElementById('inputKodeTagihan').value = '';
+                updateCounters();
+            }, 1200);
+        }
+
+        // =============================================
+        // SEMINAR
+        // =============================================
+        function cekSeminar() {
+            const input = document.getElementById('inputSeminar');
+            const errorEl = document.getElementById('seminarError');
+            const value = input.value.trim().toUpperCase();
+            if (!value) {
+                input.classList.add('error');
+                errorEl.textContent = 'Kode seminar harus diisi';
+                errorEl.classList.remove('hidden');
+                return;
+            }
+            if (!/^SEM-[0-9]{3}-[0-9]{3}$/.test(value) && !/^SEM-2026-[0-9]{3}$/.test(value)) {
+                input.classList.add('error');
+                errorEl.textContent = 'Format: SEM-2026-001';
+                errorEl.classList.remove('hidden');
+                return;
+            }
+            input.classList.remove('error');
+            errorEl.classList.add('hidden');
+            showToast('Mencari data seminar...', 'info');
+            setTimeout(() => {
+                const data = billData.seminar[value];
+                if (!data) { showToast('Kode seminar tidak ditemukan', 'error'); return; }
+                state.seminarBill = { ...data, id: value };
+                document.getElementById('seminarResult').classList.remove('hidden');
+                document.getElementById('seminarNama').textContent = data.name;
+                document.getElementById('seminarPeriode').textContent = data.period;
+                document.getElementById('seminarDue').textContent = formatDate(data.due);
+                document.getElementById('seminarAmount').textContent = `Rp ${formatRupiah(data.amount)}`;
+                document.getElementById('seminarDenda').textContent = data.fine > 0 ? `Rp ${formatRupiah(data.fine)}` :
+                    'Tidak ada';
+                document.getElementById('seminarTotal').textContent = `Rp ${formatRupiah(data.amount + data.fine)}`;
+                document.getElementById('seminarStatus').textContent = data.status === 'paid' ? 'Lunas' : 'Belum Lunas';
+                document.getElementById('seminarStatus').className = `badge ${data.status==='paid'?'badge-success':'badge-warning'}`;
+                document.getElementById('seminarResult').scrollIntoView({ behavior: 'smooth' });
+            }, 800);
+        }
+
+        function prosesBayarSeminar() {
+            if (!state.seminarBill) { showToast('Cek seminar dulu', 'error'); return; }
+            const total = state.seminarBill.amount + state.seminarBill.fine;
+            if (state.saldo < total) { showToast(`Saldo kurang! Rp ${formatRupiah(total)}`, 'error'); return; }
+            showToast('Memproses...', 'info');
+            setTimeout(() => {
+                state.saldo -= total;
+                updateSaldoDisplay();
+                const trans = {
+                    id: Date.now(),
+                    type: 'seminar',
+                    title: `Seminar - ${state.seminarBill.name}`,
+                    amount: total,
+                    date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
+                    time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+                    method: 'Saldo',
+                    status: 'success',
+                    bill: { ...state.seminarBill }
+                };
+                state.history.push(trans);
+                saveState();
+                if (billData.seminar[state.seminarBill.id]) billData.seminar[state.seminarBill.id].status = 'paid';
+                showReceipt(trans);
+                state.seminarBill = null;
+                document.getElementById('seminarResult').classList.add('hidden');
+                document.getElementById('inputSeminar').value = '';
                 updateCounters();
             }, 1200);
         }
@@ -2326,13 +2526,11 @@
             err.classList.add('hidden');
             showToast('Mencari data langganan...', 'info');
             setTimeout(() => {
-                let found = null,
-                    foundKey = '';
+                let found = null;
                 for (const [key, data] of Object.entries(billData.tv)) {
                     if (key.toLowerCase().includes(val.toLowerCase()) || data.name.toLowerCase().includes(val
                         .toLowerCase())) {
                         found = { ...data, id: key };
-                        foundKey = key;
                         break;
                     }
                 }
@@ -2433,63 +2631,14 @@
         }
 
         // =============================================
-        // RECEIPT — dengan detail metode
+        // RECEIPT
         // =============================================
-        function showReceipt(transaction, methodOverride) {
-            const method = methodOverride || transaction.method || 'Saldo';
+        function showReceipt(transaction) {
             let detailHtml = '';
             const isPulsa = transaction.type === 'pulsa';
             const isSpp = transaction.type === 'spp';
             const isDonasi = transaction.type === 'donasi';
-
-            // Detail spesifik metode
-            let methodDetailHtml = '';
-            if (method === 'Virtual Account' || method === 'va') {
-                const vaNumber = generateVA();
-                methodDetailHtml = `
-                    <div class="bg-primary-light p-4 rounded-xl mt-2" style="background:var(--primary-light);">
-                        <p class="font-bold text-sm" style="color:var(--text-light);">💳 Virtual Account</p>
-                        <p class="font-mono text-lg font-bold" style="color:var(--primary);">${vaNumber}</p>
-                        <p class="text-xs" style="color:var(--text-secondary-light);">Transfer ke bank:</p>
-                        <div class="flex gap-2 mt-1 flex-wrap">
-                            <span class="badge badge-info">BCA</span>
-                            <span class="badge badge-info">BNI</span>
-                            <span class="badge badge-info">Mandiri</span>
-                            <span class="badge badge-info">BRI</span>
-                        </div>
-                        <p class="text-xs mt-2" style="color:var(--text-secondary-light);">Gunakan nomor VA di atas untuk transfer.</p>
-                    </div>
-                `;
-            } else if (method === 'QRIS' || method === 'qris') {
-                const vaCode = generateVA();
-                methodDetailHtml = `
-                    <div class="bg-white p-4 rounded-xl text-center mt-2" style="background:var(--card-light);">
-                        <div id="qrcode" class="flex justify-center"></div>
-                        <p class="text-xs mt-2" style="color:var(--text-secondary-light);">Scan QR code dengan aplikasi e-wallet</p>
-                        <div class="text-sm mt-2">
-                            <p class="font-mono" style="color:var(--text-light);">${vaCode}</p>
-                            <p class="text-xs" style="color:var(--text-secondary-light);">Kode QRIS</p>
-                        </div>
-                        <div class="timer mt-2" id="qrTimer">05:00</div>
-                    </div>
-                `;
-            } else if (method === 'Teller / Kasir' || method === 'teller') {
-                const paymentCode = 'TRX-' + Date.now().toString().slice(-8);
-                methodDetailHtml = `
-                    <div class="bg-primary-light p-4 rounded-xl mt-2" style="background:var(--primary-light);">
-                        <p class="font-bold text-sm" style="color:var(--text-light);">🏦 Bayar di Teller / Kasir</p>
-                        <p class="font-mono text-lg font-bold" style="color:var(--primary);">${paymentCode}</p>
-                        <p class="text-xs" style="color:var(--text-secondary-light);">Kantor cabang terdekat:</p>
-                        <ul class="text-xs mt-1 space-y-1" style="color:var(--text-secondary-light);">
-                            <li>📍 Jl. Sudirman No. 12, Jakarta Pusat</li>
-                            <li>📍 Jl. Pahlawan No. 45, Bandung</li>
-                            <li>📍 Jl. Diponegoro No. 78, Surabaya</li>
-                            <li>📍 Jl. Gajah Mada No. 33, Medan</li>
-                        </ul>
-                        <p class="text-xs mt-2" style="color:var(--text-secondary-light);">Tunjukkan kode ini ke kasir.</p>
-                    </div>
-                `;
-            }
+            const isSeminar = transaction.type === 'seminar';
 
             if (isPulsa) {
                 detailHtml = `
@@ -2516,10 +2665,18 @@
                         ${transaction.donasi.catatan?`<p><span style="color:var(--text-secondary-light);">Catatan:</span> ${transaction.donasi.catatan}</p>`:''}
                     </div>
                 `;
+            } else if (isSeminar) {
+                detailHtml = `
+                    <div class="text-sm space-y-1">
+                        <p><span style="color:var(--text-secondary-light);">Event:</span> ${transaction.bill.name}</p>
+                        <p><span style="color:var(--text-secondary-light);">Periode:</span> ${transaction.bill.period}</p>
+                        <p><span style="color:var(--text-secondary-light);">Kode:</span> ${transaction.bill.id}</p>
+                    </div>
+                `;
             } else {
                 detailHtml = `
                     <div class="text-sm space-y-1">
-                        <p><span style="color:var(--text-secondary-light);">Kategori:</span> ${getCategoryLabel(transaction.category)||transaction.type}</p>
+                        <p><span style="color:var(--text-secondary-light);">Kategori:</span> ${getCategoryLabel(transaction.category)||getTypeLabel(transaction.type)}</p>
                         <p><span style="color:var(--text-secondary-light);">Pelanggan:</span> ${transaction.bill?.name||'-'}</p>
                         ${transaction.bill?.period?`<p><span style="color:var(--text-secondary-light);">Periode:</span> ${transaction.bill.period}</p>`:''}
                     </div>
@@ -2535,11 +2692,10 @@
                 <div class="border-t border-b py-4 my-4" style="border-color:var(--border-light);">
                     <div class="flex justify-between text-sm"><span style="color:var(--text-secondary-light);">ID</span><span class="font-mono" style="color:var(--text-light);">#${transaction.id}</span></div>
                     <div class="flex justify-between text-sm mt-1"><span style="color:var(--text-secondary-light);">Tanggal</span><span style="color:var(--text-light);">${transaction.date} ${transaction.time}</span></div>
-                    <div class="flex justify-between text-sm mt-1"><span style="color:var(--text-secondary-light);">Metode</span><span style="color:var(--text-light);">${method}</span></div>
+                    <div class="flex justify-between text-sm mt-1"><span style="color:var(--text-secondary-light);">Metode</span><span style="color:var(--text-light);">${transaction.method||'Saldo'}</span></div>
                 </div>
-                ${methodDetailHtml}
                 <div class="mb-4 mt-3">
-                    <p class="text-sm" style="color:var(--text-secondary-light);">${isDonasi?'Donasi':isPulsa?'Pembelian':'Pembayaran'}</p>
+                    <p class="text-sm" style="color:var(--text-secondary-light);">${isDonasi?'Donasi':isPulsa?'Pembelian':isSeminar?'Seminar':'Pembayaran'}</p>
                     <p class="font-bold" style="color:var(--text-light);">${transaction.title}</p>
                 </div>
                 ${detailHtml}
@@ -2555,41 +2711,6 @@
             `;
 
             showModal(html);
-
-            // QR Code untuk metode QRIS
-            if (method === 'QRIS' || method === 'qris') {
-                setTimeout(() => {
-                    const qrContainer = document.getElementById('qrcode');
-                    if (qrContainer && typeof QRCode !== 'undefined') {
-                        qrContainer.innerHTML = '';
-                        new QRCode(qrContainer, {
-                            text: generateVA(),
-                            width: 170,
-                            height: 170,
-                            colorDark: '#03AC0E',
-                            colorLight: '#ffffff',
-                            correctLevel: QRCode.CorrectLevel.H
-                        });
-                        startTimer(300);
-                    }
-                }, 350);
-            }
-        }
-
-        function startTimer(seconds) {
-            let remaining = seconds;
-            const timerEl = document.getElementById('qrTimer');
-            if (!timerEl) return;
-            const interval = setInterval(() => {
-                const mins = Math.floor(remaining / 60);
-                const secs = remaining % 60;
-                timerEl.textContent = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
-                if (remaining <= 0) { clearInterval(interval);
-                    timerEl.textContent = '⏰ Expired';
-                    timerEl.style.color = '#EF4444';
-                    showToast('QR Code kadaluarsa', 'error'); }
-                remaining--;
-            }, 1000);
         }
 
         function exportPDF() {
@@ -2678,16 +2799,18 @@
         updateCounters();
 
         // Enter key
-        document.getElementById('inputPelanggan').addEventListener('keypress', e => { if (e.key === 'Enter') cekTagihan(); });
+        document.getElementById('inputListrik').addEventListener('keypress', e => { if (e.key === 'Enter') cekListrik(); });
+        document.getElementById('inputPdam').addEventListener('keypress', e => { if (e.key === 'Enter') cekPdam(); });
+        document.getElementById('inputInternet').addEventListener('keypress', e => { if (e.key === 'Enter') cekInternet(); });
         document.getElementById('inputNim').addEventListener('keypress', e => { if (e.key === 'Enter') cekTagihanSpp(); });
+        document.getElementById('inputSeminar').addEventListener('keypress', e => { if (e.key === 'Enter') cekSeminar(); });
         document.getElementById('inputHp').addEventListener('keypress', e => { if (e.key === 'Enter') prosesBayarPulsa(); });
         document.getElementById('inputBpjs').addEventListener('keypress', e => { if (e.key === 'Enter') cekBpjs(); });
         document.getElementById('inputPajak').addEventListener('keypress', e => { if (e.key === 'Enter') cekPajak(); });
         document.getElementById('inputTv').addEventListener('keypress', e => { if (e.key === 'Enter') cekTv(); });
 
-        console.log('💰 BayaranKita — tanpa login, langsung greeting');
+        console.log('💰 BayaranKita — Listrik, PDAM, Internet terpisah | SPP/SEMINAR digabung');
         console.log('👋 HALO SELAMAT DATANG Muhammad Ricky Ardian');
-        console.log('📱 Metode: Virtual Account, QRIS, Teller, Saldo');
     </script>
 </body>
 </html>
