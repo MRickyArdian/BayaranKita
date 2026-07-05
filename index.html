@@ -65,7 +65,6 @@
             color: var(--text-dark);
         }
 
-        /* Scrollbar */
         ::-webkit-scrollbar {
             width: 4px;
             height: 4px;
@@ -1062,7 +1061,49 @@
                     <p class="text-2xl font-extrabold" style="color:var(--primary);" id="listrikTotal">-</p>
                 </div>
             </div>
-            <button class="btn-primary" onclick="prosesBayarListrik()"><i class="fas fa-credit-card"></i> Bayar Listrik</button>
+
+            <!-- METODE PEMBAYARAN -->
+            <div class="card">
+                <label class="form-label">Pilih Metode Pembayaran</label>
+                <div class="space-y-2">
+                    <div class="method-option active-method" data-method="va" onclick="selectMethodListrik('va')">
+                        <i class="fas fa-university text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">Virtual Account</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Transfer bank BCA/BNI/Mandiri</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600" id="checkListrikVa"></i>
+                    </div>
+                    <div class="method-option" data-method="qris" onclick="selectMethodListrik('qris')">
+                        <i class="fas fa-qrcode text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">QRIS</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Scan QR code via e-wallet</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkListrikQris"></i>
+                    </div>
+                    <div class="method-option" data-method="teller" onclick="selectMethodListrik('teller')">
+                        <i class="fas fa-store text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">Bayar di Teller / Kasir</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Kantor cabang terdekat</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkListrikTeller"></i>
+                    </div>
+                    <div class="method-option" data-method="saldo" onclick="selectMethodListrik('saldo')">
+                        <i class="fas fa-wallet text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">Dengan Saldo</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Bayar langsung dari saldo</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkListrikSaldo"></i>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="prosesBayarListrik()">
+                <i class="fas fa-credit-card"></i> Bayar Listrik
+            </button>
         </div>
     </div>
 
@@ -1106,7 +1147,48 @@
                     <p class="text-2xl font-extrabold" style="color:var(--primary);" id="pdamTotal">-</p>
                 </div>
             </div>
-            <button class="btn-primary" onclick="prosesBayarPdam()"><i class="fas fa-credit-card"></i> Bayar PDAM</button>
+
+            <div class="card">
+                <label class="form-label">Pilih Metode Pembayaran</label>
+                <div class="space-y-2">
+                    <div class="method-option active-method" data-method="va" onclick="selectMethodPdam('va')">
+                        <i class="fas fa-university text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">Virtual Account</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Transfer bank</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600" id="checkPdamVa"></i>
+                    </div>
+                    <div class="method-option" data-method="qris" onclick="selectMethodPdam('qris')">
+                        <i class="fas fa-qrcode text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">QRIS</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Scan QR code</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkPdamQris"></i>
+                    </div>
+                    <div class="method-option" data-method="teller" onclick="selectMethodPdam('teller')">
+                        <i class="fas fa-store text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">Bayar di Teller</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Kantor cabang</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkPdamTeller"></i>
+                    </div>
+                    <div class="method-option" data-method="saldo" onclick="selectMethodPdam('saldo')">
+                        <i class="fas fa-wallet text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">Dengan Saldo</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Bayar dari saldo</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkPdamSaldo"></i>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="prosesBayarPdam()">
+                <i class="fas fa-credit-card"></i> Bayar PDAM
+            </button>
         </div>
     </div>
 
@@ -1150,7 +1232,48 @@
                     <p class="text-2xl font-extrabold" style="color:var(--primary);" id="internetTotal">-</p>
                 </div>
             </div>
-            <button class="btn-primary" onclick="prosesBayarInternet()"><i class="fas fa-credit-card"></i> Bayar Internet</button>
+
+            <div class="card">
+                <label class="form-label">Pilih Metode Pembayaran</label>
+                <div class="space-y-2">
+                    <div class="method-option active-method" data-method="va" onclick="selectMethodInternet('va')">
+                        <i class="fas fa-university text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">Virtual Account</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Transfer bank</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600" id="checkInternetVa"></i>
+                    </div>
+                    <div class="method-option" data-method="qris" onclick="selectMethodInternet('qris')">
+                        <i class="fas fa-qrcode text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">QRIS</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Scan QR code</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkInternetQris"></i>
+                    </div>
+                    <div class="method-option" data-method="teller" onclick="selectMethodInternet('teller')">
+                        <i class="fas fa-store text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">Bayar di Teller</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Kantor cabang</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkInternetTeller"></i>
+                    </div>
+                    <div class="method-option" data-method="saldo" onclick="selectMethodInternet('saldo')">
+                        <i class="fas fa-wallet text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">Dengan Saldo</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Bayar dari saldo</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkInternetSaldo"></i>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="prosesBayarInternet()">
+                <i class="fas fa-credit-card"></i> Bayar Internet
+            </button>
         </div>
     </div>
 
@@ -1200,7 +1323,40 @@
                 <input type="text" id="inputKodeTagihan" class="form-input" placeholder="Contoh: 221011450228001" maxlength="15">
                 <div id="kodeTagihanError" class="text-red-500 text-xs mt-1 hidden"></div>
             </div>
-            <button class="btn-primary" onclick="prosesBayarSpp()"><i class="fas fa-credit-card"></i> Bayar SPP</button>
+
+            <div class="card">
+                <label class="form-label">Pilih Metode Pembayaran</label>
+                <div class="space-y-2">
+                    <div class="method-option active-method" data-method="va" onclick="selectMethodSpp('va')">
+                        <i class="fas fa-university text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">Virtual Account</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Transfer bank</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600" id="checkSppVa"></i>
+                    </div>
+                    <div class="method-option" data-method="qris" onclick="selectMethodSpp('qris')">
+                        <i class="fas fa-qrcode text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">QRIS</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Scan QR code</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkSppQris"></i>
+                    </div>
+                    <div class="method-option" data-method="saldo" onclick="selectMethodSpp('saldo')">
+                        <i class="fas fa-wallet text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">Dengan Saldo</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Bayar dari saldo</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkSppSaldo"></i>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="prosesBayarSpp()">
+                <i class="fas fa-credit-card"></i> Bayar SPP
+            </button>
         </div>
 
         <!-- === SECTION SEMINAR === -->
@@ -1236,6 +1392,37 @@
                     <p class="text-2xl font-extrabold" style="color:#F59E0B;" id="seminarTotal">-</p>
                 </div>
             </div>
+
+            <div class="card">
+                <label class="form-label">Pilih Metode Pembayaran</label>
+                <div class="space-y-2">
+                    <div class="method-option active-method" data-method="va" onclick="selectMethodSeminar('va')">
+                        <i class="fas fa-university text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">Virtual Account</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Transfer bank</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600" id="checkSeminarVa"></i>
+                    </div>
+                    <div class="method-option" data-method="qris" onclick="selectMethodSeminar('qris')">
+                        <i class="fas fa-qrcode text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">QRIS</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Scan QR code</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkSeminarQris"></i>
+                    </div>
+                    <div class="method-option" data-method="saldo" onclick="selectMethodSeminar('saldo')">
+                        <i class="fas fa-wallet text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">Dengan Saldo</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Bayar dari saldo</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkSeminarSaldo"></i>
+                    </div>
+                </div>
+            </div>
+
             <button class="btn-primary" style="background:#F59E0B;box-shadow:0 4px 14px rgba(245,158,11,0.3);" onclick="prosesBayarSeminar()">
                 <i class="fas fa-credit-card"></i> Bayar Seminar
             </button>
@@ -1334,6 +1521,36 @@
             <p class="text-xs mt-2" style="color:var(--text-secondary-light);">*Pilih nominal pulsa atau paket data, bisa keduanya</p>
         </div>
 
+        <div class="card">
+            <label class="form-label">Pilih Metode Pembayaran</label>
+            <div class="space-y-2">
+                <div class="method-option active-method" data-method="va" onclick="selectMethodPulsa('va')">
+                    <i class="fas fa-university text-xl" style="color:var(--primary);"></i>
+                    <div class="flex-1">
+                        <p class="font-bold text-sm" style="color:var(--text-light);">Virtual Account</p>
+                        <p class="text-xs" style="color:var(--text-secondary-light);">Transfer bank</p>
+                    </div>
+                    <i class="fas fa-check-circle text-emerald-600" id="checkPulsaVa"></i>
+                </div>
+                <div class="method-option" data-method="qris" onclick="selectMethodPulsa('qris')">
+                    <i class="fas fa-qrcode text-xl" style="color:var(--primary);"></i>
+                    <div class="flex-1">
+                        <p class="font-bold text-sm" style="color:var(--text-light);">QRIS</p>
+                        <p class="text-xs" style="color:var(--text-secondary-light);">Scan QR code</p>
+                    </div>
+                    <i class="fas fa-check-circle text-emerald-600 hidden" id="checkPulsaQris"></i>
+                </div>
+                <div class="method-option" data-method="saldo" onclick="selectMethodPulsa('saldo')">
+                    <i class="fas fa-wallet text-xl" style="color:var(--primary);"></i>
+                    <div class="flex-1">
+                        <p class="font-bold text-sm" style="color:var(--text-light);">Dengan Saldo</p>
+                        <p class="text-xs" style="color:var(--text-secondary-light);">Bayar dari saldo</p>
+                    </div>
+                    <i class="fas fa-check-circle text-emerald-600 hidden" id="checkPulsaSaldo"></i>
+                </div>
+            </div>
+        </div>
+
         <button class="btn-primary" onclick="prosesBayarPulsa()">
             <i class="fas fa-mobile-alt"></i> Beli Pulsa / Paket
         </button>
@@ -1372,6 +1589,45 @@
                     <p class="text-2xl font-extrabold" style="color:var(--primary);" id="bpjsTotal">-</p>
                 </div>
             </div>
+
+            <div class="card">
+                <label class="form-label">Pilih Metode Pembayaran</label>
+                <div class="space-y-2">
+                    <div class="method-option active-method" data-method="va" onclick="selectMethodBpjs('va')">
+                        <i class="fas fa-university text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">Virtual Account</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Transfer bank</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600" id="checkBpjsVa"></i>
+                    </div>
+                    <div class="method-option" data-method="qris" onclick="selectMethodBpjs('qris')">
+                        <i class="fas fa-qrcode text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">QRIS</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Scan QR code</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkBpjsQris"></i>
+                    </div>
+                    <div class="method-option" data-method="teller" onclick="selectMethodBpjs('teller')">
+                        <i class="fas fa-store text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">Bayar di Teller</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Kantor cabang</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkBpjsTeller"></i>
+                    </div>
+                    <div class="method-option" data-method="saldo" onclick="selectMethodBpjs('saldo')">
+                        <i class="fas fa-wallet text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">Dengan Saldo</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Bayar dari saldo</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkBpjsSaldo"></i>
+                    </div>
+                </div>
+            </div>
+
             <button class="btn-primary" onclick="prosesBayarBpjs()"><i class="fas fa-credit-card"></i> Bayar BPJS</button>
         </div>
     </div>
@@ -1409,6 +1665,45 @@
                     <p class="text-2xl font-extrabold" style="color:var(--primary);" id="pajakTotal">-</p>
                 </div>
             </div>
+
+            <div class="card">
+                <label class="form-label">Pilih Metode Pembayaran</label>
+                <div class="space-y-2">
+                    <div class="method-option active-method" data-method="va" onclick="selectMethodPajak('va')">
+                        <i class="fas fa-university text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">Virtual Account</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Transfer bank</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600" id="checkPajakVa"></i>
+                    </div>
+                    <div class="method-option" data-method="qris" onclick="selectMethodPajak('qris')">
+                        <i class="fas fa-qrcode text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">QRIS</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Scan QR code</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkPajakQris"></i>
+                    </div>
+                    <div class="method-option" data-method="teller" onclick="selectMethodPajak('teller')">
+                        <i class="fas fa-store text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">Bayar di Teller</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Kantor cabang</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkPajakTeller"></i>
+                    </div>
+                    <div class="method-option" data-method="saldo" onclick="selectMethodPajak('saldo')">
+                        <i class="fas fa-wallet text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">Dengan Saldo</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Bayar dari saldo</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkPajakSaldo"></i>
+                    </div>
+                </div>
+            </div>
+
             <button class="btn-primary" onclick="prosesBayarPajak()"><i class="fas fa-credit-card"></i> Bayar Pajak</button>
         </div>
     </div>
@@ -1455,6 +1750,45 @@
                     <p class="text-2xl font-extrabold" style="color:var(--primary);" id="tvTotal">-</p>
                 </div>
             </div>
+
+            <div class="card">
+                <label class="form-label">Pilih Metode Pembayaran</label>
+                <div class="space-y-2">
+                    <div class="method-option active-method" data-method="va" onclick="selectMethodTv('va')">
+                        <i class="fas fa-university text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">Virtual Account</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Transfer bank</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600" id="checkTvVa"></i>
+                    </div>
+                    <div class="method-option" data-method="qris" onclick="selectMethodTv('qris')">
+                        <i class="fas fa-qrcode text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">QRIS</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Scan QR code</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkTvQris"></i>
+                    </div>
+                    <div class="method-option" data-method="teller" onclick="selectMethodTv('teller')">
+                        <i class="fas fa-store text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">Bayar di Teller</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Kantor cabang</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkTvTeller"></i>
+                    </div>
+                    <div class="method-option" data-method="saldo" onclick="selectMethodTv('saldo')">
+                        <i class="fas fa-wallet text-xl" style="color:var(--primary);"></i>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm" style="color:var(--text-light);">Dengan Saldo</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Bayar dari saldo</p>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-600 hidden" id="checkTvSaldo"></i>
+                    </div>
+                </div>
+            </div>
+
             <button class="btn-primary" onclick="prosesBayarTv()"><i class="fas fa-credit-card"></i> Bayar Langganan</button>
         </div>
     </div>
@@ -1494,6 +1828,45 @@
                 <input type="text" id="inputDonasiCatatan" class="form-input" placeholder="Doa atau pesan">
             </div>
         </div>
+
+        <div class="card">
+            <label class="form-label">Pilih Metode Pembayaran</label>
+            <div class="space-y-2">
+                <div class="method-option active-method" data-method="va" onclick="selectMethodDonasi('va')">
+                    <i class="fas fa-university text-xl" style="color:var(--primary);"></i>
+                    <div class="flex-1">
+                        <p class="font-bold text-sm" style="color:var(--text-light);">Virtual Account</p>
+                        <p class="text-xs" style="color:var(--text-secondary-light);">Transfer bank</p>
+                    </div>
+                    <i class="fas fa-check-circle text-emerald-600" id="checkDonasiVa"></i>
+                </div>
+                <div class="method-option" data-method="qris" onclick="selectMethodDonasi('qris')">
+                    <i class="fas fa-qrcode text-xl" style="color:var(--primary);"></i>
+                    <div class="flex-1">
+                        <p class="font-bold text-sm" style="color:var(--text-light);">QRIS</p>
+                        <p class="text-xs" style="color:var(--text-secondary-light);">Scan QR code</p>
+                    </div>
+                    <i class="fas fa-check-circle text-emerald-600 hidden" id="checkDonasiQris"></i>
+                </div>
+                <div class="method-option" data-method="teller" onclick="selectMethodDonasi('teller')">
+                    <i class="fas fa-store text-xl" style="color:var(--primary);"></i>
+                    <div class="flex-1">
+                        <p class="font-bold text-sm" style="color:var(--text-light);">Bayar di Teller</p>
+                        <p class="text-xs" style="color:var(--text-secondary-light);">Kantor cabang</p>
+                    </div>
+                    <i class="fas fa-check-circle text-emerald-600 hidden" id="checkDonasiTeller"></i>
+                </div>
+                <div class="method-option" data-method="saldo" onclick="selectMethodDonasi('saldo')">
+                    <i class="fas fa-wallet text-xl" style="color:var(--primary);"></i>
+                    <div class="flex-1">
+                        <p class="font-bold text-sm" style="color:var(--text-light);">Dengan Saldo</p>
+                        <p class="text-xs" style="color:var(--text-secondary-light);">Bayar dari saldo</p>
+                    </div>
+                    <i class="fas fa-check-circle text-emerald-600 hidden" id="checkDonasiSaldo"></i>
+                </div>
+            </div>
+        </div>
+
         <button class="btn-primary" onclick="prosesBayarDonasi()"><i class="fas fa-hand-holding-heart"></i> Kirim Donasi</button>
     </div>
 
@@ -1723,28 +2096,36 @@
         // =============================================
         let state = {
             currentPage: 'dashboard',
-            currentCategory: 'pln',
-            selectedMethod: 'va',
-            currentBill: null,
-            selectedNominal: '10000',
-            selectedProvider: 'telkomsel',
-            selectedPaket: null,
-            selectedSppItems: [],
-            sppData: null,
             saldo: 1250000,
             history: [],
             darkMode: false,
             tvSelected: 'netflix',
             donasiSelected: 'baznas',
             donasiNominal: '25000',
+            selectedNominal: '10000',
+            selectedProvider: 'telkomsel',
+            selectedPaket: null,
+            selectedSppItems: [],
+            sppData: null,
+            // Bills
+            listrikBill: null,
+            pdamBill: null,
+            internetBill: null,
             bpjsBill: null,
             pajakBill: null,
             tvBill: null,
             seminarBill: null,
-            // untuk tagihan terpisah
-            listrikBill: null,
-            pdamBill: null,
-            internetBill: null
+            // Methods
+            listrikMethod: 'va',
+            pdamMethod: 'va',
+            internetMethod: 'va',
+            sppMethod: 'va',
+            seminarMethod: 'va',
+            bpjsMethod: 'va',
+            pajakMethod: 'va',
+            tvMethod: 'va',
+            pulsaMethod: 'va',
+            donasiMethod: 'va'
         };
 
         function loadState() {
@@ -1788,9 +2169,20 @@
             return dateStr;
         }
 
-        function getCategoryLabel(cat) {
-            const map = { pln: 'PLN', pdam: 'PDAM', internet: 'Internet' };
-            return map[cat] || cat;
+        function getTypeLabel(type) {
+            const map = {
+                listrik: 'Listrik',
+                pdam: 'PDAM',
+                internet: 'Internet',
+                spp: 'SPP',
+                seminar: 'Seminar',
+                pulsa: 'Pulsa',
+                bpjs: 'BPJS',
+                pajak: 'Pajak',
+                tv: 'TV/Stream',
+                donasi: 'Donasi'
+            };
+            return map[type] || type;
         }
 
         function getIconForType(type) {
@@ -1807,22 +2199,6 @@
                 donasi: 'fa-hand-holding-heart'
             };
             return map[type] || 'fa-receipt';
-        }
-
-        function getTypeLabel(type) {
-            const map = {
-                listrik: 'Listrik',
-                pdam: 'PDAM',
-                internet: 'Internet',
-                spp: 'SPP',
-                seminar: 'Seminar',
-                pulsa: 'Pulsa',
-                bpjs: 'BPJS',
-                pajak: 'Pajak',
-                tv: 'TV/Stream',
-                donasi: 'Donasi'
-            };
-            return map[type] || type;
         }
 
         function generateVA() {
@@ -1955,7 +2331,131 @@
         }
 
         // =============================================
-        // LISTRIK (PLN)
+        // GENERIC PAYMENT PROCESSOR
+        // =============================================
+        function processPayment(bill, type, title, method) {
+            if (!bill) { showToast('Cek tagihan dulu', 'error'); return; }
+            const total = bill.amount + (bill.fine || 0);
+
+            if (method === 'saldo') {
+                if (state.saldo < total) {
+                    showToast(`Saldo kurang! Rp ${formatRupiah(total)}`, 'error');
+                    return;
+                }
+                showToast('Memproses pembayaran dengan saldo...', 'info');
+                setTimeout(() => {
+                    state.saldo -= total;
+                    updateSaldoDisplay();
+                    const trans = {
+                        id: Date.now(),
+                        type: type,
+                        title: title,
+                        amount: total,
+                        date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long',
+                            year: 'numeric' }),
+                        time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+                        method: 'Saldo',
+                        status: 'success',
+                        bill: { ...bill }
+                    };
+                    state.history.push(trans);
+                    saveState();
+                    // Mark as paid in data
+                    markAsPaid(type, bill);
+                    showReceipt(trans, 'saldo');
+                    updateCounters();
+                    // Reset result
+                    resetResult(type);
+                }, 1200);
+                return;
+            }
+
+            // For VA, QRIS, Teller - tetap pakai saldo dulu (simulasi)
+            if (state.saldo < total) {
+                showToast(`Saldo kurang! Rp ${formatRupiah(total)}`, 'error');
+                return;
+            }
+
+            showToast(`Memproses pembayaran via ${getMethodLabel(method)}...`, 'info');
+            setTimeout(() => {
+                state.saldo -= total;
+                updateSaldoDisplay();
+                const trans = {
+                    id: Date.now(),
+                    type: type,
+                    title: title,
+                    amount: total,
+                    date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
+                    time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+                    method: getMethodLabel(method),
+                    status: 'success',
+                    bill: { ...bill }
+                };
+                state.history.push(trans);
+                saveState();
+                markAsPaid(type, bill);
+                showReceipt(trans, method);
+                updateCounters();
+                resetResult(type);
+            }, 1200);
+        }
+
+        function getMethodLabel(method) {
+            const map = { va: 'Virtual Account', qris: 'QRIS', teller: 'Teller / Kasir', saldo: 'Saldo' };
+            return map[method] || 'Saldo';
+        }
+
+        function markAsPaid(type, bill) {
+            const dataMap = {
+                listrik: billData.pln,
+                pdam: billData.pdam,
+                internet: billData.internet,
+                seminar: billData.seminar,
+                bpjs: billData.bpjs,
+                pajak: billData.pajak,
+                tv: billData.tv
+            };
+            if (bill && bill.id && dataMap[type]) {
+                if (dataMap[type][bill.id]) {
+                    dataMap[type][bill.id].status = 'paid';
+                }
+            }
+        }
+
+        function resetResult(type) {
+            const map = {
+                listrik: 'listrikResult',
+                pdam: 'pdamResult',
+                internet: 'internetResult',
+                seminar: 'seminarResult',
+                bpjs: 'bpjsResult',
+                pajak: 'pajakResult',
+                tv: 'tvResult'
+            };
+            const el = document.getElementById(map[type]);
+            if (el) el.classList.add('hidden');
+            const inputMap = {
+                listrik: 'inputListrik',
+                pdam: 'inputPdam',
+                internet: 'inputInternet',
+                seminar: 'inputSeminar',
+                bpjs: 'inputBpjs',
+                pajak: 'inputPajak',
+                tv: 'inputTv'
+            };
+            const input = document.getElementById(inputMap[type]);
+            if (input) input.value = '';
+            if (type === 'listrik') state.listrikBill = null;
+            if (type === 'pdam') state.pdamBill = null;
+            if (type === 'internet') state.internetBill = null;
+            if (type === 'seminar') state.seminarBill = null;
+            if (type === 'bpjs') state.bpjsBill = null;
+            if (type === 'pajak') state.pajakBill = null;
+            if (type === 'tv') state.tvBill = null;
+        }
+
+        // =============================================
+        // LISTRIK
         // =============================================
         function cekListrik() {
             const input = document.getElementById('inputListrik');
@@ -1970,7 +2470,7 @@
             setTimeout(() => {
                 const data = billData.pln[val];
                 if (!data) { showToast('Nomor tidak ditemukan', 'error'); return; }
-                state.listrikBill = { ...data, id: val, category: 'pln' };
+                state.listrikBill = { ...data, id: val };
                 document.getElementById('listrikResult').classList.remove('hidden');
                 document.getElementById('listrikNama').textContent = data.name;
                 document.getElementById('listrikPeriode').textContent = data.period;
@@ -1981,38 +2481,36 @@
                 document.getElementById('listrikTotal').textContent = `Rp ${formatRupiah(data.amount + data.fine)}`;
                 document.getElementById('listrikStatus').textContent = data.status === 'paid' ? 'Lunas' : 'Belum Lunas';
                 document.getElementById('listrikStatus').className = `badge ${data.status==='paid'?'badge-success':'badge-warning'}`;
+                state.listrikMethod = 'va';
+                document.querySelectorAll('#page-listrik .method-option').forEach(el => {
+                    el.classList.remove('active-method');
+                    const check = el.querySelector('[class*="fa-check-circle"]');
+                    if (check) check.classList.add('hidden');
+                });
+                const first = document.querySelector('#page-listrik .method-option[data-method="va"]');
+                if (first) { first.classList.add('active-method');
+                    const c = first.querySelector('[class*="fa-check-circle"]');
+                    if (c) c.classList.remove('hidden'); }
                 document.getElementById('listrikResult').scrollIntoView({ behavior: 'smooth' });
             }, 800);
         }
 
+        function selectMethodListrik(method) {
+            state.listrikMethod = method;
+            document.querySelectorAll('#page-listrik .method-option').forEach(el => {
+                el.classList.remove('active-method');
+                const check = el.querySelector('[class*="fa-check-circle"]');
+                if (check) check.classList.add('hidden');
+            });
+            const el = document.querySelector(`#page-listrik .method-option[data-method="${method}"]`);
+            if (el) { el.classList.add('active-method');
+                const c = el.querySelector('[class*="fa-check-circle"]');
+                if (c) c.classList.remove('hidden'); }
+        }
+
         function prosesBayarListrik() {
             if (!state.listrikBill) { showToast('Cek tagihan dulu', 'error'); return; }
-            const total = state.listrikBill.amount + state.listrikBill.fine;
-            if (state.saldo < total) { showToast(`Saldo kurang! Rp ${formatRupiah(total)}`, 'error'); return; }
-            showToast('Memproses...', 'info');
-            setTimeout(() => {
-                state.saldo -= total;
-                updateSaldoDisplay();
-                const trans = {
-                    id: Date.now(),
-                    type: 'listrik',
-                    title: `Listrik - ${state.listrikBill.name}`,
-                    amount: total,
-                    date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
-                    time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
-                    method: 'Saldo',
-                    status: 'success',
-                    bill: { ...state.listrikBill }
-                };
-                state.history.push(trans);
-                saveState();
-                if (billData.pln[state.listrikBill.id]) billData.pln[state.listrikBill.id].status = 'paid';
-                showReceipt(trans);
-                state.listrikBill = null;
-                document.getElementById('listrikResult').classList.add('hidden');
-                document.getElementById('inputListrik').value = '';
-                updateCounters();
-            }, 1200);
+            processPayment(state.listrikBill, 'listrik', `Listrik - ${state.listrikBill.name}`, state.listrikMethod);
         }
 
         // =============================================
@@ -2031,7 +2529,7 @@
             setTimeout(() => {
                 const data = billData.pdam[val];
                 if (!data) { showToast('Nomor tidak ditemukan', 'error'); return; }
-                state.pdamBill = { ...data, id: val, category: 'pdam' };
+                state.pdamBill = { ...data, id: val };
                 document.getElementById('pdamResult').classList.remove('hidden');
                 document.getElementById('pdamNama').textContent = data.name;
                 document.getElementById('pdamPeriode').textContent = data.period;
@@ -2042,38 +2540,36 @@
                 document.getElementById('pdamTotal').textContent = `Rp ${formatRupiah(data.amount + data.fine)}`;
                 document.getElementById('pdamStatus').textContent = data.status === 'paid' ? 'Lunas' : 'Belum Lunas';
                 document.getElementById('pdamStatus').className = `badge ${data.status==='paid'?'badge-success':'badge-warning'}`;
+                state.pdamMethod = 'va';
+                document.querySelectorAll('#page-pdam .method-option').forEach(el => {
+                    el.classList.remove('active-method');
+                    const check = el.querySelector('[class*="fa-check-circle"]');
+                    if (check) check.classList.add('hidden');
+                });
+                const first = document.querySelector('#page-pdam .method-option[data-method="va"]');
+                if (first) { first.classList.add('active-method');
+                    const c = first.querySelector('[class*="fa-check-circle"]');
+                    if (c) c.classList.remove('hidden'); }
                 document.getElementById('pdamResult').scrollIntoView({ behavior: 'smooth' });
             }, 800);
         }
 
+        function selectMethodPdam(method) {
+            state.pdamMethod = method;
+            document.querySelectorAll('#page-pdam .method-option').forEach(el => {
+                el.classList.remove('active-method');
+                const check = el.querySelector('[class*="fa-check-circle"]');
+                if (check) check.classList.add('hidden');
+            });
+            const el = document.querySelector(`#page-pdam .method-option[data-method="${method}"]`);
+            if (el) { el.classList.add('active-method');
+                const c = el.querySelector('[class*="fa-check-circle"]');
+                if (c) c.classList.remove('hidden'); }
+        }
+
         function prosesBayarPdam() {
             if (!state.pdamBill) { showToast('Cek tagihan dulu', 'error'); return; }
-            const total = state.pdamBill.amount + state.pdamBill.fine;
-            if (state.saldo < total) { showToast(`Saldo kurang! Rp ${formatRupiah(total)}`, 'error'); return; }
-            showToast('Memproses...', 'info');
-            setTimeout(() => {
-                state.saldo -= total;
-                updateSaldoDisplay();
-                const trans = {
-                    id: Date.now(),
-                    type: 'pdam',
-                    title: `PDAM - ${state.pdamBill.name}`,
-                    amount: total,
-                    date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
-                    time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
-                    method: 'Saldo',
-                    status: 'success',
-                    bill: { ...state.pdamBill }
-                };
-                state.history.push(trans);
-                saveState();
-                if (billData.pdam[state.pdamBill.id]) billData.pdam[state.pdamBill.id].status = 'paid';
-                showReceipt(trans);
-                state.pdamBill = null;
-                document.getElementById('pdamResult').classList.add('hidden');
-                document.getElementById('inputPdam').value = '';
-                updateCounters();
-            }, 1200);
+            processPayment(state.pdamBill, 'pdam', `PDAM - ${state.pdamBill.name}`, state.pdamMethod);
         }
 
         // =============================================
@@ -2092,7 +2588,7 @@
             setTimeout(() => {
                 const data = billData.internet[val];
                 if (!data) { showToast('Nomor tidak ditemukan', 'error'); return; }
-                state.internetBill = { ...data, id: val, category: 'internet' };
+                state.internetBill = { ...data, id: val };
                 document.getElementById('internetResult').classList.remove('hidden');
                 document.getElementById('internetNama').textContent = data.name;
                 document.getElementById('internetPeriode').textContent = data.period;
@@ -2103,38 +2599,36 @@
                 document.getElementById('internetTotal').textContent = `Rp ${formatRupiah(data.amount + data.fine)}`;
                 document.getElementById('internetStatus').textContent = data.status === 'paid' ? 'Lunas' : 'Belum Lunas';
                 document.getElementById('internetStatus').className = `badge ${data.status==='paid'?'badge-success':'badge-warning'}`;
+                state.internetMethod = 'va';
+                document.querySelectorAll('#page-internet .method-option').forEach(el => {
+                    el.classList.remove('active-method');
+                    const check = el.querySelector('[class*="fa-check-circle"]');
+                    if (check) check.classList.add('hidden');
+                });
+                const first = document.querySelector('#page-internet .method-option[data-method="va"]');
+                if (first) { first.classList.add('active-method');
+                    const c = first.querySelector('[class*="fa-check-circle"]');
+                    if (c) c.classList.remove('hidden'); }
                 document.getElementById('internetResult').scrollIntoView({ behavior: 'smooth' });
             }, 800);
         }
 
+        function selectMethodInternet(method) {
+            state.internetMethod = method;
+            document.querySelectorAll('#page-internet .method-option').forEach(el => {
+                el.classList.remove('active-method');
+                const check = el.querySelector('[class*="fa-check-circle"]');
+                if (check) check.classList.add('hidden');
+            });
+            const el = document.querySelector(`#page-internet .method-option[data-method="${method}"]`);
+            if (el) { el.classList.add('active-method');
+                const c = el.querySelector('[class*="fa-check-circle"]');
+                if (c) c.classList.remove('hidden'); }
+        }
+
         function prosesBayarInternet() {
             if (!state.internetBill) { showToast('Cek tagihan dulu', 'error'); return; }
-            const total = state.internetBill.amount + state.internetBill.fine;
-            if (state.saldo < total) { showToast(`Saldo kurang! Rp ${formatRupiah(total)}`, 'error'); return; }
-            showToast('Memproses...', 'info');
-            setTimeout(() => {
-                state.saldo -= total;
-                updateSaldoDisplay();
-                const trans = {
-                    id: Date.now(),
-                    type: 'internet',
-                    title: `Internet - ${state.internetBill.name}`,
-                    amount: total,
-                    date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
-                    time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
-                    method: 'Saldo',
-                    status: 'success',
-                    bill: { ...state.internetBill }
-                };
-                state.history.push(trans);
-                saveState();
-                if (billData.internet[state.internetBill.id]) billData.internet[state.internetBill.id].status = 'paid';
-                showReceipt(trans);
-                state.internetBill = null;
-                document.getElementById('internetResult').classList.add('hidden');
-                document.getElementById('inputInternet').value = '';
-                updateCounters();
-            }, 1200);
+            processPayment(state.internetBill, 'internet', `Internet - ${state.internetBill.name}`, state.internetMethod);
         }
 
         // =============================================
@@ -2177,6 +2671,16 @@
                 </div>
             `).join('');
             document.getElementById('sppTotal').textContent = 'Rp 0';
+            state.sppMethod = 'va';
+            document.querySelectorAll('#page-spp-seminar .method-option').forEach(el => {
+                el.classList.remove('active-method');
+                const check = el.querySelector('[class*="fa-check-circle"]');
+                if (check) check.classList.add('hidden');
+            });
+            const first = document.querySelector('#page-spp-seminar .method-option[data-method="va"]');
+            if (first) { first.classList.add('active-method');
+                const c = first.querySelector('[class*="fa-check-circle"]');
+                if (c) c.classList.remove('hidden'); }
             document.getElementById('sppResult').scrollIntoView({ behavior: 'smooth' });
         }
 
@@ -2186,6 +2690,19 @@
                     i !== idx); }
             const total = state.selectedSppItems.reduce((s, i) => s + (state.sppData.items[i]?.amount || 0), 0);
             document.getElementById('sppTotal').textContent = `Rp ${formatRupiah(total)}`;
+        }
+
+        function selectMethodSpp(method) {
+            state.sppMethod = method;
+            document.querySelectorAll('#page-spp-seminar .method-option').forEach(el => {
+                el.classList.remove('active-method');
+                const check = el.querySelector('[class*="fa-check-circle"]');
+                if (check) check.classList.add('hidden');
+            });
+            const el = document.querySelector(`#page-spp-seminar .method-option[data-method="${method}"]`);
+            if (el) { el.classList.add('active-method');
+                const c = el.querySelector('[class*="fa-check-circle"]');
+                if (c) c.classList.remove('hidden'); }
         }
 
         function prosesBayarSpp() {
@@ -2199,13 +2716,51 @@
                 kErr.classList.remove('hidden'); return; }
             kErr.classList.add('hidden');
             const total = state.selectedSppItems.reduce((s, i) => s + (state.sppData.items[i]?.amount || 0), 0);
+
+            if (state.sppMethod === 'saldo') {
+                if (state.saldo < total) { showToast(`Saldo kurang! Rp ${formatRupiah(total)}`, 'error'); return; }
+                showToast('Memproses...', 'info');
+                setTimeout(() => {
+                    state.saldo -= total;
+                    updateSaldoDisplay();
+                    state.selectedSppItems.forEach(i => { if (state.sppData.items[i]) state.sppData.items[i]
+                            .status = 'paid'; });
+                    const nim = state.sppData.nim;
+                    if (billData.spp[nim]) billData.spp[nim].items = state.sppData.items;
+                    const trans = {
+                        id: Date.now(),
+                        type: 'spp',
+                        title: `SPP - ${state.sppData.name} (${state.selectedSppItems.length} cicilan)`,
+                        amount: total,
+                        date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long',
+                            year: 'numeric' }),
+                        time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+                        method: 'Saldo',
+                        status: 'success',
+                        spp: { nim: state.sppData.nim, name: state.sppData.name, items: state
+                                .selectedSppItems.map(i => state.sppData.items[i]) }
+                    };
+                    state.history.push(trans);
+                    saveState();
+                    showReceipt(trans, 'saldo');
+                    state.selectedSppItems = [];
+                    document.getElementById('sppTotal').textContent = 'Rp 0';
+                    document.getElementById('sppResult').classList.add('hidden');
+                    document.getElementById('inputNim').value = '';
+                    document.getElementById('inputKodeTagihan').value = '';
+                    updateCounters();
+                }, 1200);
+                return;
+            }
+
             if (state.saldo < total) { showToast(`Saldo kurang! Rp ${formatRupiah(total)}`, 'error'); return; }
-            showToast('Memproses...', 'info');
+
+            showToast(`Memproses pembayaran via ${getMethodLabel(state.sppMethod)}...`, 'info');
             setTimeout(() => {
                 state.saldo -= total;
                 updateSaldoDisplay();
                 state.selectedSppItems.forEach(i => { if (state.sppData.items[i]) state.sppData.items[i].status =
-                    'paid'; });
+                        'paid'; });
                 const nim = state.sppData.nim;
                 if (billData.spp[nim]) billData.spp[nim].items = state.sppData.items;
                 const trans = {
@@ -2215,14 +2770,14 @@
                     amount: total,
                     date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
                     time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
-                    method: 'Saldo',
+                    method: getMethodLabel(state.sppMethod),
                     status: 'success',
                     spp: { nim: state.sppData.nim, name: state.sppData.name, items: state.selectedSppItems.map(i =>
                             state.sppData.items[i]) }
                 };
                 state.history.push(trans);
                 saveState();
-                showReceipt(trans);
+                showReceipt(trans, state.sppMethod);
                 state.selectedSppItems = [];
                 document.getElementById('sppTotal').textContent = 'Rp 0';
                 document.getElementById('sppResult').classList.add('hidden');
@@ -2268,42 +2823,40 @@
                 document.getElementById('seminarTotal').textContent = `Rp ${formatRupiah(data.amount + data.fine)}`;
                 document.getElementById('seminarStatus').textContent = data.status === 'paid' ? 'Lunas' : 'Belum Lunas';
                 document.getElementById('seminarStatus').className = `badge ${data.status==='paid'?'badge-success':'badge-warning'}`;
+                state.seminarMethod = 'va';
+                document.querySelectorAll('#page-spp-seminar .method-option').forEach(el => {
+                    el.classList.remove('active-method');
+                    const check = el.querySelector('[class*="fa-check-circle"]');
+                    if (check) check.classList.add('hidden');
+                });
+                const first = document.querySelector('#page-spp-seminar .method-option[data-method="va"]');
+                if (first) { first.classList.add('active-method');
+                    const c = first.querySelector('[class*="fa-check-circle"]');
+                    if (c) c.classList.remove('hidden'); }
                 document.getElementById('seminarResult').scrollIntoView({ behavior: 'smooth' });
             }, 800);
         }
 
+        function selectMethodSeminar(method) {
+            state.seminarMethod = method;
+            document.querySelectorAll('#page-spp-seminar .method-option').forEach(el => {
+                el.classList.remove('active-method');
+                const check = el.querySelector('[class*="fa-check-circle"]');
+                if (check) check.classList.add('hidden');
+            });
+            const el = document.querySelector(`#page-spp-seminar .method-option[data-method="${method}"]`);
+            if (el) { el.classList.add('active-method');
+                const c = el.querySelector('[class*="fa-check-circle"]');
+                if (c) c.classList.remove('hidden'); }
+        }
+
         function prosesBayarSeminar() {
             if (!state.seminarBill) { showToast('Cek seminar dulu', 'error'); return; }
-            const total = state.seminarBill.amount + state.seminarBill.fine;
-            if (state.saldo < total) { showToast(`Saldo kurang! Rp ${formatRupiah(total)}`, 'error'); return; }
-            showToast('Memproses...', 'info');
-            setTimeout(() => {
-                state.saldo -= total;
-                updateSaldoDisplay();
-                const trans = {
-                    id: Date.now(),
-                    type: 'seminar',
-                    title: `Seminar - ${state.seminarBill.name}`,
-                    amount: total,
-                    date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
-                    time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
-                    method: 'Saldo',
-                    status: 'success',
-                    bill: { ...state.seminarBill }
-                };
-                state.history.push(trans);
-                saveState();
-                if (billData.seminar[state.seminarBill.id]) billData.seminar[state.seminarBill.id].status = 'paid';
-                showReceipt(trans);
-                state.seminarBill = null;
-                document.getElementById('seminarResult').classList.add('hidden');
-                document.getElementById('inputSeminar').value = '';
-                updateCounters();
-            }, 1200);
+            processPayment(state.seminarBill, 'seminar', `Seminar - ${state.seminarBill.name}`, state.seminarMethod);
         }
 
         // =============================================
-        // PULSA & PAKET
+        // PULSA
         // =============================================
         function selectProvider(p) {
             state.selectedProvider = p;
@@ -2329,6 +2882,19 @@
             });
         }
 
+        function selectMethodPulsa(method) {
+            state.pulsaMethod = method;
+            document.querySelectorAll('#page-pulsa .method-option').forEach(el => {
+                el.classList.remove('active-method');
+                const check = el.querySelector('[class*="fa-check-circle"]');
+                if (check) check.classList.add('hidden');
+            });
+            const el = document.querySelector(`#page-pulsa .method-option[data-method="${method}"]`);
+            if (el) { el.classList.add('active-method');
+                const c = el.querySelector('[class*="fa-check-circle"]');
+                if (c) c.classList.remove('hidden'); }
+        }
+
         function prosesBayarPulsa() {
             const hp = document.getElementById('inputHp').value.trim();
             const hpErr = document.getElementById('hpError');
@@ -2349,15 +2915,54 @@
                     paketName = p.name; }
             }
             const total = nominal + paketPrice;
-            if (state.saldo < total) { showToast(`Saldo kurang! Rp ${formatRupiah(total)}`, 'error'); return; }
-            let provider = state.selectedProvider;
-            for (const [pref, prov] of Object.entries(providerMapping)) {
-                if (hp.startsWith(pref)) { provider = prov; break; }
+
+            if (state.pulsaMethod === 'saldo') {
+                if (state.saldo < total) { showToast(`Saldo kurang! Rp ${formatRupiah(total)}`, 'error'); return; }
+                showToast('Memproses...', 'info');
+                setTimeout(() => {
+                    state.saldo -= total;
+                    updateSaldoDisplay();
+                    let provider = state.selectedProvider;
+                    for (const [pref, prov] of Object.entries(providerMapping)) {
+                        if (hp.startsWith(pref)) { provider = prov; break; }
+                    }
+                    const trans = {
+                        id: Date.now(),
+                        type: 'pulsa',
+                        title: `${paketName||'Pulsa'} ${formatRupiah(nominal)} - ${hp}`,
+                        amount: total,
+                        date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long',
+                            year: 'numeric' }),
+                        time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+                        method: 'Saldo',
+                        status: 'success',
+                        pulsa: { hp, provider, nominal, paket: paketName || null, total }
+                    };
+                    state.history.push(trans);
+                    saveState();
+                    showReceipt(trans, 'saldo');
+                    document.getElementById('inputHp').value = '';
+                    document.getElementById('inputCustomNominal').value = '';
+                    state.selectedPaket = null;
+                    document.querySelectorAll('#page-pulsa [data-paket]').forEach(el => {
+                        el.style.borderColor = 'var(--border-light)';
+                        el.style.background = 'var(--card-light)';
+                    });
+                    updateCounters();
+                }, 1200);
+                return;
             }
-            showToast('Memproses...', 'info');
+
+            if (state.saldo < total) { showToast(`Saldo kurang! Rp ${formatRupiah(total)}`, 'error'); return; }
+
+            showToast(`Memproses via ${getMethodLabel(state.pulsaMethod)}...`, 'info');
             setTimeout(() => {
                 state.saldo -= total;
                 updateSaldoDisplay();
+                let provider = state.selectedProvider;
+                for (const [pref, prov] of Object.entries(providerMapping)) {
+                    if (hp.startsWith(pref)) { provider = prov; break; }
+                }
                 const trans = {
                     id: Date.now(),
                     type: 'pulsa',
@@ -2365,13 +2970,13 @@
                     amount: total,
                     date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
                     time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
-                    method: 'Saldo',
+                    method: getMethodLabel(state.pulsaMethod),
                     status: 'success',
                     pulsa: { hp, provider, nominal, paket: paketName || null, total }
                 };
                 state.history.push(trans);
                 saveState();
-                showReceipt(trans);
+                showReceipt(trans, state.pulsaMethod);
                 document.getElementById('inputHp').value = '';
                 document.getElementById('inputCustomNominal').value = '';
                 state.selectedPaket = null;
@@ -2410,38 +3015,36 @@
                 document.getElementById('bpjsTotal').textContent = `Rp ${formatRupiah(data.amount + data.fine)}`;
                 document.getElementById('bpjsStatus').textContent = data.status === 'paid' ? 'Lunas' : 'Belum Lunas';
                 document.getElementById('bpjsStatus').className = `badge ${data.status==='paid'?'badge-success':'badge-warning'}`;
+                state.bpjsMethod = 'va';
+                document.querySelectorAll('#page-bpjs .method-option').forEach(el => {
+                    el.classList.remove('active-method');
+                    const check = el.querySelector('[class*="fa-check-circle"]');
+                    if (check) check.classList.add('hidden');
+                });
+                const first = document.querySelector('#page-bpjs .method-option[data-method="va"]');
+                if (first) { first.classList.add('active-method');
+                    const c = first.querySelector('[class*="fa-check-circle"]');
+                    if (c) c.classList.remove('hidden'); }
                 document.getElementById('bpjsResult').scrollIntoView({ behavior: 'smooth' });
             }, 800);
         }
 
+        function selectMethodBpjs(method) {
+            state.bpjsMethod = method;
+            document.querySelectorAll('#page-bpjs .method-option').forEach(el => {
+                el.classList.remove('active-method');
+                const check = el.querySelector('[class*="fa-check-circle"]');
+                if (check) check.classList.add('hidden');
+            });
+            const el = document.querySelector(`#page-bpjs .method-option[data-method="${method}"]`);
+            if (el) { el.classList.add('active-method');
+                const c = el.querySelector('[class*="fa-check-circle"]');
+                if (c) c.classList.remove('hidden'); }
+        }
+
         function prosesBayarBpjs() {
             if (!state.bpjsBill) { showToast('Cek BPJS dulu', 'error'); return; }
-            const total = state.bpjsBill.amount + state.bpjsBill.fine;
-            if (state.saldo < total) { showToast(`Saldo kurang! Rp ${formatRupiah(total)}`, 'error'); return; }
-            showToast('Memproses...', 'info');
-            setTimeout(() => {
-                state.saldo -= total;
-                updateSaldoDisplay();
-                const trans = {
-                    id: Date.now(),
-                    type: 'bpjs',
-                    title: `BPJS - ${state.bpjsBill.name}`,
-                    amount: total,
-                    date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
-                    time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
-                    method: 'Saldo',
-                    status: 'success',
-                    bill: { ...state.bpjsBill }
-                };
-                state.history.push(trans);
-                saveState();
-                if (billData.bpjs[state.bpjsBill.id]) billData.bpjs[state.bpjsBill.id].status = 'paid';
-                showReceipt(trans);
-                state.bpjsBill = null;
-                document.getElementById('bpjsResult').classList.add('hidden');
-                document.getElementById('inputBpjs').value = '';
-                updateCounters();
-            }, 1200);
+            processPayment(state.bpjsBill, 'bpjs', `BPJS - ${state.bpjsBill.name}`, state.bpjsMethod);
         }
 
         // =============================================
@@ -2471,42 +3074,40 @@
                 document.getElementById('pajakTotal').textContent = `Rp ${formatRupiah(data.amount + data.fine)}`;
                 document.getElementById('pajakStatus').textContent = data.status === 'paid' ? 'Lunas' : 'Belum Bayar';
                 document.getElementById('pajakStatus').className = `badge ${data.status==='paid'?'badge-success':'badge-warning'}`;
+                state.pajakMethod = 'va';
+                document.querySelectorAll('#page-pajak .method-option').forEach(el => {
+                    el.classList.remove('active-method');
+                    const check = el.querySelector('[class*="fa-check-circle"]');
+                    if (check) check.classList.add('hidden');
+                });
+                const first = document.querySelector('#page-pajak .method-option[data-method="va"]');
+                if (first) { first.classList.add('active-method');
+                    const c = first.querySelector('[class*="fa-check-circle"]');
+                    if (c) c.classList.remove('hidden'); }
                 document.getElementById('pajakResult').scrollIntoView({ behavior: 'smooth' });
             }, 800);
         }
 
+        function selectMethodPajak(method) {
+            state.pajakMethod = method;
+            document.querySelectorAll('#page-pajak .method-option').forEach(el => {
+                el.classList.remove('active-method');
+                const check = el.querySelector('[class*="fa-check-circle"]');
+                if (check) check.classList.add('hidden');
+            });
+            const el = document.querySelector(`#page-pajak .method-option[data-method="${method}"]`);
+            if (el) { el.classList.add('active-method');
+                const c = el.querySelector('[class*="fa-check-circle"]');
+                if (c) c.classList.remove('hidden'); }
+        }
+
         function prosesBayarPajak() {
             if (!state.pajakBill) { showToast('Cek pajak dulu', 'error'); return; }
-            const total = state.pajakBill.amount + state.pajakBill.fine;
-            if (state.saldo < total) { showToast(`Saldo kurang! Rp ${formatRupiah(total)}`, 'error'); return; }
-            showToast('Memproses...', 'info');
-            setTimeout(() => {
-                state.saldo -= total;
-                updateSaldoDisplay();
-                const trans = {
-                    id: Date.now(),
-                    type: 'pajak',
-                    title: `Pajak - ${state.pajakBill.name}`,
-                    amount: total,
-                    date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
-                    time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
-                    method: 'Saldo',
-                    status: 'success',
-                    bill: { ...state.pajakBill }
-                };
-                state.history.push(trans);
-                saveState();
-                if (billData.pajak[state.pajakBill.id]) billData.pajak[state.pajakBill.id].status = 'paid';
-                showReceipt(trans);
-                state.pajakBill = null;
-                document.getElementById('pajakResult').classList.add('hidden');
-                document.getElementById('inputPajak').value = '';
-                updateCounters();
-            }, 1200);
+            processPayment(state.pajakBill, 'pajak', `Pajak - ${state.pajakBill.name}`, state.pajakMethod);
         }
 
         // =============================================
-        // TV / STREAMING
+        // TV
         // =============================================
         function selectTv(p) {
             state.tvSelected = p;
@@ -2546,38 +3147,36 @@
                 document.getElementById('tvTotal').textContent = `Rp ${formatRupiah(found.amount + found.fine)}`;
                 document.getElementById('tvStatus').textContent = found.status === 'paid' ? 'Lunas' : 'Belum Bayar';
                 document.getElementById('tvStatus').className = `badge ${found.status==='paid'?'badge-success':'badge-warning'}`;
+                state.tvMethod = 'va';
+                document.querySelectorAll('#page-tv .method-option').forEach(el => {
+                    el.classList.remove('active-method');
+                    const check = el.querySelector('[class*="fa-check-circle"]');
+                    if (check) check.classList.add('hidden');
+                });
+                const first = document.querySelector('#page-tv .method-option[data-method="va"]');
+                if (first) { first.classList.add('active-method');
+                    const c = first.querySelector('[class*="fa-check-circle"]');
+                    if (c) c.classList.remove('hidden'); }
                 document.getElementById('tvResult').scrollIntoView({ behavior: 'smooth' });
             }, 800);
         }
 
+        function selectMethodTv(method) {
+            state.tvMethod = method;
+            document.querySelectorAll('#page-tv .method-option').forEach(el => {
+                el.classList.remove('active-method');
+                const check = el.querySelector('[class*="fa-check-circle"]');
+                if (check) check.classList.add('hidden');
+            });
+            const el = document.querySelector(`#page-tv .method-option[data-method="${method}"]`);
+            if (el) { el.classList.add('active-method');
+                const c = el.querySelector('[class*="fa-check-circle"]');
+                if (c) c.classList.remove('hidden'); }
+        }
+
         function prosesBayarTv() {
             if (!state.tvBill) { showToast('Cek tagihan dulu', 'error'); return; }
-            const total = state.tvBill.amount + state.tvBill.fine;
-            if (state.saldo < total) { showToast(`Saldo kurang! Rp ${formatRupiah(total)}`, 'error'); return; }
-            showToast('Memproses...', 'info');
-            setTimeout(() => {
-                state.saldo -= total;
-                updateSaldoDisplay();
-                const trans = {
-                    id: Date.now(),
-                    type: 'tv',
-                    title: `${state.tvBill.name}`,
-                    amount: total,
-                    date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
-                    time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
-                    method: 'Saldo',
-                    status: 'success',
-                    bill: { ...state.tvBill }
-                };
-                state.history.push(trans);
-                saveState();
-                if (billData.tv[state.tvBill.id]) billData.tv[state.tvBill.id].status = 'paid';
-                showReceipt(trans);
-                state.tvBill = null;
-                document.getElementById('tvResult').classList.add('hidden');
-                document.getElementById('inputTv').value = '';
-                updateCounters();
-            }, 1200);
+            processPayment(state.tvBill, 'tv', `${state.tvBill.name}`, state.tvMethod);
         }
 
         // =============================================
@@ -2597,16 +3196,59 @@
             });
         }
 
+        function selectMethodDonasi(method) {
+            state.donasiMethod = method;
+            document.querySelectorAll('#page-donasi .method-option').forEach(el => {
+                el.classList.remove('active-method');
+                const check = el.querySelector('[class*="fa-check-circle"]');
+                if (check) check.classList.add('hidden');
+            });
+            const el = document.querySelector(`#page-donasi .method-option[data-method="${method}"]`);
+            if (el) { el.classList.add('active-method');
+                const c = el.querySelector('[class*="fa-check-circle"]');
+                if (c) c.classList.remove('hidden'); }
+        }
+
         function prosesBayarDonasi() {
             let nominal = 0;
             const custom = document.getElementById('inputDonasiCustom').value;
             if (custom && parseInt(custom) > 0) { nominal = parseInt(custom); } else if (state.donasiNominal) { nominal =
                     parseInt(state.donasiNominal); } else { showToast('Pilih nominal donasi', 'error'); return; }
             if (nominal < 10000) { showToast('Minimal Rp 10.000', 'error'); return; }
-            if (state.saldo < nominal) { showToast(`Saldo kurang! Rp ${formatRupiah(nominal)}`, 'error'); return; }
             const catatan = document.getElementById('inputDonasiCatatan').value.trim();
             const lembaga = billData.donasi[state.donasiSelected];
-            showToast('Memproses donasi...', 'info');
+
+            if (state.donasiMethod === 'saldo') {
+                if (state.saldo < nominal) { showToast(`Saldo kurang! Rp ${formatRupiah(nominal)}`, 'error'); return; }
+                showToast('Memproses donasi...', 'info');
+                setTimeout(() => {
+                    state.saldo -= nominal;
+                    updateSaldoDisplay();
+                    const trans = {
+                        id: Date.now(),
+                        type: 'donasi',
+                        title: `Donasi ${lembaga?.name||state.donasiSelected} ${catatan?'- '+catatan:''}`,
+                        amount: nominal,
+                        date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long',
+                            year: 'numeric' }),
+                        time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+                        method: 'Saldo',
+                        status: 'success',
+                        donasi: { lembaga: state.donasiSelected, nominal, catatan }
+                    };
+                    state.history.push(trans);
+                    saveState();
+                    showReceipt(trans, 'saldo');
+                    document.getElementById('inputDonasiCustom').value = '';
+                    document.getElementById('inputDonasiCatatan').value = '';
+                    updateCounters();
+                }, 1200);
+                return;
+            }
+
+            if (state.saldo < nominal) { showToast(`Saldo kurang! Rp ${formatRupiah(nominal)}`, 'error'); return; }
+
+            showToast(`Memproses donasi via ${getMethodLabel(state.donasiMethod)}...`, 'info');
             setTimeout(() => {
                 state.saldo -= nominal;
                 updateSaldoDisplay();
@@ -2617,13 +3259,13 @@
                     amount: nominal,
                     date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
                     time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
-                    method: 'Saldo',
+                    method: getMethodLabel(state.donasiMethod),
                     status: 'success',
                     donasi: { lembaga: state.donasiSelected, nominal, catatan }
                 };
                 state.history.push(trans);
                 saveState();
-                showReceipt(trans);
+                showReceipt(trans, state.donasiMethod);
                 document.getElementById('inputDonasiCustom').value = '';
                 document.getElementById('inputDonasiCatatan').value = '';
                 updateCounters();
@@ -2633,12 +3275,62 @@
         // =============================================
         // RECEIPT
         // =============================================
-        function showReceipt(transaction) {
+        function showReceipt(transaction, methodOverride) {
+            const method = methodOverride ? getMethodLabel(methodOverride) : (transaction.method || 'Saldo');
             let detailHtml = '';
             const isPulsa = transaction.type === 'pulsa';
             const isSpp = transaction.type === 'spp';
             const isDonasi = transaction.type === 'donasi';
             const isSeminar = transaction.type === 'seminar';
+
+            let methodDetailHtml = '';
+            const methodLower = (methodOverride || '').toLowerCase();
+            if (methodLower === 'va' || methodLower === 'virtual account') {
+                const vaNumber = generateVA();
+                methodDetailHtml = `
+                    <div class="bg-primary-light p-4 rounded-xl mt-2" style="background:var(--primary-light);">
+                        <p class="font-bold text-sm" style="color:var(--text-light);">💳 Virtual Account</p>
+                        <p class="font-mono text-lg font-bold" style="color:var(--primary);">${vaNumber}</p>
+                        <p class="text-xs" style="color:var(--text-secondary-light);">Transfer ke bank:</p>
+                        <div class="flex gap-2 mt-1 flex-wrap">
+                            <span class="badge badge-info">BCA</span>
+                            <span class="badge badge-info">BNI</span>
+                            <span class="badge badge-info">Mandiri</span>
+                            <span class="badge badge-info">BRI</span>
+                        </div>
+                        <p class="text-xs mt-2" style="color:var(--text-secondary-light);">Gunakan nomor VA di atas untuk transfer.</p>
+                    </div>
+                `;
+            } else if (methodLower === 'qris') {
+                const vaCode = generateVA();
+                methodDetailHtml = `
+                    <div class="bg-white p-4 rounded-xl text-center mt-2" style="background:var(--card-light);">
+                        <div id="qrcode" class="flex justify-center"></div>
+                        <p class="text-xs mt-2" style="color:var(--text-secondary-light);">Scan QR code dengan aplikasi e-wallet</p>
+                        <div class="text-sm mt-2">
+                            <p class="font-mono" style="color:var(--text-light);">${vaCode}</p>
+                            <p class="text-xs" style="color:var(--text-secondary-light);">Kode QRIS</p>
+                        </div>
+                        <div class="timer mt-2" id="qrTimer">05:00</div>
+                    </div>
+                `;
+            } else if (methodLower === 'teller' || methodLower === 'teller / kasir') {
+                const paymentCode = 'TRX-' + Date.now().toString().slice(-8);
+                methodDetailHtml = `
+                    <div class="bg-primary-light p-4 rounded-xl mt-2" style="background:var(--primary-light);">
+                        <p class="font-bold text-sm" style="color:var(--text-light);">🏦 Bayar di Teller / Kasir</p>
+                        <p class="font-mono text-lg font-bold" style="color:var(--primary);">${paymentCode}</p>
+                        <p class="text-xs" style="color:var(--text-secondary-light);">Kantor cabang terdekat:</p>
+                        <ul class="text-xs mt-1 space-y-1" style="color:var(--text-secondary-light);">
+                            <li>📍 Jl. Sudirman No. 12, Jakarta Pusat</li>
+                            <li>📍 Jl. Pahlawan No. 45, Bandung</li>
+                            <li>📍 Jl. Diponegoro No. 78, Surabaya</li>
+                            <li>📍 Jl. Gajah Mada No. 33, Medan</li>
+                        </ul>
+                        <p class="text-xs mt-2" style="color:var(--text-secondary-light);">Tunjukkan kode ini ke kasir.</p>
+                    </div>
+                `;
+            }
 
             if (isPulsa) {
                 detailHtml = `
@@ -2676,7 +3368,7 @@
             } else {
                 detailHtml = `
                     <div class="text-sm space-y-1">
-                        <p><span style="color:var(--text-secondary-light);">Kategori:</span> ${getCategoryLabel(transaction.category)||getTypeLabel(transaction.type)}</p>
+                        <p><span style="color:var(--text-secondary-light);">Kategori:</span> ${getTypeLabel(transaction.type)}</p>
                         <p><span style="color:var(--text-secondary-light);">Pelanggan:</span> ${transaction.bill?.name||'-'}</p>
                         ${transaction.bill?.period?`<p><span style="color:var(--text-secondary-light);">Periode:</span> ${transaction.bill.period}</p>`:''}
                     </div>
@@ -2692,8 +3384,9 @@
                 <div class="border-t border-b py-4 my-4" style="border-color:var(--border-light);">
                     <div class="flex justify-between text-sm"><span style="color:var(--text-secondary-light);">ID</span><span class="font-mono" style="color:var(--text-light);">#${transaction.id}</span></div>
                     <div class="flex justify-between text-sm mt-1"><span style="color:var(--text-secondary-light);">Tanggal</span><span style="color:var(--text-light);">${transaction.date} ${transaction.time}</span></div>
-                    <div class="flex justify-between text-sm mt-1"><span style="color:var(--text-secondary-light);">Metode</span><span style="color:var(--text-light);">${transaction.method||'Saldo'}</span></div>
+                    <div class="flex justify-between text-sm mt-1"><span style="color:var(--text-secondary-light);">Metode</span><span style="color:var(--text-light);">${method}</span></div>
                 </div>
+                ${methodDetailHtml}
                 <div class="mb-4 mt-3">
                     <p class="text-sm" style="color:var(--text-secondary-light);">${isDonasi?'Donasi':isPulsa?'Pembelian':isSeminar?'Seminar':'Pembayaran'}</p>
                     <p class="font-bold" style="color:var(--text-light);">${transaction.title}</p>
@@ -2711,6 +3404,40 @@
             `;
 
             showModal(html);
+
+            if (methodLower === 'qris') {
+                setTimeout(() => {
+                    const qrContainer = document.getElementById('qrcode');
+                    if (qrContainer && typeof QRCode !== 'undefined') {
+                        qrContainer.innerHTML = '';
+                        new QRCode(qrContainer, {
+                            text: generateVA(),
+                            width: 170,
+                            height: 170,
+                            colorDark: '#03AC0E',
+                            colorLight: '#ffffff',
+                            correctLevel: QRCode.CorrectLevel.H
+                        });
+                        startTimer(300);
+                    }
+                }, 350);
+            }
+        }
+
+        function startTimer(seconds) {
+            let remaining = seconds;
+            const timerEl = document.getElementById('qrTimer');
+            if (!timerEl) return;
+            const interval = setInterval(() => {
+                const mins = Math.floor(remaining / 60);
+                const secs = remaining % 60;
+                timerEl.textContent = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+                if (remaining <= 0) { clearInterval(interval);
+                    timerEl.textContent = '⏰ Expired';
+                    timerEl.style.color = '#EF4444';
+                    showToast('QR Code kadaluarsa', 'error'); }
+                remaining--;
+            }, 1000);
         }
 
         function exportPDF() {
@@ -2810,6 +3537,7 @@
         document.getElementById('inputTv').addEventListener('keypress', e => { if (e.key === 'Enter') cekTv(); });
 
         console.log('💰 BayaranKita — Listrik, PDAM, Internet terpisah | SPP/SEMINAR digabung');
+        console.log('💳 4 Metode Pembayaran: Virtual Account, QRIS, Teller/Kasir, Saldo');
         console.log('👋 HALO SELAMAT DATANG Muhammad Ricky Ardian');
     </script>
 </body>
